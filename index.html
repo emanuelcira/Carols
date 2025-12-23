@@ -1,34 +1,754 @@
 <!DOCTYPE html>
-<html lang="ro">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Colinde – Crăciun</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colinde / Christmas Carols</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 16px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 24px 16px;
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .search-container {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .carol-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .carol-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .carol-item:active {
+            transform: scale(0.98);
+        }
+
+        .carol-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .carol-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .carol-subtitle {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            padding: 16px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 40px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            border-radius: 16px 16px 0 0;
+            z-index: 10;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f5f5f5;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .close-btn:active {
+            background: #e0e0e0;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 4px;
+            padding-right: 40px;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .lyrics-container {
+            padding: 20px;
+        }
+
+        .lyrics-section {
+            margin-bottom: 32px;
+        }
+
+        .lyrics-section h3 {
+            font-size: 16px;
+            color: #667eea;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .lyrics-text {
+            font-size: 16px;
+            line-height: 1.8;
+            white-space: pre-line;
+            color: #333;
+        }
+
+        .verse {
+            margin-bottom: 20px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+            font-size: 16px;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            .modal-content {
+                max-height: 90vh;
+            }
+
+            .lyrics-text {
+                font-size: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>🎄 Colinde / Christmas Carols 🎄</h1>
+            <p class="subtitle">Romanian & English Lyrics</p>
+        </header>
 
-<header>
-  <h1>Colinde – Crăciun</h1>
-</header>
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search carols... / Caută colinde...">
+        </div>
 
-<main>
-  <input
-    id="search"
-    type="text"
-    placeholder="Caută colind…"
-    autocomplete="off"
-  >
+        <div class="carol-list" id="carolList"></div>
+        <div class="no-results" id="noResults" style="display: none;">
+            No carols found / Nu s-au găsit colinde
+        </div>
+    </div>
 
-  <ul id="song-list"></ul>
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-btn" id="closeBtn">×</button>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-subtitle" id="modalSubtitle"></p>
+            </div>
+            <div class="lyrics-container" id="lyricsContainer"></div>
+        </div>
+    </div>
 
-  <section id="lyrics-view" class="hidden">
-    <button id="back">← Înapoi</button>
-    <h2 id="song-title"></h2>
-    <div id="lyrics"></div>
-  </section>
-</main>
+    <script>
+        const carols = [
+            {
+                id: 1,
+                titleRo: "Steaua sus răsare",
+                titleEn: "The Star Rises High",
+                lyricsRo: `Steaua sus răsare
+Ca o taină mare
+Steaua strălucește
+Și lumii vestește
+Că astăzi S-a născut
+Hristos Domnul mult așteptat
 
-<script src="script.js"></script>
+Refren:
+Florile dalbe, crinii din văi
+Și cu alai, veniți să-L lăudați
+Florile dalbe, crinii din văi
+Și cu alai, veniți să-L cinstați
+
+Peste-a pământului margini
+Suflete de serafini
+L-au văzut și L-au cântat
+Sus în cer L-au închinat
+Că astăzi S-a născut
+Hristos Domnul mult așteptat`,
+                lyricsEn: `The star rises high
+Like a great mystery
+The star shines bright
+And announces to the world
+That today is born
+Christ the Lord, long awaited
+
+Chorus:
+White flowers, lilies from valleys
+Come with procession to praise Him
+White flowers, lilies from valleys
+Come with procession to honor Him
+
+Over the edges of the earth
+Souls of seraphim
+Have seen Him and sang to Him
+High in heaven they worshiped Him
+That today is born
+Christ the Lord, long awaited`
+            },
+            {
+                id: 2,
+                titleRo: "O, ce veste minunată",
+                titleEn: "Oh, What Wonderful News",
+                lyricsRo: `O, ce veste minunată
+În Betleem ni se arată
+Astă noapte s-a născut
+Cel de sus cel preaslăvit
+
+Refren:
+Lui Hristos să-I cântăm
+Și din gură să-I grăim
+Că S-a pogorât din cer
+Pe pământ spre-a ne mântui
+
+De semeție de Sus vine
+Ne aduce vești senine
+Împărat nemuritor
+În Iisus Mântuitorul
+
+Pe părinți cu drag îi miră
+Jilț și margătar și smirnă
+Daruri scumpe cer pământ
+Regelui ce s-a născut`,
+                lyricsEn: `Oh, what wonderful news
+Is shown to us in Bethlehem
+This night is born
+The most glorious One from above
+
+Chorus:
+Let us sing to Christ
+And speak with our mouths
+That He descended from heaven
+To earth to save us
+
+From His majesty on high He comes
+He brings us serene news
+Immortal Emperor
+In Jesus the Savior
+
+Parents greet with love
+Gold and pearl and myrrh
+Precious gifts from heaven and earth
+To the King who is born`
+            },
+            {
+                id: 3,
+                titleRo: "Trei crai de la răsărit",
+                titleEn: "Three Kings from the East",
+                lyricsRo: `Trei crai de la răsărit
+Lăsară totul și se pornit
+Steaua din cer îi călăuzea
+Către-a lui Hristos însemnare
+
+Refren:
+Și mergând după steaua cea
+Ce strălucea pe cerul pământului
+Ajunseră la locul sfânt
+Unde S-a născut pruncul cel sfânt
+
+Intrară în Ierusalim
+La Irod să întrebe pe el
+Unde este noul împărat
+Ce s-a născut în acest pământ
+
+Și Irod le-a spus lor:
+Du-te și caută-l voi
+Și când îl veți găsi pe el
+Să-mi spuneți și mie
+
+Ei plecară de la Irod
+Cu steaua călăuză înainte
+Și ajunseră în Betleem
+Unde era pruncul cu Maria
+
+Căzură în genunchi la el
+Și-I dădură darul de aur
+Smirnă și tămâie sfântă
+Pentru împăratul ceresc`,
+                lyricsEn: `Three kings from the East
+Left everything and set out
+The star from heaven guided them
+Toward Christ's sign
+
+Chorus:
+And following the star
+That shone in the earth's sky
+They arrived at the holy place
+Where the holy child was born
+
+They entered Jerusalem
+To ask Herod about him
+Where is the new king
+Who was born in this land
+
+And Herod told them:
+Go and search for him
+And when you find him
+Tell me as well
+
+They left from Herod
+With the guiding star ahead
+And arrived in Bethlehem
+Where the child was with Mary
+
+They fell on their knees before him
+And gave him the gift of gold
+Myrrh and holy incense
+For the heavenly king`
+            },
+            {
+                id: 4,
+                titleRo: "Florile dalbe",
+                titleEn: "White Flowers",
+                lyricsRo: `Florile dalbe, crinii din văi
+Astăzi cu alai, vin să ne-nșelați
+Ele știu bine că Hristos cel sfânt
+S-a născut pe-acest pământ
+
+Refren:
+Veniți păstori, toți cu hărnicie
+Și veți vedea mare minune
+Venind în pace la-mpăratul nou
+Mesia Domnului Dumnezeu
+
+Îngerii cântă în slava cerească
+Pace pe pământ și bucurie cerească
+Fiilor oamenilor dea-se pace
+Că Hristos s-a născut astăzi
+
+În peștera săracă și rece
+Pruncul zace pe iarbă uscată
+Maria și Iosif cu mare evlavie
+Păzesc pe-acest prunc dumnezeiesc`,
+                lyricsEn: `White flowers, lilies from valleys
+Today with procession come to deceive us
+They know well that Christ the holy
+Was born on this earth
+
+Chorus:
+Come shepherds, all with diligence
+And you will see great wonder
+Coming in peace to the new emperor
+The Messiah of the Lord God
+
+Angels sing in heavenly glory
+Peace on earth and heavenly joy
+To the sons of men be given peace
+For Christ was born today
+
+In the poor and cold cave
+The child lies on dry grass
+Mary and Joseph with great piety
+Guard this divine child`
+            },
+            {
+                id: 5,
+                titleRo: "Colind, colind",
+                titleEn: "Carol, Carol",
+                lyricsRo: `Colind, colind, colindăm
+Cu bucurie vestim
+Că-n noaptea sfântă s-a născut
+Cel de-a pururea lăudat
+
+Refren:
+Deci colindăm, cu voie de colind
+Cu drag și căldură mergem din poartă-n poartă
+Să vestim minunea cea mare
+Că Hristos S-a născut în Betleem
+
+Iată vin colindători
+Toți veseli și cu flori
+Să cânte la fiecare casă
+Colinde dulci și frumoase
+
+Cu steaua în frunte mergem
+Prin zăpadă și ger
+Vestind bucuria Nașterii
+Că Dumnezeu S-a făcut om`,
+                lyricsEn: `Carol, carol, we sing carols
+With joy we announce
+That on the holy night was born
+The eternally praised One
+
+Chorus:
+So we carol, with permission to carol
+With love and warmth we go door to door
+To announce the great wonder
+That Christ was born in Bethlehem
+
+Behold the carolers come
+All joyful and with flowers
+To sing at every house
+Sweet and beautiful carols
+
+With the star ahead we go
+Through snow and frost
+Announcing the joy of the Birth
+That God became man`
+            },
+            {
+                id: 6,
+                titleRo: "Între fir și cer",
+                titleEn: "Between Thread and Sky",
+                lyricsRo: `Între fir și cer
+Și pământ și cer
+Steaua lui Hristos
+Astăzi a răsărit
+
+Refren:
+Slavă întru cei de sus
+Și pe pământ pace
+Între oamenii de bună voință
+Slavă lui Dumnezeu
+
+Astăzi s-a născut
+Cel fără de moarte
+În peșteră săracă
+Pentru a ne mântui
+
+Îngerii din cer
+Cântă cu bucurie
+Păstorii pe câmp
+Vin să se închine
+
+Magii de departe
+Cu daruri au venit
+Aur, smirnă, tămâie
+La Pruncul cel sfânt`,
+                lyricsEn: `Between thread and sky
+And earth and heaven
+The star of Christ
+Today has risen
+
+Chorus:
+Glory in the highest
+And peace on earth
+Among people of good will
+Glory to God
+
+Today is born
+The One without death
+In a poor cave
+To save us
+
+Angels from heaven
+Sing with joy
+Shepherds in the field
+Come to worship
+
+Magi from afar
+Came with gifts
+Gold, myrrh, incense
+To the Holy Child`
+            },
+            {
+                id: 7,
+                titleRo: "Sculați, sculați boieri",
+                titleEn: "Arise, Arise Nobles",
+                lyricsRo: `Sculați, sculați boieri mari
+Că astăzi e mare sărbătoare
+Hristos S-a născut în Betleem
+Din Fecioara Maria
+
+Refren:
+Bucură-te, bucură-te pământule
+Că astăzi S-a născut împăratul cel mare
+Bucură-te, bucură-te pământule
+Că vine Mântuitorul să te mântuie
+
+Deschideți porțile largi
+Să intre regele slavei
+Cel ce vine din înaltul cer
+Să ne aducă mântuire
+
+Îngerii cântă în cer
+Slavă lui Dumnezeu
+Iar pe pământ pace
+Între oamenii de bună credință
+
+Păstorii din câmpie
+Au auzit vestea
+Și au venit în grabă
+Să vadă minunea`,
+                lyricsEn: `Arise, arise great nobles
+For today is a great celebration
+Christ was born in Bethlehem
+From the Virgin Mary
+
+Chorus:
+Rejoice, rejoice earth
+For today the great king is born
+Rejoice, rejoice earth
+For the Savior comes to save you
+
+Open the wide gates
+Let the king of glory enter
+He who comes from the high heaven
+To bring us salvation
+
+Angels sing in heaven
+Glory to God
+And on earth peace
+Among people of good faith
+
+Shepherds from the field
+Heard the news
+And came in haste
+To see the wonder`
+            },
+            {
+                id: 8,
+                titleRo: "Astăzi s-a născut Hristos",
+                titleEn: "Today Christ is Born",
+                lyricsRo: `Astăzi s-a născut Hristos
+Din Fecioara curata
+În orașul Betleemului
+În peșteră săracă
+
+Refren:
+Aleluia, aleluia
+Cântați slavă Domnului
+Aleluia, aleluia
+Mântuitorului nostru
+
+Îngerii vestesc păstorilor
+Marea minune din cer
+Că S-a născut Mesia
+Mântuitorul lumii întregi
+
+Păstorii au venit grabnici
+Cu daruri simple și curate
+La Pruncul cel sfânt
+Să-I aducă închinare
+
+Craiii din răsărit
+Cu steaua călăuză
+Au venit cu daruri scumpe
+Aur, smirnă și tămâie`,
+                lyricsEn: `Today Christ is born
+From the pure Virgin
+In the city of Bethlehem
+In a poor cave
+
+Chorus:
+Hallelujah, hallelujah
+Sing glory to the Lord
+Hallelujah, hallelujah
+To our Savior
+
+Angels announce to shepherds
+The great wonder from heaven
+That the Messiah is born
+The Savior of the whole world
+
+Shepherds came hastily
+With simple and pure gifts
+To the Holy Child
+To bring worship
+
+Kings from the east
+With the guiding star
+Came with precious gifts
+Gold, myrrh and incense`
+            }
+        ];
+
+        const carolList = document.getElementById('carolList');
+        const searchBox = document.getElementById('searchBox');
+        const modal = document.getElementById('modal');
+        const closeBtn = document.getElementById('closeBtn');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSubtitle = document.getElementById('modalSubtitle');
+        const lyricsContainer = document.getElementById('lyricsContainer');
+        const noResults = document.getElementById('noResults');
+
+        function renderCarols(carolsToRender) {
+            carolList.innerHTML = '';
+            
+            if (carolsToRender.length === 0) {
+                carolList.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            carolList.style.display = 'flex';
+            noResults.style.display = 'none';
+
+            carolsToRender.forEach(carol => {
+                const carolItem = document.createElement('div');
+                carolItem.className = 'carol-item';
+                carolItem.innerHTML = `
+                    <div class="carol-title">${carol.titleRo}</div>
+                    <div class="carol-subtitle">${carol.titleEn}</div>
+                `;
+                carolItem.onclick = () => openModal(carol);
+                carolList.appendChild(carolItem);
+            });
+        }
+
+        function openModal(carol) {
+            modalTitle.textContent = carol.titleRo;
+            modalSubtitle.textContent = carol.titleEn;
+            
+            lyricsContainer.innerHTML = `
+                <div class="lyrics-section">
+                    <h3>🇷🇴 Versuri în Română</h3>
+                    <div class="lyrics-text">${carol.lyricsRo}</div>
+                </div>
+                <div class="lyrics-section">
+                    <h3>🇬🇧 English Lyrics</h3>
+                    <div class="lyrics-text">${carol.lyricsEn}</div>
+                </div>
+            `;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        closeBtn.onclick = closeModal;
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        };
+
+        searchBox.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filtered = carols.filter(carol => 
+                carol.titleRo.toLowerCase().includes(searchTerm) ||
+                carol.titleEn.toLowerCase().includes(searchTerm) ||
+                carol.lyricsRo.toLowerCase().includes(searchTerm) ||
+                carol.lyricsEn.toLowerCase().includes(searchTerm)
+            );
+            renderCarols(filtered);
+        });
+
+        // Handle back button on Android
+        window.addEventListener('popstate', () => {
+            if (modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Initial render
+        renderCarols(carols);
+    </script>
 </body>
 </html>
