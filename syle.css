@@ -1,0 +1,70 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #fafafa;
+  color: #111;
+}
+
+header {
+  padding: 16px;
+  text-align: center;
+  background: #111;
+  color: white;
+}
+
+main {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+#search {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+#song-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#song-list li {
+  padding: 14px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+#song-list li:hover {
+  background: #eee;
+}
+
+#lyrics-view {
+  margin-top: 12px;
+}
+
+#lyrics-view.hidden {
+  display: none;
+}
+
+#back {
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+#song-title {
+  margin-top: 0;
+}
+
+#lyrics {
+  white-space: pre-line;
+  line-height: 1.6;
+  font-size: 18px;
+}
