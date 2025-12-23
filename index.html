@@ -66,6 +66,35 @@
             border-color: #667eea;
         }
 
+        .filter-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            flex: 1;
+            padding: 12px 16px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .filter-btn:active {
+            transform: scale(0.98);
+        }
+
+        .filter-btn.active {
+            background: #667eea;
+            border-color: #667eea;
+            color: white;
+        }
+
         .carol-list {
             display: flex;
             flex-direction: column;
@@ -236,6 +265,12 @@
             <input type="text" class="search-box" id="searchBox" placeholder="Search carols... / Caută colinde...">
         </div>
 
+        <div class="filter-container">
+            <button class="filter-btn active" id="allBtn">All / Toate</button>
+            <button class="filter-btn" id="romanianBtn">🇷🇴 Română</button>
+            <button class="filter-btn" id="englishBtn">🇬🇧 English</button>
+        </div>
+
         <div class="carol-list" id="carolList"></div>
         <div class="no-results" id="noResults" style="display: none;">
             No carols found / Nu s-au găsit colinde
@@ -257,29 +292,9 @@
         const carols = [
             {
                 id: 1,
-                titleEn: "Joy to the World",
-                titleRo: "Joy to the World",
-                lyricsEn: `1. Joy to the world, the Lord is come!
-Let earth receive her King!
-Let ev'ry heart prepare Him room,
-and heav'n and nature sing,
-and heav'n and nature sing,
-and heav'n, and heav'n and nature sing.
-
-2. Joy to the earth, the Savior reigns!
-Let men their songs employ,
-while fields and floods, rocks, hills, and plains
-repeat the sounding joy,
-repeat the sounding joy,
-repeat, repeat the sounding joy.
-
-3. He rules the world with truth and grace,
-and makes the nations prove
-the glories of His righteousness
-and wonders of His love,
-and wonders of His love,
-and wonders, wonders of His love.`,
-                lyricsRo: `1. Joy to the world, the Lord is come!
+                title: "Joy to the World",
+                language: "english",
+                lyrics: `1. Joy to the world, the Lord is come!
 Let earth receive her King!
 Let ev'ry heart prepare Him room,
 and heav'n and nature sing,
@@ -302,9 +317,9 @@ and wonders, wonders of His love.`
             },
             {
                 id: 2,
-                titleRo: "O, ce veste minunată",
-                titleEn: "Oh, What Wonderful News",
-                lyricsRo: `1. O, ce veste minunată
+                title: "O, ce veste minunată",
+                language: "romanian",
+                lyrics: `1. O, ce veste minunată
 În Betleem ni se-arată
 /: Că a născut prunc, Prunc din Duhul Sfânt
 Fecioara curată. :/
@@ -321,31 +336,13 @@ Să ne mântuiască. :/
 4. E Isus, Păstorul mare
 Turmă ca El nimeni n-are
 /: Noi Îl lăudăm şi ne închinăm
-Cu credinţă tare :/`,
-                lyricsEn: `1. Oh, what wonderful news
-Is shown to us in Bethlehem
-/: That a child was born, Child from the Holy Spirit
-The pure Virgin. :/
-
-2. For in Bethlehem Mary completing her journey.
-/: In a poor dwelling, near that city
-She gave birth to the Messiah. :/
-
-3. The Son from eternity
-Whom the Father sent to me
-/: To be born, and to grow
-To save us. :/
-
-4. He is Jesus, the great Shepherd
-No one has a flock like Him
-/: We praise Him and worship Him
-With strong faith :/`
+Cu credinţă tare :/`
             },
             {
                 id: 3,
-                titleRo: "Laudă",
-                titleEn: "Praise",
-                lyricsRo: `R: /: Laudă fie adusă, Celui ce S-a Născut
+                title: "Laudă",
+                language: "romanian",
+                lyrics: `R: /: Laudă fie adusă, Celui ce S-a Născut
 La Betleem! :/ x8
 
 B: /: Aleluia! Salvatorului nostru,
@@ -364,49 +361,13 @@ Veşnicia s-o trăieşti eu te colind
 2. Veşnicia Lui şi de toată slava s-a lăsat
 Pe pământ s-a întrupat Pruncul Isus
 Să fii fericit, mântuit şi liber să trăieşti
-An de an pe Isus să-l iubeşti, eu te colind.`,
-                lyricsEn: `R: /: Praise be given, To the One who was Born
-In Bethlehem! :/ x8
-
-B: /: Hallelujah! To our Savior,
-The King was Born in Bethlehem. :/ x2
-
-/: Come open your heart
-To find the wonder within it
-That in a manger and in your life
-The Messiah was born:/
-
-1. With His love and with grace from His divine grace
-You adorn my life, I carol to you
-Dream holidays, with Christ born in your heart
-To live eternity I carol to you
-
-2. His eternity and all the glory He left behind
-On earth the Child Jesus was incarnated
-To be happy, saved and free to live
-Year after year to love Jesus, I carol to you.`
+An de an pe Isus să-l iubeşti, eu te colind.`
             },
             {
                 id: 4,
-                titleEn: "Angels We Have Heard on High",
-                titleRo: "Angels We Have Heard on High",
-                lyricsEn: `1. Angels we have heard on high
-Sweetly swinging o'er the plains
-And the mountains in reply
-Echoing their joyous strains
-Gloria In Excelsis Deo
-Gloria In Excelsis Deo
-
-2. Shepherds why this jubilee?
-Why your joyous strains prolong?
-Say what may the tidings be
-Which inspire your heavenly song?
-
-3. Come to Bethlehem and see
-Him Whose birth the angels sing;
-Come, adore on bended knee
-Christ the Lord, the newborn King`,
-                lyricsRo: `1. Angels we have heard on high
+                title: "Angels We Have Heard on High",
+                language: "english",
+                lyrics: `1. Angels we have heard on high
 Sweetly swinging o'er the plains
 And the mountains in reply
 Echoing their joyous strains
@@ -425,9 +386,9 @@ Christ the Lord, the newborn King`
             },
             {
                 id: 5,
-                titleRo: "Îngeri Mii",
-                titleEn: "Thousands of Angels",
-                lyricsRo: `1. Îngeri mii din ceruri cântă
+                title: "Îngeri Mii",
+                language: "romanian",
+                lyrics: `1. Îngeri mii din ceruri cântă
 Pe deasupra văilor
 Munţii bucuroşi repetă
 Armonia, cântul lor.
@@ -446,33 +407,13 @@ Sfinţi părinţi cu adorare
 4. Vino azi la ieslea sfântă
 Laudă să-I aduci smerit
 Viaţa ta doar Lui predată
-Pentru El e-un dar dorit.`,
-                lyricsEn: `1. Thousands of angels from heaven sing
-Over the valleys
-The mountains joyfully repeat
-Their harmony, their song.
-/: Glory, the Messiah is born. : /
-
-2. What is your joy about?
-You shepherds, what do you hear?
-What does heaven announce in glory?
-What are you listening to so amazed?
-
-3. The holy Child with sun-like face
-Is unspeakably bright.
-Holy parents with adoration
-Watch over Christ.
-
-4. Come today to the holy manger
-Bring praise humbly
-Your life given only to Him
-For Him is a desired gift.`
+Pentru El e-un dar dorit.`
             },
             {
                 id: 6,
-                titleRo: "Într-un Staul Mic",
-                titleEn: "In a Small Stable",
-                lyricsRo: `1. Într-un staul mic, la o margine de sat
+                title: "Într-un Staul Mic",
+                language: "romanian",
+                lyrics: `1. Într-un staul mic, la o margine de sat
 S-a născut un Prunc drăgălaş şi minunat
 Îngeri cântă-n cor: pace fie pe Pământ
 S-a născut Hristos, fiul Domnului, Cel Sfânt.
@@ -484,49 +425,13 @@ S-a născut Hristos, fiul Domnului, Cel Sfânt.
 Şi la Betleem au venit a se-nchina
 
 4. Vestea bună azi se aude ne-ncetat
-Pruncul a venit să ne scape de păcat`,
-                lyricsEn: `1. In a small stable, at the edge of the village
-A lovely and wonderful Child was born
-Angels sing in chorus: peace be on Earth
-Christ was born, the son of the Lord, the Holy One.
-
-2. The group of shepherds listen in wonder
-The angelic choir, the good news it brought
-
-3. Magi, from the east, set out led by a star
-And came to Bethlehem to worship
-
-4. The good news today is heard unceasingly
-The Child came to save us from sin`
+Pruncul a venit să ne scape de păcat`
             },
             {
                 id: 7,
-                titleEn: "God Rest Ye Merry Gentlemen",
-                titleRo: "God Rest Ye Merry Gentlemen",
-                lyricsEn: `1. God Rest Ye Merry Gentlemen,
-Let nothing you dismay,
-Remember Christ our Savior
-Was born on Christmas Day;
-To save us all from Satan's power
-When we were gone astray.
-O tidings of comfort and joy,
-Comfort and joy,
-O tidings of comfort and joy!
-
-2. From God our heavenly
-Father A blessed angel came;
-And unto certain shepherds
-Brought tiding of the same;
-How that in Bethlehem was born
-The Son of God by name.
-
-3. Now to the Lord sing praises,
-All you within this place,
-And with true love and brotherhood
-Each other now embrace;
-this holy tide of Christmas
-Doth bring redeeming grace`,
-                lyricsRo: `1. God Rest Ye Merry Gentlemen,
+                title: "God Rest Ye Merry Gentlemen",
+                language: "english",
+                lyrics: `1. God Rest Ye Merry Gentlemen,
 Let nothing you dismay,
 Remember Christ our Savior
 Was born on Christmas Day;
@@ -552,25 +457,9 @@ Doth bring redeeming grace`
             },
             {
                 id: 8,
-                titleEn: "O Come, O Come, Emmanuel",
-                titleRo: "O Come, O Come, Emmanuel",
-                lyricsEn: `1. O come, O come, Emmanuel
-And ransom captive Israel
-That mourns in lonely exile here
-Until the Son of God appear
-Rejoice! Rejoice! Emmanuel
-Shall come to thee, O Israel.
-
-2. O come, O come, Thou Lord of might,
-Who to Thy tribes, on Sinai's height,
-In ancient times did'st give the Law,
-In cloud, and majesty and awe.
-
-3. O come, Thou Rod of Jesse, free
-Thine own from Satan's tyranny
-From depths of hell Thy people save
-And give them victory o'er the grave`,
-                lyricsRo: `1. O come, O come, Emmanuel
+                title: "O Come, O Come, Emmanuel",
+                language: "english",
+                lyrics: `1. O come, O come, Emmanuel
 And ransom captive Israel
 That mourns in lonely exile here
 Until the Son of God appear
@@ -589,35 +478,9 @@ And give them victory o'er the grave`
             },
             {
                 id: 9,
-                titleEn: "Joyful, Joyful We Adore Thee",
-                titleRo: "Joyful, Joyful We Adore Thee",
-                lyricsEn: `1. Joyful, joyful, we adore You,
-God of glory, Lord of love;
-Hearts unfold like flow'rs before You,
-Op'ning to the sun above.
-Melt the clouds of sin and sadness;
-Drive the dark of doubt away;
-Giver of immortal gladness,
-Fill us with the light of day!
-
-2. All Your works with joy surround You,
-Earth and heav'n reflect Your rays,
-Stars and angels sing around You,
-Center of unbroken praise;
-Field and forest, vale and mountain,
-Flow'ry meadow, flashing sea,
-Chanting bird and flowing fountain
-Praising You eternally!
-
-3. Always giving and forgiving,
-Ever blessing, ever blest,
-Well-spring of the joy of living,
-Ocean-depth of happy rest!
-Loving Father, Christ our Brother,
-Let Your light upon us shine;
-Teach us how to love each other,
-Lift us to the joy divine.`,
-                lyricsRo: `1. Joyful, joyful, we adore You,
+                title: "Joyful, Joyful We Adore Thee",
+                language: "english",
+                lyrics: `1. Joyful, joyful, we adore You,
 God of glory, Lord of love;
 Hearts unfold like flow'rs before You,
 Op'ning to the sun above.
@@ -646,29 +509,9 @@ Lift us to the joy divine.`
             },
             {
                 id: 10,
-                titleEn: "Silent Night",
-                titleRo: "Silent Night",
-                lyricsEn: `1. Silent night, holy night
-All is calm, all is bright
-Round yon Virgin Mother and Child
-Holy Infant so tender and mild
-Sleep in heavenly peace
-Sleep in heavenly peace
-
-2. Silent night, holy night!
-Shepherds quake at the sight
-Glories stream from heaven afar
-Heavenly hosts sing Alleluia!
-Christ, the Saviour is born
-Christ, the Saviour is born
-
-3. Silent night, holy night
-Son of God, love's pure light
-Radiant beams from Thy holy face
-With the dawn of redeeming grace
-Jesus, Lord, at Thy birth
-Jesus, Lord, at Thy birth`,
-                lyricsRo: `1. Silent night, holy night
+                title: "Silent Night",
+                language: "english",
+                lyrics: `1. Silent night, holy night
 All is calm, all is bright
 Round yon Virgin Mother and Child
 Holy Infant so tender and mild
@@ -691,28 +534,9 @@ Jesus, Lord, at Thy birth`
             },
             {
                 id: 11,
-                titleEn: "O Come All Ye Faithful",
-                titleRo: "O Come All Ye Faithful",
-                lyricsEn: `1. O Come All Ye Faithful
-Joyful and triumphant,
-O come ye, O come ye to Bethlehem.
-Come and behold Him,
-Born the King of Angels;
-O come, let us adore Him,
-O come, let us adore Him,
-O come, let us adore Him,
-Christ the Lord.
-
-2. O Sing, choirs of angels,
-Sing in exultation,
-Sing all that hear in heaven God's holy word.
-Give to our Father glory in the Highest;
-
-3. All Hail! Lord, we greet Thee,
-Born this happy morning,
-O Jesus! for evermore be Thy name adored.
-Word of the Father, now in flesh appearing;`,
-                lyricsRo: `1. O Come All Ye Faithful
+                title: "O Come All Ye Faithful",
+                language: "english",
+                lyrics: `1. O Come All Ye Faithful
 Joyful and triumphant,
 O come ye, O come ye to Bethlehem.
 Come and behold Him,
@@ -734,28 +558,9 @@ Word of the Father, now in flesh appearing;`
             },
             {
                 id: 12,
-                titleEn: "O Holy Night",
-                titleRo: "O Holy Night",
-                lyricsEn: `1. O holy night! The stars are brightly shining
-It is the night of our dear Savior's birth
-Long lay the world in sin and error pining
-'Til He appears and the Soul felt its worth
-A thrill of hope the weary world rejoices
-For yonder breaks a new and glorious morn
-Fall on your knees; O hear the angel voices!
-O night divine, O night when Christ was born
-O night divine, O night, O night divine!
-
-2. Truly He taught us to love one another;
-His law is love and His gospel is peace
-Chains shall He break, for the slave is our brother
-And in His name all oppression shall cease
-Sweet hymns of joy in grateful chorus raise we
-Let all within us praise His holy name
-Christ is the Lord; O praise His name forever!
-His power and glory evermore proclaim
-His power and glory evermore proclaim`,
-                lyricsRo: `1. O holy night! The stars are brightly shining
+                title: "O Holy Night",
+                language: "english",
+                lyrics: `1. O holy night! The stars are brightly shining
 It is the night of our dear Savior's birth
 Long lay the world in sin and error pining
 'Til He appears and the Soul felt its worth
@@ -777,9 +582,9 @@ His power and glory evermore proclaim`
             },
             {
                 id: 13,
-                titleRo: "O Noapte Preasfinţită",
-                titleEn: "O Holy Night",
-                lyricsRo: `1. O, noapte preasfinţită
+                title: "O Noapte Preasfinţită",
+                language: "romanian",
+                lyrics: `1. O, noapte preasfinţită
 Toate-s în odihnă
 Toţi dorm, numai părinţii sfinţi
 Stau, veghind lângă al lor iubit
@@ -795,51 +600,13 @@ Acest cânt, o, cum răsună
 Saltă, o, inimă
 Acum Fiul lui Dumnezeu
 Ne mântuie prin harul Său
-/: Vezi, Cristos S-a născut. : /`,
-                lyricsEn: `1. O, holy night
-All is in rest
-All sleep, only the holy parents
-Stand, watching by their beloved
-/: Sleep too, o, holy Child. : /
-
-2. O, holy night
-Angelic voice sounds
-Hear from heaven: "Hallelujah!"
-This song, o, how it resounds
-/: Christ saves us. : /
-
-3. O, holy night
-Leap, o, heart
-Now the Son of God
-Saves us through His grace
-/: See, Christ was born. : /`
+/: Vezi, Cristos S-a născut. : /`
             },
             {
                 id: 14,
-                titleEn: "Hark the Herald Angels Sing",
-                titleRo: "Hark the Herald Angels Sing",
-                lyricsEn: `Hark the herald angels sing
-"Glory to the newborn King!
-Peace on earth and mercy mild
-God and sinners reconciled"
-Joyful, all ye nations rise
-Join the triumph of the skies
-With the angelic host proclaim:
-"Christ is born in Bethlehem"
-Hark! The herald angels sing
-"Glory to the newborn King!"
-
-Hail the heav'n-born Prince of Peace!
-Hail the Son of Righteousness!
-Light and life to all He brings
-Ris'n with healing in His wings
-Mild He lays His glory by
-Born that man no more may die
-Born to raise the sons of earth
-Born to give them second birth
-Hark! The herald angels sing
-"Glory to the newborn King!"`,
-                lyricsRo: `Hark the herald angels sing
+                title: "Hark the Herald Angels Sing",
+                language: "english",
+                lyrics: `Hark the herald angels sing
 "Glory to the newborn King!
 Peace on earth and mercy mild
 God and sinners reconciled"
@@ -863,23 +630,9 @@ Hark! The herald angels sing
             },
             {
                 id: 15,
-                titleEn: "Feliz Navidad",
-                titleRo: "Feliz Navidad",
-                lyricsEn: `Feliz Navidad
-Feliz Navidad
-Feliz Navidad
-Prospero año y Felicedad
-
-Feliz Navidad
-Feliz Navidad
-Feliz Navidad
-Prospero año y Felicedad
-
-I want to wish you a Merry Christmas
-I want to wish you a Merry Christmas
-I want to wish you a Merry Christmas
-From the bottom of my heart`,
-                lyricsRo: `Feliz Navidad
+                title: "Feliz Navidad",
+                language: "english",
+                lyrics: `Feliz Navidad
 Feliz Navidad
 Feliz Navidad
 Prospero año y Felicedad
@@ -896,38 +649,9 @@ From the bottom of my heart`
             },
             {
                 id: 16,
-                titleEn: "Mary Did You Know",
-                titleRo: "Mary Did You Know",
-                lyricsEn: `1. Mary did you know
-that your baby boy would one day walk on water?
-Mary did you know
-that your baby boy would save our sons and daughters?
-Did you know that your baby boy
-has come to make you new?
-This child that you've delivered,
-will soon deliver you.
-
-2. Mary did you know
-that your baby boy would give sight to a blind man?
-Mary did you know
-that your baby boy would calm a storm with his hand?
-Did you know that your baby boy
-has walked where angels trod?
-And when you kiss your little baby,
-you have kissed the face of God.
-
-The blind will see, the deaf will hear,
-the dead will live again.
-The lame will leap, the dumb will speak,
-the praises of the lamb
-
-3. Mary did you know
-that your baby boy is Lord of all creation?
-Mary did you know
-that your baby boy would one day rule the nations?
-Did you know that your baby boy is heaven's perfect Lamb?
-This sleeping child you're holding is the great I AM.`,
-                lyricsRo: `1. Mary did you know
+                title: "Mary Did You Know",
+                language: "english",
+                lyrics: `1. Mary did you know
 that your baby boy would one day walk on water?
 Mary did you know
 that your baby boy would save our sons and daughters?
@@ -959,28 +683,9 @@ This sleeping child you're holding is the great I AM.`
             },
             {
                 id: 17,
-                titleEn: "Go Tell It on the Mountain",
-                titleRo: "Go Tell It on the Mountain",
-                lyricsEn: `Go tell it on the mountain,
-Over the hills and everywhere,
-Go tell it on the mountain,
-Our Jesus Christ is born.
-
-1. While shepherds kept their watching
-Over silent flocks by night
-Behold throughout the heavens
-There shone a holy light
-
-2. The shepherds feared and trembled
-When lo above the earth
-Rang out the angel chorus
-That hailed our saviour's birth
-
-3. Down in a lowly manger
-Our humble Christ was born
-And God send us salvation
-That blessed Christmas morn`,
-                lyricsRo: `Go tell it on the mountain,
+                title: "Go Tell It on the Mountain",
+                language: "english",
+                lyrics: `Go tell it on the mountain,
 Over the hills and everywhere,
 Go tell it on the mountain,
 Our Jesus Christ is born.
@@ -1002,9 +707,9 @@ That blessed Christmas morn`
             },
             {
                 id: 18,
-                titleRo: "Astăzi S-a Născut Hristos",
-                titleEn: "Today Christ Was Born",
-                lyricsRo: `1. Astăzi s-a nascut Hristos,
+                title: "Astăzi S-a Născut Hristos",
+                language: "romanian",
+                lyrics: `1. Astăzi s-a nascut Hristos,
 Mesia chip luminos
 Laudați și cântați,
 Și vă bucurați!
@@ -1022,32 +727,13 @@ Lăudați și cântați,
 4. Și de acum până-n vecie,
 Mila Domnului să fie,
 Laudați și cântați,
-Și vă bucurați!`,
-                lyricsEn: `1. Today Christ was born,
-The Messiah with bright face
-Praise and sing,
-And rejoice!
-
-2. Little one, swaddled,
-In cotton cloth,
-Praise and sing,
-And rejoice!
-
-3. The wind blows, doesn't pierce Him,
-The snow falls, doesn't touch Him,
-Praise and sing,
-And rejoice!
-
-4. And from now until eternity,
-May the Lord's mercy be,
-Praise and sing,
-And rejoice!`
+Și vă bucurați!`
             },
             {
                 id: 19,
-                titleRo: "O Stea pe Cer S-Arată",
-                titleEn: "A Star Appears in the Sky",
-                lyricsRo: `/: Steaua sus răsare Răsare, răsare :/ 
+                title: "O Stea pe Cer S-Arată",
+                language: "romanian",
+                lyrics: `/: Steaua sus răsare Răsare, răsare :/ 
 
 1. Un copil ni s-a născut
 O stea pe cer se-arată
@@ -1067,34 +753,13 @@ O stea pe cer se arată
 Să Ne-nchinăm, venim îndată
 Pe Isus Pruncul cel Sfânt
 Mântuire pe pământ
-Bucurie-i colindăm`,
-                lyricsEn: `/: The star rises high Rises, rises :/ 
-
-1. A child was born to us
-A star appears in the sky
-A son of a king was given to us
-To worship, we come immediately
-They will call Him the Wonderful
-Counselor, Lord and Emperor,
-The awaited Messiah
-A star appears in the sky
-To worship, we come immediately
-Our heart as a gift to give
-To King Emmanuel
-
-2. Like the magi we search for Him
-A star appears in the sky
-In a manger to find Him
-To worship, we come immediately
-Jesus the Holy Child
-Salvation on earth
-With joy we carol to Him`
+Bucurie-i colindăm`
             },
             {
                 id: 20,
-                titleRo: "Veste-am Adus",
-                titleEn: "We Brought News",
-                lyricsRo: `B: Veste-am adus, o veste,
+                title: "Veste-am Adus",
+                language: "romanian",
+                lyrics: `B: Veste-am adus, o veste,
 o veste
 Veste-am adus, o veste-am
 adus
@@ -1137,50 +802,7 @@ S-a născut, S-a născut Isus
 Cel făr' de-nceput şi făr' de
 pată
 Noi o veste-am adus
-S-a născut, S-a născut Isus`,
-                lyricsEn: `B: We brought news, oh news,
-oh news
-We brought news, we brought
-news
-
-1. You good people, who stay
-at home
-With a fir branch and
-nuts on the table
-We brought news
-Jesus was born, Jesus was born
-As commanded by the Most Holy
-Father
-The Most Pure One gave birth to His Son
-We brought news
-Jesus was born, Jesus was born
-The Savior was born,
-The Lord and Redeemer
-We brought news, Jesus
-was born
-
-2. Under white snowflakes in the poor
-manger
-A Child came to make
-peace
-We brought news
-Jesus was born, Jesus was born
-The Child is small, great is His
-purpose
-Again on earth
-divinity
-We brought news
-Jesus was born, Jesus was born
-
-3. From the east the magi departed
-And in Bethlehem they worshiped Him
-We brought news
-Jesus was born, Jesus was born
-And to the whole world He appears
-The One without beginning and without
-blemish
-We brought news
-Jesus was born, Jesus was born`
+S-a născut, S-a născut Isus`
             }
         ];
 
@@ -1192,6 +814,11 @@ Jesus was born, Jesus was born`
         const modalSubtitle = document.getElementById('modalSubtitle');
         const lyricsContainer = document.getElementById('lyricsContainer');
         const noResults = document.getElementById('noResults');
+        const allBtn = document.getElementById('allBtn');
+        const romanianBtn = document.getElementById('romanianBtn');
+        const englishBtn = document.getElementById('englishBtn');
+
+        let currentFilter = 'all';
 
         function renderCarols(carolsToRender) {
             carolList.innerHTML = '';
@@ -1209,8 +836,8 @@ Jesus was born, Jesus was born`
                 const carolItem = document.createElement('div');
                 carolItem.className = 'carol-item';
                 carolItem.innerHTML = `
-                    <div class="carol-title">${carol.titleRo}</div>
-                    <div class="carol-subtitle">${carol.titleEn}</div>
+                    <div class="carol-title">${carol.title}</div>
+                    <div class="carol-subtitle">${carol.language === 'romanian' ? '🇷🇴 Română' : '🇬🇧 English'}</div>
                 `;
                 carolItem.onclick = () => openModal(carol);
                 carolList.appendChild(carolItem);
@@ -1218,17 +845,12 @@ Jesus was born, Jesus was born`
         }
 
         function openModal(carol) {
-            modalTitle.textContent = carol.titleRo;
-            modalSubtitle.textContent = carol.titleEn;
+            modalTitle.textContent = carol.title;
+            modalSubtitle.textContent = carol.language === 'romanian' ? '🇷🇴 Română' : '🇬🇧 English';
             
             lyricsContainer.innerHTML = `
                 <div class="lyrics-section">
-                    <h3>🇷🇴 Versuri în Română</h3>
-                    <div class="lyrics-text">${carol.lyricsRo}</div>
-                </div>
-                <div class="lyrics-section">
-                    <h3>🇬🇧 English Lyrics</h3>
-                    <div class="lyrics-text">${carol.lyricsEn}</div>
+                    <div class="lyrics-text">${carol.lyrics}</div>
                 </div>
             `;
             
@@ -1241,6 +863,47 @@ Jesus was born, Jesus was born`
             document.body.style.overflow = 'auto';
         }
 
+        function filterCarols() {
+            const searchTerm = searchBox.value.toLowerCase();
+            let filtered = carols;
+
+            // Apply language filter
+            if (currentFilter === 'romanian') {
+                filtered = filtered.filter(carol => carol.language === 'romanian');
+            } else if (currentFilter === 'english') {
+                filtered = filtered.filter(carol => carol.language === 'english');
+            }
+
+            // Apply search filter
+            if (searchTerm) {
+                filtered = filtered.filter(carol => 
+                    carol.title.toLowerCase().includes(searchTerm) ||
+                    carol.lyrics.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            renderCarols(filtered);
+        }
+
+        function setActiveFilter(filter) {
+            currentFilter = filter;
+            
+            // Update button styles
+            allBtn.classList.remove('active');
+            romanianBtn.classList.remove('active');
+            englishBtn.classList.remove('active');
+            
+            if (filter === 'all') {
+                allBtn.classList.add('active');
+            } else if (filter === 'romanian') {
+                romanianBtn.classList.add('active');
+            } else if (filter === 'english') {
+                englishBtn.classList.add('active');
+            }
+            
+            filterCarols();
+        }
+
         closeBtn.onclick = closeModal;
         modal.onclick = (e) => {
             if (e.target === modal) {
@@ -1248,16 +911,10 @@ Jesus was born, Jesus was born`
             }
         };
 
-        searchBox.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const filtered = carols.filter(carol => 
-                carol.titleRo.toLowerCase().includes(searchTerm) ||
-                carol.titleEn.toLowerCase().includes(searchTerm) ||
-                carol.lyricsRo.toLowerCase().includes(searchTerm) ||
-                carol.lyricsEn.toLowerCase().includes(searchTerm)
-            );
-            renderCarols(filtered);
-        });
+        searchBox.addEventListener('input', filterCarols);
+        allBtn.addEventListener('click', () => setActiveFilter('all'));
+        romanianBtn.addEventListener('click', () => setActiveFilter('romanian'));
+        englishBtn.addEventListener('click', () => setActiveFilter('english'));
 
         // Handle back button on Android
         window.addEventListener('popstate', () => {
