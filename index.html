@@ -43,6 +43,164 @@
             font-size: 14px;
             color: #666;
         }
+        .schedule-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
+            justify-content: center;
+        }
+
+        .schedule-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .schedule-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .schedule-btn:active {
+            transform: scale(0.98);
+        }
+
+        .schedule-section {
+            margin-bottom: 24px;
+        }
+
+        .schedule-section h3 {
+            font-size: 18px;
+            color: #667eea;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .schedule-location {
+            margin-bottom: 16px;
+        }
+
+        .schedule-location h4 {
+            font-size: 16px;
+            color: #764ba2;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .schedule-item {
+            padding: 8px 12px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .address {
+            color: #666;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .schedule-btn:hover {
+            background: #5568d3;
+        }
+
+        .schedule-btn:active {
+            transform: scale(0.98);
+        }
+
+        .schedule-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .schedule-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 40px;
+        }
+
+        .schedule-content {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .schedule-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            border-radius: 16px 16px 0 0;
+            z-index: 10;
+        }
+
+        .schedule-title {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 4px;
+            padding-right: 40px;
+        }
+
+        .schedule-body {
+            padding: 20px;
+        }
+
+        .location-group {
+            margin-bottom: 24px;
+        }
+
+        .city-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 12px;
+        }
+
+        .address-item {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .address-item strong {
+            color: #555;
+        }
+
+        .address-link {
+            color: #667eea;
+            text-decoration: none;
+            font-style: italic;
+        }
+
+        .address-link:hover {
+            text-decoration: underline;
+        }
 
         .search-container {
             background: white;
@@ -257,9 +415,13 @@
 <body>
     <div class="container">
         <header>
-            <h1> Colinde / Christmas Carols</h1>
-            <h2>RBCSF Caroling 2025</h2>
+            <h1>🎄 Colinde / Christmas Carols 🎄</h1>
+            <h2>RBCSF Caroling 2024</h2>
             <p class="subtitle">Romanian & English Lyrics</p>
+            <div class="schedule-buttons">
+                <button class="schedule-btn" id="dec24Btn">📅 December 24th</button>
+                <button class="schedule-btn" id="dec25Btn">📅 December 25th</button>
+            </div>
         </header>
 
         <div class="search-container">
@@ -286,6 +448,16 @@
                 <p class="modal-subtitle" id="modalSubtitle"></p>
             </div>
             <div class="lyrics-container" id="lyricsContainer"></div>
+        </div>
+    </div>
+
+    <div class="schedule-modal" id="scheduleModal">
+        <div class="schedule-content">
+            <div class="schedule-header">
+                <button class="close-btn" id="closeScheduleBtn">×</button>
+                <h2 class="schedule-title" id="scheduleTitle"></h2>
+            </div>
+            <div class="schedule-body" id="scheduleBody"></div>
         </div>
     </div>
 
@@ -1185,7 +1357,7 @@ Unde-s fericiri nespus!
             }
         ];
 
-        const carolList = document.getElementById('carolList');
+const carolList = document.getElementById('carolList');
         const searchBox = document.getElementById('searchBox');
         const modal = document.getElementById('modal');
         const closeBtn = document.getElementById('closeBtn');
@@ -1196,8 +1368,117 @@ Unde-s fericiri nespus!
         const allBtn = document.getElementById('allBtn');
         const romanianBtn = document.getElementById('romanianBtn');
         const englishBtn = document.getElementById('englishBtn');
+        const dec24Btn = document.getElementById('dec24Btn');
+        const dec25Btn = document.getElementById('dec25Btn');
+        const scheduleModal = document.getElementById('scheduleModal');
+        const closeScheduleBtn = document.getElementById('closeScheduleBtn');
+        const scheduleTitle = document.getElementById('scheduleTitle');
+        const scheduleBody = document.getElementById('scheduleBody');
 
         let currentFilter = 'all';
+
+        const scheduleData = {
+            dec24: {
+                title: 'December 24th - After Youth Service',
+                locations: [
+                    {
+                        city: 'San Leandro',
+                        addresses: [
+                            { name: 'Tamas + Neighbors', address: '1065 Auburn Ave' }
+                        ]
+                    },
+                    {
+                        city: 'Castro Valley',
+                        addresses: [
+                            { name: 'Gheorghiesh Fam.', address: '3700 Carlwyn Ct' },
+                            { name: 'Patricia & Bocsan', address: '4724 Mira Vista Dr.' },
+                            { name: 'Bejenariu', address: '4481 Hillsborough Dr.' }
+                        ]
+                    },
+                    {
+                        city: 'Walnut Creek',
+                        addresses: [
+                            { name: 'Mircea Ilie', address: '921 Jeffrey Lane' }
+                        ]
+                    },
+                    {
+                        city: 'Concord',
+                        addresses: [
+                            { name: 'Lenuța Neagoe', address: '1530 Center Ave' },
+                            { name: 'Triff', address: '3641 Wren Ave' },
+                            { name: 'Ruthy', address: '2708 Rio Seco Dr.' }
+                        ]
+                    }
+                ]
+            },
+            dec25: {
+                title: 'December 25th - After Evening Service',
+                locations: [
+                    {
+                        city: 'San Leandro',
+                        addresses: [
+                            { name: 'Dochita', address: '1664 Maubert Ct' }
+                        ]
+                    },
+                    {
+                        city: 'Hayward',
+                        addresses: [
+                            { name: 'Andreea\'s hispanic friend', address: '3146 San Angelo Way' },
+                            { name: 'Vancea', address: '22703 Souza Ct' },
+                            { name: 'Jose (Iudita\'s friend)', address: '2125 Cotati St' }
+                        ]
+                    },
+                    {
+                        city: 'Castro Valley',
+                        addresses: [
+                            { name: 'Cami Zidaru', address: '16540 Hannah Dr' },
+                            { name: 'Rusu', address: '16737 Almond Rd' },
+                            { name: 'Dîrnu', address: '4911 Apricot Ct' }
+                        ]
+                    },
+                    {
+                        city: 'San Ramon',
+                        addresses: [
+                            { name: 'Ploscariu', address: '3007 Bernard Ave' }
+                        ]
+                    },
+                    {
+                        city: 'Livermore',
+                        addresses: [
+                            { name: 'Sfeatcu', address: '3934 California Way' }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        function openSchedule(day) {
+            const data = scheduleData[day];
+            scheduleTitle.textContent = data.title;
+            
+            let html = '';
+            data.locations.forEach(location => {
+                html += `<div class="location-group">`;
+                html += `<div class="city-name">${location.city}</div>`;
+                location.addresses.forEach((addr, index) => {
+                    const addressForUrl = encodeURIComponent(addr.address);
+                    html += `<div class="address-item">`;
+                    html += `${index + 1}. <strong>${addr.name}</strong> - `;
+                    html += `<a href="https://www.google.com/maps/search/?api=1&query=${addressForUrl}" target="_blank" class="address-link">${addr.address}</a>`;
+                    html += `</div>`;
+                });
+                html += `</div>`;
+            });
+            
+            scheduleBody.innerHTML = html;
+            scheduleModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSchedule() {
+            scheduleModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
 
         function renderCarols(carolsToRender) {
             carolList.innerHTML = '';
@@ -1289,6 +1570,16 @@ Unde-s fericiri nespus!
                 closeModal();
             }
         };
+
+        closeScheduleBtn.onclick = closeSchedule;
+        scheduleModal.onclick = (e) => {
+            if (e.target === scheduleModal) {
+                closeSchedule();
+            }
+        };
+
+        dec24Btn.addEventListener('click', () => openSchedule('dec24'));
+        dec25Btn.addEventListener('click', () => openSchedule('dec25'));
 
         searchBox.addEventListener('input', filterCarols);
         allBtn.addEventListener('click', () => setActiveFilter('all'));
