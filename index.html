@@ -788,7 +788,9 @@
 
         /* ----- Requests (stars) ----- */
         .list-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 4px 8px; }
-        .list-head .result-count { margin: 0; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .list-head .sort-toggle { flex: 1; }
+        .list-head .sort-toggle button { flex: 1; }
+        #resultCount { text-align: center; margin: 12px 4px 0; }
         .add-carol-btn {
             width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; border: none;
             background: var(--accent); color: var(--accent-text);
@@ -904,7 +906,6 @@
 
         <div class="pending edit-only" id="pendingBox" hidden></div>
         <div class="list-head">
-            <p class="result-count" id="resultCount"></p>
             <div class="sort-toggle" role="group" aria-label="Sort">
                 <button class="active" id="sortAz">A–Z</button>
                 <button id="sortTop">Most requested</button>
@@ -914,6 +915,7 @@
             </button>
         </div>
         <div class="carol-list" id="carolList"></div>
+        <p class="result-count" id="resultCount"></p>
         <div class="no-results" id="noResults" style="display: none;">
             Nu s-au găsit colinde / No carols found
         </div>
