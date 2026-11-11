@@ -799,7 +799,7 @@
 
         .row-star {
             display: flex; align-items: center; gap: 4px; flex-shrink: 0;
-            min-width: 44px; height: 36px; padding: 0 8px; margin: -6px -6px -6px 0;
+            min-width: 52px; height: 44px; padding: 0 10px; margin: -10px -8px -10px 0;
             justify-content: flex-end;
             border: none; background: transparent; border-radius: 10px;
             color: var(--text-3); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;
@@ -1457,7 +1457,9 @@
                 paintStar(item.querySelector('.row-star'), song.id);
                 item.onclick = (e) => { if (!e.target.closest('.row-star')) openCarol(i); };
                 item.onkeydown = (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === item) { e.preventDefault(); openCarol(i); } };
-                item.querySelector('.row-star').onclick = () => toggleStar(song.id);
+                // stopPropagation: the star redraws its icon on tap, so the row could no
+                // longer tell the tap came from the star and would open the song
+                item.querySelector('.row-star').onclick = (e) => { e.stopPropagation(); toggleStar(song.id); };
                 frag.appendChild(item);
             });
             carolList.appendChild(frag);
