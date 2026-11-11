@@ -1,0 +1,391 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "title": "Joy to the World",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. Joy to the world, the Lord is come!\nLet earth receive her King!\nLet ev'ry heart prepare Him room,\nand heav'n and nature sing,\nand heav'n and nature sing,\nand heav'n, and heav'n and nature sing.\n\n2. Joy to the earth, the Savior reigns!\nLet men their songs employ,\nwhile fields and floods, rocks, hills, and plains\nrepeat the sounding joy,\nrepeat the sounding joy,\nrepeat, repeat the sounding joy.\n\n3. He rules the world with truth and grace,\nand makes the nations prove\nthe glories of His righteousness\nand wonders of His love,\nand wonders of His love,\nand wonders, wonders of His love."
+    },
+    {
+      "id": 2,
+      "title": "O, ce veste minunată",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. O, ce veste minunată\nÎn Betleem ni se-arată\n/: Că a născut prunc, Prunc din Duhul Sfânt\nFecioara curată. :/\n\n2. Că la Betleem Maria Săvârşind călătoria.\n/: În sărac locaş, lâng-acel oraş\nA născut pe Mesia. :/\n\n3. Pe Fiul cel din vecie\nCe L-a trimis Tatăl mie\n/: Să Se nască, şi să crească\nSă ne mântuiască. :/\n\n4. E Isus, Păstorul mare\nTurmă ca El nimeni n-are\n/: Noi Îl lăudăm şi ne închinăm\nCu credinţă tare :/"
+    },
+    {
+      "id": 3,
+      "title": "Laudă",
+      "key": "A",
+      "language": "romanian",
+      "lyrics": "R: /: Laudă fie adusă, Celui ce S-a Născut\nLa Betleem! :/ x8\n\nB: /: Aleluia! Salvatorului nostru,\nRege s-a Născut La Betleem. :/ x2\n\n/: Hai deschide inima ta\nSă găseşti minunea din ea\nCă-ntr-o iesle şi-n viaţa ta\nS-a născut Mesia:/\n\n1. Cu iubirea Lui şi cu har din harul Său divin\nÎmpodobeşti viaţa mea, eu te colind\nSărbători de vis, cu Hristos născut în inimă\nVeşnicia s-o trăieşti eu te colind\n\n2. Veşnicia Lui şi de toată slava s-a lăsat\nPe pământ s-a întrupat Pruncul Isus\nSă fii fericit, mântuit şi liber să trăieşti\nAn de an pe Isus să-l iubeşti, eu te colind."
+    },
+    {
+      "id": 4,
+      "title": "Angels We Have Heard on High",
+      "key": "E",
+      "language": "english",
+      "lyrics": "1. Angels we have heard on high\nSweetly swinging o'er the plains\nAnd the mountains in reply\nEchoing their joyous strains\nGloria In Excelsis Deo\nGloria In Excelsis Deo\n\n2. Shepherds why this jubilee?\nWhy your joyous strains prolong?\nSay what may the tidings be\nWhich inspire your heavenly song?\n\n3. Come to Bethlehem and see\nHim Whose birth the angels sing;\nCome, adore on bended knee\nChrist the Lord, the newborn King"
+    },
+    {
+      "id": 5,
+      "title": "Îngeri Mii",
+      "key": "E",
+      "language": "romanian",
+      "lyrics": "1. Îngeri mii din ceruri cântă\nPe deasupra văilor\nMunţii bucuroşi repetă\nArmonia, cântul lor.\n/: Glorie, S-a născut Mesia. : /\n\n2. Ce-i cu bucuria voastră?\nVoi păstori, ce auziţi?\nCe anunţă ceru-n slavă?\nCe-ascultaţi aşa uimiţi?\n\n3. Pruncul sfânt cu chip de soare\nE nespus de luminos.\nSfinţi părinţi cu adorare\nÎl veghează pe Hristos.\n\n4. Vino azi la ieslea sfântă\nLaudă să-I aduci smerit\nViaţa ta doar Lui predată\nPentru El e-un dar dorit."
+    },
+    {
+      "id": 6,
+      "title": "Într-un Staul Mic",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Într-un staul mic, la o margine de sat\nS-a născut un Prunc drăgălaş şi minunat\nÎngeri cântă-n cor: pace fie pe Pământ\nS-a născut Hristos, fiul Domnului, Cel Sfânt.\n\n2. Ceata de păstori în uimire ascultă\nÎngerescul cor, vestea bună ce-aducea\n\n3. Magi, din răsărit, au pornit conduşi de stea\nŞi la Betleem au venit a se-nchina\n\n4. Vestea bună azi se aude ne-ncetat\nPruncul a venit să ne scape de păcat"
+    },
+    {
+      "id": 7,
+      "title": "God Rest Ye Merry Gentlemen",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. God Rest Ye Merry Gentlemen,\nLet nothing you dismay,\nRemember Christ our Savior\nWas born on Christmas Day;\nTo save us all from Satan's power\nWhen we were gone astray.\nO tidings of comfort and joy,\nComfort and joy,\nO tidings of comfort and joy!\n\n2. From God our heavenly\nFather A blessed angel came;\nAnd unto certain shepherds\nBrought tiding of the same;\nHow that in Bethlehem was born\nThe Son of God by name.\n\n3. Now to the Lord sing praises,\nAll you within this place,\nAnd with true love and brotherhood\nEach other now embrace;\nthis holy tide of Christmas\nDoth bring redeeming grace"
+    },
+    {
+      "id": 8,
+      "title": "O Come, O Come, Emmanuel",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. O come, O come, Emmanuel\nAnd ransom captive Israel\nThat mourns in lonely exile here\nUntil the Son of God appear\nRejoice! Rejoice! Emmanuel\nShall come to thee, O Israel.\n\n2. O come, O come, Thou Lord of might,\nWho to Thy tribes, on Sinai's height,\nIn ancient times did'st give the Law,\nIn cloud, and majesty and awe.\n\n3. O come, Thou Rod of Jesse, free\nThine own from Satan's tyranny\nFrom depths of hell Thy people save\nAnd give them victory o'er the grave"
+    },
+    {
+      "id": 9,
+      "title": "Joyful, Joyful We Adore Thee",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. Joyful, joyful, we adore You,\nGod of glory, Lord of love;\nHearts unfold like flow'rs before You,\nOp'ning to the sun above.\nMelt the clouds of sin and sadness;\nDrive the dark of doubt away;\nGiver of immortal gladness,\nFill us with the light of day!\n\n2. All Your works with joy surround You,\nEarth and heav'n reflect Your rays,\nStars and angels sing around You,\nCenter of unbroken praise;\nField and forest, vale and mountain,\nFlow'ry meadow, flashing sea,\nChanting bird and flowing fountain\nPraising You eternally!\n\n3. Always giving and forgiving,\nEver blessing, ever blest,\nWell-spring of the joy of living,\nOcean-depth of happy rest!\nLoving Father, Christ our Brother,\nLet Your light upon us shine;\nTeach us how to love each other,\nLift us to the joy divine."
+    },
+    {
+      "id": 10,
+      "title": "Silent Night",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. Silent night, holy night\nAll is calm, all is bright\nRound yon Virgin Mother and Child\nHoly Infant so tender and mild\nSleep in heavenly peace\nSleep in heavenly peace\n\n2. Silent night, holy night!\nShepherds quake at the sight\nGlories stream from heaven afar\nHeavenly hosts sing Alleluia!\nChrist, the Saviour is born\nChrist, the Saviour is born\n\n3. Silent night, holy night\nSon of God, love's pure light\nRadiant beams from Thy holy face\nWith the dawn of redeeming grace\nJesus, Lord, at Thy birth\nJesus, Lord, at Thy birth"
+    },
+    {
+      "id": 11,
+      "title": "O Come All Ye Faithful",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. O Come All Ye Faithful\nJoyful and triumphant,\nO come ye, O come ye to Bethlehem.\nCome and behold Him,\nBorn the King of Angels;\n\nC: O come, let us adore Him,\nO come, let us adore Him,\nO come, let us adore Him,\nChrist the Lord.\n\n2. Sing, choirs of angels, \nSing in exultation, \nSing, all ye citizens of heaven above!\nGlory to God, glory in the highest:\n\nC: O come, let us adore Him,\nO come, let us adore Him,\nO come, let us adore Him,\nChrist the Lord.\n\n3. All Hail! Lord, we greet Thee,\nBorn this happy morning,\nO Jesus! for evermore be Thy name adored.\nWord of the Father, now in flesh appearing;\n\nC: O come, let us adore Him,\nO come, let us adore Him,\nO come, let us adore Him,\nChrist the Lord."
+    },
+    {
+      "id": 12,
+      "title": "O Holy Night",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. O holy night! The stars are brightly shining\nIt is the night of our dear Savior's birth\nLong lay the world in sin and error pining\n'Til He appears and the Soul felt its worth\nA thrill of hope the weary world rejoices\nFor yonder breaks a new and glorious morn\nFall on your knees; O hear the angel voices!\nO night divine, O night when Christ was born\nO night divine, O night, O night divine!\n\n2. Truly He taught us to love one another;\nHis law is love and His gospel is peace\nChains shall He break, for the slave is our brother\nAnd in His name all oppression shall cease\nSweet hymns of joy in grateful chorus raise we\nLet all within us praise His holy name\nChrist is the Lord; O praise His name forever!\nHis power and glory evermore proclaim\nHis power and glory evermore proclaim"
+    },
+    {
+      "id": 13,
+      "title": "O Noapte Preasfinţită",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. O, noapte preasfinţită\nToate-s în odihnă\nToţi dorm, numai părinţii sfinţi\nStau, veghind lângă al lor iubit\n/: Dormi şi tu, o, Prunc sfânt. : /\n\n2. O, noapte preasfinţită\nGlas îngeresc sună\nAuzi din cer: \"Aleluia!\"\nAcest cânt, o, cum răsună\n/: Cristos ne mântuie. : /\n\n3. O, noapte preasfinţită\nSaltă, o, inimă\nAcum Fiul lui Dumnezeu\nNe mântuie prin harul Său\n/: Vezi, Cristos S-a născut. : /"
+    },
+    {
+      "id": 14,
+      "title": "Hark the Herald Angels Sing",
+      "key": "",
+      "language": "english",
+      "lyrics": "Hark the herald angels sing\n\"Glory to the newborn King!\nPeace on earth and mercy mild\nGod and sinners reconciled\"\nJoyful, all ye nations rise\nJoin the triumph of the skies\nWith the angelic host proclaim:\n\"Christ is born in Bethlehem\"\nHark! The herald angels sing\n\"Glory to the newborn King!\"\n\nHail the heav'n-born Prince of Peace!\nHail the Son of Righteousness!\nLight and life to all He brings\nRis'n with healing in His wings\nMild He lays His glory by\nBorn that man no more may die\nBorn to raise the sons of earth\nBorn to give them second birth\nHark! The herald angels sing\n\"Glory to the newborn King!\""
+    },
+    {
+      "id": 15,
+      "title": "Feliz Navidad",
+      "key": "G",
+      "language": "english",
+      "lyrics": "Feliz Navidad\nFeliz Navidad\nFeliz Navidad\nProspero año y Felicedad\n\nFeliz Navidad\nFeliz Navidad\nFeliz Navidad\nProspero año y Felicedad\n\nI want to wish you a Merry Christmas\nI want to wish you a Merry Christmas\nI want to wish you a Merry Christmas\nFrom the bottom of my heart"
+    },
+    {
+      "id": 16,
+      "title": "Mary Did You Know",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. Mary did you know\nthat your baby boy would one day walk on water?\nMary did you know\nthat your baby boy would save our sons and daughters?\nDid you know that your baby boy\nhas come to make you new?\nThis child that you've delivered,\nwill soon deliver you.\n\n2. Mary did you know\nthat your baby boy would give sight to a blind man?\nMary did you know\nthat your baby boy would calm a storm with his hand?\nDid you know that your baby boy\nhas walked where angels trod?\nAnd when you kiss your little baby,\nyou have kissed the face of God.\n\nThe blind will see, the deaf will hear,\nthe dead will live again.\nThe lame will leap, the dumb will speak,\nthe praises of the lamb\n\n3. Mary did you know\nthat your baby boy is Lord of all creation?\nMary did you know\nthat your baby boy would one day rule the nations?\nDid you know that your baby boy is heaven's perfect Lamb?\nThis sleeping child you're holding is the great I AM."
+    },
+    {
+      "id": 17,
+      "title": "Go Tell It on the Mountain",
+      "key": "",
+      "language": "english",
+      "lyrics": "Go tell it on the mountain,\nOver the hills and everywhere,\nGo tell it on the mountain,\nOur Jesus Christ is born.\n\n1. While shepherds kept their watching\nOver silent flocks by night\nBehold throughout the heavens\nThere shone a holy light\n\n2. The shepherds feared and trembled\nWhen lo above the earth\nRang out the angel chorus\nThat hailed our saviour's birth\n\n3. Down in a lowly manger\nOur humble Christ was born\nAnd God send us salvation\nThat blessed Christmas morn"
+    },
+    {
+      "id": 18,
+      "title": "Astăzi S-a Născut Hristos",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Astăzi s-a nascut Hristos,\nMesia chip luminos\nLaudați și cântați,\nȘi vă bucurați!\n\n2. Mititel, înfășetel,\nÎn scutec de bumbăcel,\nLaudăți și cântați,\nȘi vă bucurați!\n\n3. Vântul bate, nu-l răzbate,\nNeaua ninge, nu-l atinge,\nLăudați și cântați,\nȘi vă bucurați!\n\n4. Și de acum până-n vecie,\nMila Domnului să fie,\nLaudați și cântați,\nȘi vă bucurați!"
+    },
+    {
+      "id": 19,
+      "title": "O Stea pe Cer S-Arată",
+      "key": "F",
+      "language": "romanian",
+      "lyrics": "/: Steaua sus răsare! Răsare, răsare! :/ \n\n1. Un copil ni s-a născut\nO stea pe cer se-arată\nFiu de rege ni s-a dat\nSă Ne-nchinăm, venim îndată\nÎl vor numi Cel Minunat\nSfetnic, Domn și Împărat,\nMesia cel așteptat\n\nC: O stea pe cer se-arată\nSă ne-nchinăm, venim îndată\nInima în dar să-i dăm\nRegelui Emanuel\n\n2. Ca și magii-l căutam\nO stea pe cer se arată\nÎntr-o iesle să-l aflăm\nSă Ne-nchinăm, venim îndată\nPe Isus Pruncul cel Sfânt\nMântuire pe pământ\nBucurie-i colindăm\n\nC: O stea pe cer se-arată\nSă ne-nchinăm, venim îndată\nInima în dar să-i dăm\nRegelui Emanuel"
+    },
+    {
+      "id": 20,
+      "title": "Veste-am Adus",
+      "key": "F#",
+      "language": "romanian",
+      "lyrics": "B: Veste-am adus, o veste,\no veste\nVeste-am adus, o veste-am\nadus\n\n1. Voi oameni buni, ce staţi\nîn casă\nCu o creangă de brad şi\nnuci pe masă\nNoi o veste-am adus\nS-a născut, S-a născut Isus\nCum porunci Preasfântul\nTată\nNăscu pe-al Său Fiu, Cea\nPreacurată\nNoi o veste-am adus\nS-a născut, S-a născut Isus\n\nC: S-a născut Mântuitorul,\nDomnul şi Izbăvitorul\nO veste-am adus, S-a\nnascut Isus\n\n2. Sub fulgii albi în ieslea\nsăracă\nUn Prunc a venit pace să\nfacă\nNoi o veste-am adus\nS-a născut, S-a născut Isus\nPruncul e mic, mare-I\nmenirea\nDin nou pe pământ\ndumnezeirea\nNoi o veste-am adus\nS-a născut, S-a născut Isus\n\nC: S-a născut Mântuitorul,\nDomnul şi Izbăvitorul\nO veste-am adus, S-a\nnascut Isus\n\n3. Din răsărit magii plecară\nŞi în Betleem I se-nchinară\nNoi o veste-am adus\nS-a născut, S-a născut Isus\nŞi lumii întregi i se arată\nCel făr' de-nceput şi făr' de\npată\nNoi o veste-am adus\nS-a născut, S-a născut Isus\n\nC: S-a născut Mântuitorul,\nDomnul şi Izbăvitorul\nO veste-am adus, S-a\nnascut Isus"
+    },
+    {
+      "id": 21,
+      "title": "What A Glorious Night",
+      "key": "A",
+      "language": "english",
+      "lyrics": "C: I hear the angels singing halleluiah\nLet the earth receive her king\nI know that love has come\nSinging it out\nJesus Christ is born\nJesus Christ is born\n\n1. The shepherds came to\nSee the baby\nStood by his mother's side\nHere laid the Savior\nInside a manger\nOh what a glorious night\nOh what a glorious night\n\nC: I hear the angels singing halleluiah\nLet the earth receive her king\nI know that love has come\nSinging it out\nJesus Christ is born\nJesus Christ is born\n\n2. The shepherds wondered\nThey couldn't hide it\nTold everyone in sight\nAll were amazed\nWhen they heard how\nGod came down on the glorious night\nGod came down on this glorious night\n\nC: I hear the angels singing halleluiah\nLet the earth receive her king\nI know that love has come\nSinging it out\nJesus Christ is born\nJesus Christ is born\n\nB: Glorious\nGlorious\nWhat a Glorious night x2\n\nC: I hear the angels singing halleluiah\nLet the earth receive her king\nI know that love has come\nSinging it out\nJesus Christ is born\nJesus Christ is born"
+    },
+    {
+      "id": 22,
+      "title": "Colindă/ Ascultați cu toții",
+      "key": "Em",
+      "language": "romanian",
+      "lyrics": "C: Colindă, colindă, colindă, colindă x2\n\n1. Ascultaţi cu toţii când vă colindăm,\nPe Isus Mesia azi vi-L prezentăm.\n/: El e-un rege veşnic, Domn şi Dumnezeu,\nA venit să moară chiar de dragul meu.:/\n\nC: Colindă, colindă, colindă, colindă x2\n\n2. Vrem azi să cunoaştem Pruncul minunat,\nCare din iubire viaţa ne-a salvat.\n/: A venit din slavă, de la Tatăl sfânt,\nŞi-a luat trup de moarte aici pe pământ. :/\n\nC: Colindă, colindă, colindă, colindă x2\n\n3. Veniţi azi cu toţii, lângă ieslea Lui,\nPe toţi vă primeşte Prinţul harului\n/: Să-I aducem daruri, acum de Crăciun,\nInima şi viaţa Domnului cel bun. :/\n\nC: Colindă, colindă, colindă, colindă..."
+    },
+    {
+      "id": 23,
+      "title": "Frumoasă zi",
+      "key": "Em",
+      "language": "romanian",
+      "lyrics": "1. Frumoasă zi de bucurii\nLa noi iar a sosit,\nÎn coruri sfinte cu îngerii\nCântarea ne-a unit.\n\nC: Slavă lui Dumnezeu cântăm,\nRegelui nostru ne-nchinăm;\nPace fie pe pământ:\nS-a născut azi Domnul Sfânt!\n\n2. Când întunericul domnea,\nLumina a venit,\nCăci Dumnezeu ne oferea\nUn dar neprețuit.\n\nC: Slavă lui Dumnezeu cântăm,\nRegelui nostru ne-nchinăm;\nPace fie pe pământ:\nS-a născut azi Domnul Sfânt!\n\n3. Acum la ieslea Ta venim,\nLa Cel glorificat,\nUmilul Prunc ce azi privim\nE Domn și Împărat!\n\nC: Slavă lui Dumnezeu cântăm,\nRegelui nostru ne-nchinăm;\nPace fie pe pământ:\nS-a născut azi Domnul Sfânt!"
+    },
+    {
+      "id": 24,
+      "title": "Căci un copi ni s-a născut",
+      "key": "D",
+      "language": "romanian",
+      "lyrics": "1. Căci un Copil ni s-a născut\nCel ce n-are început\nCăci un Fiu ni s-a dat\nEl e Marele Împărat\n\nR: /:Îl vor numi sfetnic, minunat\nDomn al Păcii adorat,\nDumnezeu Tare, Savaot\nPărinte al veșniciilor :/\n\n2. El, Dumnezeul nevăzut\nS-a făcut azi cunoscut\nA venit din veșnicii\nSă ne aducă bucurii\n\nR: /:Îl vor numi sfetnic, minunat\nDomn al Păcii adorat,\nDumnezeu Tare, Savaot\nPărinte al veșniciilor :/\n\n3. Plăcerea Lui va fi mereu\nFrica de Dumnezeu\nȘi Duhul Domnului cel Sfânt\nSe va odihni în El\n\nR: /:Îl vor numi sfetnic, minunat\nDomn al Păcii adorat,\nDumnezeu Tare, Savaot\nPărinte al veșniciilor :/"
+    },
+    {
+      "id": 25,
+      "title": "O, ce veste îmbucurătoare",
+      "key": "D",
+      "language": "romanian",
+      "lyrics": "1. O, ce veste îmbucurătoare\nCare îngerii ne-au adus.\nVestea despre mare îndurare\nCare Dumnezeu ne-a trimis de sus.\n\nR: /:Iată, iată S-a născut Isus\nMântuire ne-a adus\nEl ne scapă din nevoi\nDumnezeu este cu noi! :/\n\n2. O, ce veste îmbucurătoare\nCântăm toţi cu însufleţire\nSă vestească deci buzele noastre:\nDomnul ne-a dăruit mântuire.\n\nR: /:Iată, iată S-a născut Isus\nMântuire ne-a adus\nEl ne scapă din nevoi\nDumnezeu este cu noi! :/\n\n3. O, ce veste îmbucurătoare\nEa stâmpără orice dureri.\nDomnul de sus la noi Se coboară,\nCel sfânt, ca să ne ridice la cer.\n\nR: /:Iată, iată S-a născut Isus\nMântuire ne-a adus\nEl ne scapă din nevoi\nDumnezeu este cu noi! :/"
+    },
+    {
+      "id": 26,
+      "title": "Ce minunat împărat",
+      "key": "A",
+      "language": "romanian",
+      "lyrics": "1. Păstori au alergat să vadă Pruncul\nCel care-a fost vestit\nNăscut în iesle, Domn din vecie\nCe minunat Împărat! ce minunat Împărat!\n\nR: Auzi cum îngeri cântă:\nAleluia! Laudă, Regelui Isus!\nEl a venit la noi din iubire,\nS-a născut Isus! S-a născut Isus!\n\n2. Păstorii s-au grăbit să ducă vestea\nCă Isus S-a născut\nSlăveau pe Dumnezeu că a venit din cer\nCe minunat Împărat! O, ce minunat Împărat!\n\nR: Auzi cum îngeri cântă:\nAleluia! Laudă, Regelui Isus!\nEl a venit la noi din iubire,\nS-a născut Isus! S-a născut Isus!\n\nB: Glorie! Glorie! S-a născut Isus!\nGlorie! Glorie! S-a născut Isus!\n\nR: Auzi cum îngeri cântă:\nAleluia! Laudă, Regelui Isus!\nEl a venit la noi din iubire,\nS-a născut Isus! S-a născut Isus!\n\n3. Toți să știe, să cunoască\nPruncul Isus venit\nEl cerul a lăsat să mântuiască\nCe minunat Împărat, ce minunat Împărat!"
+    },
+    {
+      "id": 27,
+      "title": "Departe într-o iesle",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Departe într-o iesle, în paie ascuns\nCulcat printre vite stă Pruncul Isus.\nÎi cântă şi-L leagănă stele de-argint\n/: Şi-ncet copilaşul adoarme zâmbind. :/\n\n2. Doar vitele-n grajd zgomotos Îl trezesc\nDuios le priveşte şi se liniştesc.\nO, Prunc minunat Te slăvim c-ai venit\n/: Şi-n ieslea săracă adânc Te-ai smerit. :/\n\n3. Rămâi drag Isuse cu noi, Te rugăm\nN-avem bogăţii, dar ce avem Îţi dăm\nIar Tu dă-ne binecuvântarea Ta\n/: Şi viaţa întreagă cu Tine vom sta. :/"
+    },
+    {
+      "id": 28,
+      "title": "Se așterne, pretutindeni",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Se așterne, pretutindeni,\nStratul proaspăt de omăt,\nPe la case, s-au pornit copii,\nAstăzi iarăși e Crăciun\n\nB: Peste tot e (Peste tot), veselie (Veseli),\nPrăjituri și cozonaci,\nPe la geamuri, fețe zâmbitoare,\nAstăzi iarăși e Crăciun\n\nR: Ne bucurăm că El s-a născut,\nCa să ne dea în dar pacea Sa\nȘi-n inimă să toarne Dragostea\n\n2. Strada-i plină (Este plin), de colinde (De colind),\nIar în iesle-i înfășat (În-fă-șat),\nEste Pruncul, salvatorul nostru,\nVeșnic fiu de Împărat\n\nR: Ne bucurăm că El s-a născut,\nCa să ne dea în dar pacea Sa\nȘi-n inimă să toarne Dragostea\n\n3. Strada-i plină (Este plin), de colinde (De colind),\nIar în iesle-i înfășat (În-fă-șat),\nEste Pruncul, salvatorul nostru,\nVeșnic fiu de Împărat\n\n4. /: Se așterne, pretutindeni,\nStratul proaspăt de omăt,\nPe la case, s-au pornit copii,\nAstăzi iarăși e Crăciun. :/"
+    },
+    {
+      "id": 29,
+      "title": "Veniţi cu credinţă",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Veniţi cu credinţă, plini de bucurie,\nVeniţi, o, veniți toți la Betleem!\nIată-l în paie, Rege al măririi.\n\nR1: /:Veniţi sa ne-nchinăm Lui, :/ x3\nEl e Domn!\n\n2. Voi, coruri de îngeri, glorie aduceţi\nAcelui ce-n iesle umil S-a născut;\n„Slavă lui Dumnezeu în înălţime!”\n\nR1: /:Veniţi sa ne-nchinăm Lui, :/ x3\nEl e Domn!\n\n3. O, Doamne, Îţi spunem bun venit în lume;\nIsuse, a Ta fie slava-n veci!\nTu eşti Cuvântul vieţii printre oameni!\n\nR2: /:Te adorăm, Isuse, :/ X3\nTu eşti Domn!"
+    },
+    {
+      "id": 30,
+      "title": "Auzi corul îngeresc",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Auzi corul îngeresc,\nDumnezeu din cer slăvesc!\nCântă imnuri înălţând,\nPace fie pe pământ!\nDumnezeu cum a promis,\nPe-al Său Fiu El L-a trimis.\n/: Auzi corul îngeresc,\nCântând Tatălui ceresc! :/\n\n2. Cel din cerul minunat,\nPreamărit şi înălţat,\nPe pământ jos a venit\nŞi ca noi trup a primit.\nS-a jertfit, a pătimit,\nChiar şi moarte-a suferit,\n/: De păcate ne-a spălat,\nViaţă nouă El ne-a dat. :/\n\n3. Toate de la El primim,\nCând prin rugăciuni venim.\nSă-I deschidem inima,\nCa să intre El în ea\nŞi ne va conduce sus,\nUnde-s fericiri nespus!\n/: Toţi în cor Îi vom cânta:\n\"Mare este slava Sa!\" :/"
+    },
+    {
+      "id": 31,
+      "title": "Cu mult în urmă-n Betleem",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Cu mult în urmă-n Betleem\nSfânta Biblie spune\nMaria a născut un fiu\nÎn seara de Crăciun\nŞi mii de îngeri s-au unit\nCerul s-a întunecat.\nUniversul s-a umplut\nDe slavă şi cântări.\n\nR: /:Să-i cântăm cu toţii-n cor\nNoul Rege s-a născut\nŞi viaţă El ne-a dăruit\nÎn seara de Crăciun. :/\n\n2. Păstorii s-au înfricoşat\nCerul când a izbucnit\nŞi-ntr-un gând au alergat\nCătre pruncul iubit.\n\nR: /:Să-i cântăm cu toţii-n cor\nNoul Rege s-a născut\nŞi viaţă El ne-a dăruit\nÎn seara de Crăciun. :/\n\n3. Cu mult în urmă-n Betleem\nO stea mare-a răsărit.\nEa ne spune că ceru-ntreg\nLa noi s-a coborât.\n\nR: /:Să-i cântăm cu toţii-n cor\nNoul Rege s-a născut\nŞi viaţă El ne-a dăruit\nÎn seara de Crăciun. :/"
+    },
+    {
+      "id": 32,
+      "title": "Away in a manger",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. Away in a manger, no crib for His bed\nThe little Lord Jesus laid down His sweet head\nThe stars in the bright sky looked down where He lay\nThe little Lord Jesus asleep on the hay\n\n2. The cattle are lowing, the poor Baby awakes\nBut little Lord Jesus, no crying He makes\nI love Thee, Lord Jesus! Look down from the sky\nAnd stay by my side till morning is nigh\n\n3. Be near me, Lord Jesus; I ask Thee to stay\nClose by me forever, and love me I pray\nBless all the dear children in Thy tender care\nAnd take us to Heaven to live with Thee there"
+    },
+    {
+      "id": 33,
+      "title": "Maria te-ai gândit?",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Maria te-ai gândit că Fiul tău va fi cândva un Rege?\nOare te-ai gândit că Fiul tău moartea-o să dezlege?\nTe-ai gândit c-acest Fiu al tău va face totul nou?\nCa acest Copil al păcii va fi al păcii sol?\n\n2. Maria te-ai gândit că Fiul tău va da la orbi vedere?\nOare te-ai gândit că Fiul tău va stăpâni furtuna?\nTe-ai gândit c-acest Fiu al tău e Rege sus în Cer?\nCând priveai la chipul Său îl priveai pe Dumnezeu?\n\nB: Și orbii văd, și surzii-aud, și șchiopii merg din nou!\nȘi toți acei ce cred în El vor fi născuți din nou.\nMaria te-ai gândit?\n\n3. Maria te-ai gândit că Fiul tău va fi un Miel de jertfă?\nOare te-ai gândit că Fiul tău trăi-va pentru moarte?\nTe-ai gândit c-acest Fiu al tău va răspândi lumina?\nȘi că viața Și-o va da pentru-a ta?"
+    },
+    {
+      "id": 34,
+      "title": "A long time ago in Bethlehem",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. A long time ago in Bethlehem\nSo the Holy Bible says\nMary's boy child, Jesus Christ\nWas born on Chris-ta-mas-day\n\nC: Listen, hear the angels sing\nA new king born today\nAnd man will live forever more\nBecause of Chris-ta-mas-day\n\n2. While shepherds watched their flocks by night\nThem see a new [?] brighting star\nAnd then them hear a choir sing\nIt seemed to come from afar\n\nC: Listen, hear the angels sing\nA new king born today\nAnd man will live forever more\nBecause of Chris-ta-mas-day\n\n3. When Joseph and he wife Mary\nCame to Bethlehem that night\nThey find no place to born that child\nNot a single room was in sight\n\nC: Listen, hear the angels sing\nA new king born today\nAnd man will live forever more\nBecause of Chris-ta-mas-day\n\n4. Then bye and bye them find a little nook\nIn a stable all forlorn\nAnd in a manger cold and dark\nMary's little boy was born\n\nC: Listen, hear the angels sing\nA new king born today\nAnd man will live forever more\nBecause of Christ-a-mas-day"
+    },
+    {
+      "id": 35,
+      "title": "What Child is this",
+      "key": "",
+      "language": "english",
+      "lyrics": "1. What Child is this who, laid to rest On Mary's lap is sleeping?\nWhom angels greet with anthems sweet, While shepherds watch are keeping?\nThis, this is Christ the King, Whom shepherds guard and angels sing;\nHaste, haste, to bring Him laud, The Babe, the Son of Mary\n\n2. Why lies He in such mean estate, Where ox and ass are feeding?\nGood Christians, fear, for sinners here The silent Word is pleading\nNails, spear shall pierce Him through, The cross be borne for me, for you\nHail, hail the Word made flesh, The Babe, the Son of Mary\n\n3. So bring Him incense, gold and myrrh, Come peasant, king to own Him;\nThe King of kings salvation brings, Let loving hearts enthrone Him\nRaise, raise a song on high, The virgin sings her lullaby\nJoy, joy for Christ is born, The Babe, the Son of Mary"
+    },
+    {
+      "id": 36,
+      "title": "Printul Pacii a venit",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Noaptea nu va domni\nRăul se va sfârși\nPeste lume o stea răsare\nȘi ce-a fost profețit\nTotul s-a-mplinit\nȘi de-atunci este sărbătoare\n\nB: Hei, hei, tu ai auzit\nPrințul păcii a venit,\nFiindcă te-a iubit\nHei, hei și eu l-am primit\nEl m-a mântuit, o da!\n\nR: /:S-a născut,\nCel făr' de început\nDomn Minunat\nCântă azi:\nS-a născut\nPruncul Sfânt\nNe-a salvat :/\n\n2. Peste toți va domni\nȘi nu se va sfârși\nCă domnia-i nemuritoare\nCel ce-n iesle a venit\nE-nceput și Sfârșit\nEl ne scapă de la pierzare.\n\nB: Hei, hei, tu ai auzit\nPrințul păcii a venit,\nFiindcă te-a iubit\nHei, hei și eu l-am primit\nEl m-a mântuit, o da!\n\nR: /:S-a născut,\nCel făr' de început\nDomn Minunat\nCântă azi:\nS-a născut\nPruncul Sfânt\nNe-a salvat :/"
+    },
+    {
+      "id": 37,
+      "title": "Într-un sat ne-nsemnat din Iudeea",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Într-un sat ne-nsemnat din Iudeea,\nÎntr-o iesle din Betleem,\nS-a născut aşteptatul Mesia\nSă-I cântăm cu îngerii în cor!\n\nR: /:Cânt Osana :/ x3\nRege al regilor.\n/: Cânt Osana :/ x3\nLui Isus.\n\n2. Părăsiţi turma voastră-n câmpie,\nAlergaţi umiliţi la El!\nEl este singura bucurie\nPentru prinţ şi pentru cerşetor!\n\nR: /:Cânt Osana :/ x3\nRege al regilor.\n/: Cânt Osana :/ x3\nLui Isus.\n\n3. În Isus veţi găsi fericire.\nVeniţi acum degrab la El!\nPace sfântă, și multă bucurie,\nÎn inimă El revarsă azi.\n\nR: /:Cânt Osana :/ x3\nRege al regilor.\n/: Cânt Osana :/ x3\nLui Isus."
+    },
+    {
+      "id": 38,
+      "title": "Noapte sfântă de Crăciun",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Noapte sfântă de Crăciun,\nNoapte sfântă de Crăciun,\n/: Îngerii cântă Osana,\nNoapte sfântă de Crăciun. : /\n\n2. Jos în ieslea Betleem,\nJos în ieslea Betleem,\n/: Dumnezeu la noi venise\nJos în ieslea Betleem. : /\n\n3. Mântuire ne-a adus,\nMântuire ne-a adus,\n/: Glorie în veci lui isus\nMântuire ne-a adus. : /\n\n4. Să-i aducem toţi în dar,\nSă-i aducem toţi în dar,\n/: Inima ca mulţumire\nSă-i aducem toţi în dar. : /\n\n5. Să-i cântăm cu îngerii,\nSă-i cântăm cu îngerii,\n/: Slavă, cinste şi mărire\nSă-i cântăm cu îngerii. : /"
+    },
+    {
+      "id": 39,
+      "title": "Vestea bună din cer îngerii au adus",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Vestea bună din cer îngerii au adus\nS-a născut al lumii Salvator!\n/: Jos la oameni din cer Dumnezeu a coborât\nSă mântuiască tot ce-i pierdut :/\n\nR: /:S-a născut, în Betleem\nMesia, Aleluia, Emanuel! :/\n\n2. Îngerii preamăresc minunatul moment,\nCăci salvarea prin El a venit.\n/: Osanale în cer, pace jos pe pământ\nÎntre oameni plăcuţi Domnului! :/\n\nR: /:S-a născut, în Betleem\nMesia, Aleluia, Emanuel! :/\n\n3. Iar păstorii-au adus micului prunc Isus\nLaude, daruri, cântând bucuroși.\n/: De aceea şi noi vrem prin cânt să-L slăvim\nPe Acela ce mult îl iubim! :/\n\nR: /:S-a născut, în Betleem\nMesia, Aleluia, Emanuel! :/"
+    },
+    {
+      "id": 40,
+      "title": "A venit Isus pe lume",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. A venit Isus pe lume într-o noapte minunata\nÎn Betleemul din Iudeea pe cer o stea se-arata\nMagii după stea pornesc plini de bucurie\nSa se-nchine Celui care a coborât din veșnicie\n\nR: Ne-nchinăm si noi cu ei, Pruncului Isus\nInima i-o dăruim, ca ne-a iubit nespus\nA coborât din strălucire să ne ofere mântuire Binecuvântat să fie în veci de veci.\n\n2. Îngerii au coborât plini de bucurie\nSă aducă vestea bună celor din câmpie\nPastorii au rămas uimiți de această minune\nȘi spre iesle au pornit și ei să I se-nchine\n\nR: Ne-nchinăm si noi cu ei, Pruncului Isus\nInima i-o dăruim, ca ne-a iubit nespus\nA coborât din strălucire să ne ofere mântuire Binecuvântat să fie în veci de veci."
+    },
+    {
+      "id": 41,
+      "title": "Fă-I loc lui Isus în inima ta",
+      "key": "",
+      "language": "romanian",
+      "lyrics": "1. Astăzi e Crăciun\nȘi oamenii spun\nCă e ziua Ta.\nCasa şi-o-mpodobesc,\nToate strălucesc,\nEste ziua Ta.\nÎn bucuria lor,\nUită pe Mântuitor.\n\nR: Fă-I loc lui Isus în inima ta,\nLa uşă nu Îl lăsa,\nPrimeşte-L în casa ta!\nFă-I loc în inima ta\nLui Mesia!\n\n2. Unii se veselesc\nAlţii daruri primesc,\nEste ziua Ta,\nEi dau tot ce-au mai bun\nCelor ce-i iubesc,\nEste ziua Ta.\nÎn bucuria lor,\nUită pe Mântuitor.\n\nR: Fă-I loc lui Isus în inima ta,\nLa uşă nu Îl lăsa,\nPrimeşte-L în casa ta!\nFă-I loc în inima ta\nLui Mesia!\n\nC: Tu simplu ai venit\nȘi dezbrăcat de slavă.\nTe-ai îmbrăcat, smerit,\nÎn haina mea de om.\n\nR: Fă-I loc lui Isus în inima ta,\nLa uşă nu Îl lăsa,\nPrimeşte-L în casa ta!\nFă-I loc în inima ta\nLui Mesia!"
+    }
+  ],
+  "schedule": [
+    {
+      "id": "dec24",
+      "title": "December 24th",
+      "subtitle": "After Youth Service",
+      "stops": [
+        {
+          "id": "s1",
+          "city": "San Leandro",
+          "name": "Tamas + Neighbors",
+          "address": "1065 Auburn Ave"
+        },
+        {
+          "id": "s2",
+          "city": "Castro Valley",
+          "name": "Gheorghiesh Fam.",
+          "address": "3700 Carlwyn Ct"
+        },
+        {
+          "id": "s3",
+          "city": "Castro Valley",
+          "name": "Patricia & Bocsan",
+          "address": "4724 Mira Vista Dr."
+        },
+        {
+          "id": "s4",
+          "city": "Castro Valley",
+          "name": "Bejenariu",
+          "address": "4481 Hillsborough Dr."
+        },
+        {
+          "id": "s5",
+          "city": "Walnut Creek",
+          "name": "Mircea Ilie",
+          "address": "921 Jeffrey Lane"
+        },
+        {
+          "id": "s6",
+          "city": "Concord",
+          "name": "Triff",
+          "address": "3641 Wren Ave"
+        },
+        {
+          "id": "s7",
+          "city": "Concord",
+          "name": "Lenuța Neagoe",
+          "address": "1530 Center Ave"
+        },
+        {
+          "id": "s8",
+          "city": "Concord",
+          "name": "Ruthy",
+          "address": "2708 Rio Seco Dr."
+        }
+      ]
+    },
+    {
+      "id": "dec25",
+      "title": "December 25th",
+      "subtitle": "After Evening Service",
+      "stops": [
+        {
+          "id": "s9",
+          "city": "San Leandro",
+          "name": "Dochita",
+          "address": "1664 Maubert Ct"
+        },
+        {
+          "id": "s10",
+          "city": "Castro Valley",
+          "name": "Cami Zidaru",
+          "address": "16540 Hannah Dr"
+        },
+        {
+          "id": "s11",
+          "city": "Castro Valley",
+          "name": "Rusu",
+          "address": "16737 Almond Rd"
+        },
+        {
+          "id": "s12",
+          "city": "Alamo",
+          "name": "Stamatoiu",
+          "address": "1621 Via Romero"
+        },
+        {
+          "id": "s13",
+          "city": "San Ramon",
+          "name": "Ploscariu",
+          "address": "3007 Bernard Ave"
+        },
+        {
+          "id": "s14",
+          "city": "Livermore",
+          "name": "Sfeatcu",
+          "address": "3934 California Way"
+        }
+      ]
+    }
+  ]
+}

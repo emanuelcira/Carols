@@ -51,6 +51,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        [hidden] { display: none !important; }
 
         html { -webkit-text-size-adjust: 100%; }
 
@@ -460,12 +461,14 @@
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            padding: 18px 16px 14px 20px;
+            padding: 12px 12px 14px 20px;
             border-bottom: 1px solid var(--border);
             flex-shrink: 0;
         }
 
-        .sheet-heading { flex: 1; min-width: 0; }
+        .sheet-header { flex-wrap: wrap; row-gap: 10px; }
+        .sheet-heading { flex: 1 1 100%; min-width: 0; order: 2; }
+        .sheet-actions { margin-left: auto; }
 
         .sheet-title {
             font-size: 21px;
@@ -591,6 +594,192 @@
         .stop:hover .stop-map { background: var(--accent-hover); }
         .stop-map svg { width: 15px; height: 15px; }
 
+        /* Key badge */
+        .key-badge {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 8px;
+            padding: 1px 7px;
+            border-radius: 6px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+            vertical-align: 2px;
+            border: none;
+            letter-spacing: 0.02em;
+        }
+        .key-badge.big { font-size: 14px; padding: 3px 9px; margin-left: 0; vertical-align: 0; flex-shrink: 0; cursor: default; }
+        body.editing .key-badge.big { cursor: pointer; box-shadow: inset 0 0 0 1px var(--accent); }
+        .key-badge.empty { background: transparent; box-shadow: inset 0 0 0 1px var(--border) !important; color: var(--text-3); font-weight: 600; }
+        .title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .carol-title, .carol-subtitle, .stop-address { display: block; }
+
+        /* Edit mode */
+        body:not(.editing) .edit-only { display: none !important; }
+        .edit-bar { display: none; }
+        body.editing .topbar { justify-content: space-between; gap: 8px; }
+        body.editing .edit-bar {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            height: 40px;
+            padding: 0 4px 0 12px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            min-width: 0;
+        }
+        .edit-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+        .edit-label { white-space: nowrap; margin-right: 2px; }
+        .edit-bar-btn {
+            border: none;
+            background: transparent;
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 7px 9px;
+            border-radius: 999px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .edit-bar-btn.strong { background: var(--accent); color: var(--accent-text); }
+
+        .add-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            margin-top: 12px;
+            padding: 13px;
+            border: 1.5px dashed var(--border);
+            border-radius: var(--radius);
+            background: transparent;
+            color: var(--accent);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .add-btn span { font-size: 20px; line-height: 1; font-weight: 500; }
+        .add-btn:hover { border-color: var(--accent); }
+
+        .stop-tools { display: flex; gap: 6px; flex-shrink: 0; }
+        .tool-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .tool-btn svg { width: 16px; height: 16px; }
+        .tool-btn.danger { color: #c4362c; }
+        :root[data-theme="dark"] .tool-btn.danger { color: #f08a80; }
+
+        /* Forms */
+        .song-form, .stop-form { display: flex; flex-direction: column; gap: 14px; }
+        .song-form[hidden] { display: none; }
+        .stop-form {
+            padding: 14px;
+            margin: 0 0 8px;
+            border-radius: 12px;
+            background: var(--surface);
+            border: 1.5px solid var(--accent);
+        }
+        .form-title, .form-head { font-size: 15px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 10px; }
+        .field { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+        .field > span { font-size: 13px; font-weight: 600; color: var(--text-2); }
+        .field-row { display: flex; gap: 12px; }
+        .field input, .field select, .field textarea {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg);
+            color: var(--text);
+            font: inherit;
+            font-size: 16px;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .field select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b92a3' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 16px;
+            padding-right: 32px;
+        }
+        .field textarea { line-height: 1.6; resize: vertical; min-height: 240px; }
+        .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+        .hint { font-size: 13px; color: var(--text-3); margin-top: -6px; }
+        .form-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .spacer { flex: 1; }
+        .btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+        .btn.danger-text { border-color: transparent; background: transparent; color: #c4362c; padding-left: 0; }
+        :root[data-theme="dark"] .btn.danger-text { color: #f08a80; }
+        body.saving .btn.primary { opacity: 0.6; pointer-events: none; }
+        body.saving .btn.primary::after { content: '…'; }
+        .muted { color: var(--text-3); font-size: 15px; }
+
+        /* Token dialog */
+        .sheet.dialog { z-index: 1500; }
+        .sheet.dialog.active { align-items: center; padding: 16px; }
+        .dialog-panel {
+            background: var(--surface);
+            width: 100%;
+            max-width: 440px;
+            border-radius: 18px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .dialog-text { font-size: 15px; color: var(--text-2); }
+        .dialog-steps { font-size: 14px; color: var(--text-2); padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+        .dialog-steps a { color: var(--accent); font-weight: 600; }
+        .dialog-steps b { color: var(--text); font-weight: 600; }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: calc(20px + env(safe-area-inset-bottom));
+            transform: translate(-50%, 20px);
+            max-width: calc(100% - 32px);
+            padding: 12px 16px;
+            border-radius: 12px;
+            background: var(--text);
+            color: var(--bg);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 3000;
+        }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .toast.error { background: #c4362c; color: #fff; }
+
         :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
         @media (prefers-reduced-motion: reduce) {
@@ -600,6 +789,11 @@
 </head>
 <body>
     <div class="topbar">
+        <div class="edit-bar">
+            <span class="edit-dot"></span><span class="edit-label">Edit mode</span>
+            <button class="edit-bar-btn" id="forgetToken" title="Remove the GitHub token from this device">Sign out</button>
+            <button class="edit-bar-btn strong" id="exitEdit">Done</button>
+        </div>
                 <div class="controls" role="group" aria-label="Display">
                     <button class="ctrl js-smaller" aria-label="Smaller text"><span class="a-small">A</span></button>
                     <button class="ctrl js-larger" aria-label="Larger text"><span class="a-large">A</span></button>
@@ -647,6 +841,7 @@
 
         <p class="result-count" id="resultCount"></p>
         <div class="carol-list" id="carolList"></div>
+        <button class="add-btn edit-only" id="addSongBtn"><span>+</span> Add song</button>
         <div class="no-results" id="noResults" style="display: none;">
             Nu s-au găsit colinde / No carols found
         </div>
@@ -658,10 +853,14 @@
         <div class="sheet-panel">
             <div class="sheet-header">
                 <div class="sheet-heading">
-                    <h2 class="sheet-title" id="modalTitle"></h2>
+                    <div class="title-row">
+                        <h2 class="sheet-title" id="modalTitle"></h2>
+                        <button class="key-badge big" id="modalKey" aria-label="Key"></button>
+                    </div>
                     <p class="sheet-subtitle" id="modalSubtitle"></p>
                 </div>
                 <div class="sheet-actions">
+                    <button class="icon-btn edit-only" id="editSongBtn" aria-label="Edit song"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
                 <div class="controls" role="group" aria-label="Display">
                     <button class="ctrl js-smaller" aria-label="Smaller text"><span class="a-small">A</span></button>
                     <button class="ctrl js-larger" aria-label="Larger text"><span class="a-large">A</span></button>
@@ -677,6 +876,28 @@
                 </div>
             </div>
             <div class="sheet-body" id="lyricsBody">
+                <form class="song-form" id="songForm" hidden>
+                    <p class="form-title" id="songFormHeading">Edit song</p>
+                    <label class="field"><span>Title</span><input name="title" required autocomplete="off"></label>
+                    <div class="field-row">
+                        <label class="field"><span>Key</span><input name="key" list="keyList" placeholder="e.g. G, F#, Em" maxlength="6" autocomplete="off" autocapitalize="characters"></label>
+                        <label class="field"><span>Language</span>
+                            <select name="language">
+                                <option value="romanian">🇷🇴 Română</option>
+                                <option value="english">🇺🇸 English</option>
+                            </select>
+                        </label>
+                    </div>
+                    <label class="field"><span>Lyrics</span><textarea name="lyrics" spellcheck="true"></textarea></label>
+                    <p class="hint">Leave an empty line between verses. Repeat a line by typing it again.</p>
+                    <div class="form-actions">
+                        <button type="button" class="btn danger-text" id="deleteSongBtn">Delete song</button>
+                        <span class="spacer"></span>
+                        <button type="button" class="btn" id="cancelSongBtn">Cancel</button>
+                        <button type="submit" class="btn primary">Save</button>
+                    </div>
+                </form>
+                <div id="songView">
                 <div class="lyrics-text" id="lyricsText"></div>
                 <div class="lyrics-footer">
                     <button class="nav-btn" id="prevBtn">
@@ -687,6 +908,7 @@
                         Next
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                     </button>
+                </div>
                 </div>
             </div>
         </div>
@@ -718,1300 +940,45 @@
         </div>
     </div>
 
+    <div class="sheet dialog" id="tokenModal" role="dialog" aria-modal="true" aria-labelledby="tokenTitle">
+        <form class="dialog-panel" id="tokenForm">
+            <h2 class="sheet-title" id="tokenTitle">Connect to GitHub</h2>
+            <p class="dialog-text">Saving changes needs a GitHub token that can edit the Carols repo. It is stored only on this device.</p>
+            <ol class="dialog-steps">
+                <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub token settings</a>.</li>
+                <li>Repository access: <b>Only select repositories</b>, then <b>Carols</b>.</li>
+                <li>Permissions: <b>Contents</b>, set to <b>Read and write</b>.</li>
+                <li>Generate, copy it and paste it here.</li>
+            </ol>
+            <label class="field"><span>Token</span><input id="tokenInput" type="password" autocomplete="off" placeholder="github_pat_..."></label>
+            <div class="form-actions">
+                <span class="spacer"></span>
+                <button type="button" class="btn" id="tokenCancel">Cancel</button>
+                <button type="submit" class="btn primary">Save token</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <datalist id="cityList"></datalist>
+    <datalist id="keyList">
+        <option value="C"><option value="C#"><option value="D"><option value="Eb"><option value="E"><option value="F"><option value="F#"><option value="G"><option value="Ab"><option value="A"><option value="Bb"><option value="B">
+        <option value="Cm"><option value="C#m"><option value="Dm"><option value="Em"><option value="Fm"><option value="F#m"><option value="Gm"><option value="Am"><option value="Bm">
+    </datalist>
+
     <script>
-        const carols = [
-            {
-                id: 1,
-                title: "1. Joy to the World",
-                language: "english",
-                lyrics: `1. Joy to the world, the Lord is come!
-Let earth receive her King!
-Let ev'ry heart prepare Him room,
-and heav'n and nature sing,
-and heav'n and nature sing,
-and heav'n, and heav'n and nature sing.
-
-2. Joy to the earth, the Savior reigns!
-Let men their songs employ,
-while fields and floods, rocks, hills, and plains
-repeat the sounding joy,
-repeat the sounding joy,
-repeat, repeat the sounding joy.
-
-3. He rules the world with truth and grace,
-and makes the nations prove
-the glories of His righteousness
-and wonders of His love,
-and wonders of His love,
-and wonders, wonders of His love.`
-            },
-            {
-                id: 2,
-                title: "2. O, ce veste minunată",
-                language: "romanian",
-                lyrics: `1. O, ce veste minunată
-În Betleem ni se-arată
-/: Că a născut prunc, Prunc din Duhul Sfânt
-Fecioara curată. :/
-
-2. Că la Betleem Maria Săvârşind călătoria.
-/: În sărac locaş, lâng-acel oraş
-A născut pe Mesia. :/
-
-3. Pe Fiul cel din vecie
-Ce L-a trimis Tatăl mie
-/: Să Se nască, şi să crească
-Să ne mântuiască. :/
-
-4. E Isus, Păstorul mare
-Turmă ca El nimeni n-are
-/: Noi Îl lăudăm şi ne închinăm
-Cu credinţă tare :/`
-            },
-            {
-                id: 3,
-                title: "3. Laudă (A)",
-                language: "romanian",
-                lyrics: `R: /: Laudă fie adusă, Celui ce S-a Născut
-La Betleem! :/ x8
-
-B: /: Aleluia! Salvatorului nostru,
-Rege s-a Născut La Betleem. :/ x2
-
-/: Hai deschide inima ta
-Să găseşti minunea din ea
-Că-ntr-o iesle şi-n viaţa ta
-S-a născut Mesia:/
-
-1. Cu iubirea Lui şi cu har din harul Său divin
-Împodobeşti viaţa mea, eu te colind
-Sărbători de vis, cu Hristos născut în inimă
-Veşnicia s-o trăieşti eu te colind
-
-2. Veşnicia Lui şi de toată slava s-a lăsat
-Pe pământ s-a întrupat Pruncul Isus
-Să fii fericit, mântuit şi liber să trăieşti
-An de an pe Isus să-l iubeşti, eu te colind.`
-            },
-            {
-                id: 4,
-                title: "4. Angels We Have Heard on High (E)",
-                language: "english",
-                lyrics: `1. Angels we have heard on high
-Sweetly swinging o'er the plains
-And the mountains in reply
-Echoing their joyous strains
-Gloria In Excelsis Deo
-Gloria In Excelsis Deo
-
-2. Shepherds why this jubilee?
-Why your joyous strains prolong?
-Say what may the tidings be
-Which inspire your heavenly song?
-
-3. Come to Bethlehem and see
-Him Whose birth the angels sing;
-Come, adore on bended knee
-Christ the Lord, the newborn King`
-            },
-            {
-                id: 5,
-                title: "5. Îngeri Mii (E)",
-                language: "romanian",
-                lyrics: `1. Îngeri mii din ceruri cântă
-Pe deasupra văilor
-Munţii bucuroşi repetă
-Armonia, cântul lor.
-/: Glorie, S-a născut Mesia. : /
-
-2. Ce-i cu bucuria voastră?
-Voi păstori, ce auziţi?
-Ce anunţă ceru-n slavă?
-Ce-ascultaţi aşa uimiţi?
-
-3. Pruncul sfânt cu chip de soare
-E nespus de luminos.
-Sfinţi părinţi cu adorare
-Îl veghează pe Hristos.
-
-4. Vino azi la ieslea sfântă
-Laudă să-I aduci smerit
-Viaţa ta doar Lui predată
-Pentru El e-un dar dorit.`
-            },
-            {
-                id: 6,
-                title: "6. Într-un Staul Mic",
-                language: "romanian",
-                lyrics: `1. Într-un staul mic, la o margine de sat
-S-a născut un Prunc drăgălaş şi minunat
-Îngeri cântă-n cor: pace fie pe Pământ
-S-a născut Hristos, fiul Domnului, Cel Sfânt.
-
-2. Ceata de păstori în uimire ascultă
-Îngerescul cor, vestea bună ce-aducea
-
-3. Magi, din răsărit, au pornit conduşi de stea
-Şi la Betleem au venit a se-nchina
-
-4. Vestea bună azi se aude ne-ncetat
-Pruncul a venit să ne scape de păcat`
-            },
-            {
-                id: 7,
-                title: "7. God Rest Ye Merry Gentlemen",
-                language: "english",
-                lyrics: `1. God Rest Ye Merry Gentlemen,
-Let nothing you dismay,
-Remember Christ our Savior
-Was born on Christmas Day;
-To save us all from Satan's power
-When we were gone astray.
-O tidings of comfort and joy,
-Comfort and joy,
-O tidings of comfort and joy!
-
-2. From God our heavenly
-Father A blessed angel came;
-And unto certain shepherds
-Brought tiding of the same;
-How that in Bethlehem was born
-The Son of God by name.
-
-3. Now to the Lord sing praises,
-All you within this place,
-And with true love and brotherhood
-Each other now embrace;
-this holy tide of Christmas
-Doth bring redeeming grace`
-            },
-            {
-                id: 8,
-                title: "6. O Come, O Come, Emmanuel",
-                language: "english",
-                lyrics: `1. O come, O come, Emmanuel
-And ransom captive Israel
-That mourns in lonely exile here
-Until the Son of God appear
-Rejoice! Rejoice! Emmanuel
-Shall come to thee, O Israel.
-
-2. O come, O come, Thou Lord of might,
-Who to Thy tribes, on Sinai's height,
-In ancient times did'st give the Law,
-In cloud, and majesty and awe.
-
-3. O come, Thou Rod of Jesse, free
-Thine own from Satan's tyranny
-From depths of hell Thy people save
-And give them victory o'er the grave`
-            },
-            {
-                id: 9,
-                title: "9. Joyful, Joyful We Adore Thee",
-                language: "english",
-                lyrics: `1. Joyful, joyful, we adore You,
-God of glory, Lord of love;
-Hearts unfold like flow'rs before You,
-Op'ning to the sun above.
-Melt the clouds of sin and sadness;
-Drive the dark of doubt away;
-Giver of immortal gladness,
-Fill us with the light of day!
-
-2. All Your works with joy surround You,
-Earth and heav'n reflect Your rays,
-Stars and angels sing around You,
-Center of unbroken praise;
-Field and forest, vale and mountain,
-Flow'ry meadow, flashing sea,
-Chanting bird and flowing fountain
-Praising You eternally!
-
-3. Always giving and forgiving,
-Ever blessing, ever blest,
-Well-spring of the joy of living,
-Ocean-depth of happy rest!
-Loving Father, Christ our Brother,
-Let Your light upon us shine;
-Teach us how to love each other,
-Lift us to the joy divine.`
-            },
-            {
-                id: 10,
-                title: "10. Silent Night",
-                language: "english",
-                lyrics: `1. Silent night, holy night
-All is calm, all is bright
-Round yon Virgin Mother and Child
-Holy Infant so tender and mild
-Sleep in heavenly peace
-Sleep in heavenly peace
-
-2. Silent night, holy night!
-Shepherds quake at the sight
-Glories stream from heaven afar
-Heavenly hosts sing Alleluia!
-Christ, the Saviour is born
-Christ, the Saviour is born
-
-3. Silent night, holy night
-Son of God, love's pure light
-Radiant beams from Thy holy face
-With the dawn of redeeming grace
-Jesus, Lord, at Thy birth
-Jesus, Lord, at Thy birth`
-            },
-            {
-                id: 11,
-                title: "11. O Come All Ye Faithful",
-                language: "english",
-                lyrics: `1. O Come All Ye Faithful
-Joyful and triumphant,
-O come ye, O come ye to Bethlehem.
-Come and behold Him,
-Born the King of Angels;
-
-C: O come, let us adore Him,
-O come, let us adore Him,
-O come, let us adore Him,
-Christ the Lord.
-
-2. Sing, choirs of angels, 
-Sing in exultation, 
-Sing, all ye citizens of heaven above!
-Glory to God, glory in the highest:
-
-C: O come, let us adore Him,
-O come, let us adore Him,
-O come, let us adore Him,
-Christ the Lord.
-
-3. All Hail! Lord, we greet Thee,
-Born this happy morning,
-O Jesus! for evermore be Thy name adored.
-Word of the Father, now in flesh appearing;
-
-C: O come, let us adore Him,
-O come, let us adore Him,
-O come, let us adore Him,
-Christ the Lord.`
-            },
-            {
-                id: 12,
-                title: "12. O Holy Night",
-                language: "english",
-                lyrics: `1. O holy night! The stars are brightly shining
-It is the night of our dear Savior's birth
-Long lay the world in sin and error pining
-'Til He appears and the Soul felt its worth
-A thrill of hope the weary world rejoices
-For yonder breaks a new and glorious morn
-Fall on your knees; O hear the angel voices!
-O night divine, O night when Christ was born
-O night divine, O night, O night divine!
-
-2. Truly He taught us to love one another;
-His law is love and His gospel is peace
-Chains shall He break, for the slave is our brother
-And in His name all oppression shall cease
-Sweet hymns of joy in grateful chorus raise we
-Let all within us praise His holy name
-Christ is the Lord; O praise His name forever!
-His power and glory evermore proclaim
-His power and glory evermore proclaim`
-            },
-            {
-                id: 13,
-                title: "13. O Noapte Preasfinţită",
-                language: "romanian",
-                lyrics: `1. O, noapte preasfinţită
-Toate-s în odihnă
-Toţi dorm, numai părinţii sfinţi
-Stau, veghind lângă al lor iubit
-/: Dormi şi tu, o, Prunc sfânt. : /
-
-2. O, noapte preasfinţită
-Glas îngeresc sună
-Auzi din cer: "Aleluia!"
-Acest cânt, o, cum răsună
-/: Cristos ne mântuie. : /
-
-3. O, noapte preasfinţită
-Saltă, o, inimă
-Acum Fiul lui Dumnezeu
-Ne mântuie prin harul Său
-/: Vezi, Cristos S-a născut. : /`
-            },
-            {
-                id: 14,
-                title: "14. Hark the Herald Angels Sing",
-                language: "english",
-                lyrics: `Hark the herald angels sing
-"Glory to the newborn King!
-Peace on earth and mercy mild
-God and sinners reconciled"
-Joyful, all ye nations rise
-Join the triumph of the skies
-With the angelic host proclaim:
-"Christ is born in Bethlehem"
-Hark! The herald angels sing
-"Glory to the newborn King!"
-
-Hail the heav'n-born Prince of Peace!
-Hail the Son of Righteousness!
-Light and life to all He brings
-Ris'n with healing in His wings
-Mild He lays His glory by
-Born that man no more may die
-Born to raise the sons of earth
-Born to give them second birth
-Hark! The herald angels sing
-"Glory to the newborn King!"`
-            },
-            {
-                id: 15,
-                title: "15. Feliz Navidad (G)",
-                language: "english",
-                lyrics: `Feliz Navidad
-Feliz Navidad
-Feliz Navidad
-Prospero año y Felicedad
-
-Feliz Navidad
-Feliz Navidad
-Feliz Navidad
-Prospero año y Felicedad
-
-I want to wish you a Merry Christmas
-I want to wish you a Merry Christmas
-I want to wish you a Merry Christmas
-From the bottom of my heart`
-            },
-            {
-                id: 16,
-                title: "16. Mary Did You Know",
-                language: "english",
-                lyrics: `1. Mary did you know
-that your baby boy would one day walk on water?
-Mary did you know
-that your baby boy would save our sons and daughters?
-Did you know that your baby boy
-has come to make you new?
-This child that you've delivered,
-will soon deliver you.
-
-2. Mary did you know
-that your baby boy would give sight to a blind man?
-Mary did you know
-that your baby boy would calm a storm with his hand?
-Did you know that your baby boy
-has walked where angels trod?
-And when you kiss your little baby,
-you have kissed the face of God.
-
-The blind will see, the deaf will hear,
-the dead will live again.
-The lame will leap, the dumb will speak,
-the praises of the lamb
-
-3. Mary did you know
-that your baby boy is Lord of all creation?
-Mary did you know
-that your baby boy would one day rule the nations?
-Did you know that your baby boy is heaven's perfect Lamb?
-This sleeping child you're holding is the great I AM.`
-            },
-            {
-                id: 17,
-                title: "17. Go Tell It on the Mountain",
-                language: "english",
-                lyrics: `Go tell it on the mountain,
-Over the hills and everywhere,
-Go tell it on the mountain,
-Our Jesus Christ is born.
-
-1. While shepherds kept their watching
-Over silent flocks by night
-Behold throughout the heavens
-There shone a holy light
-
-2. The shepherds feared and trembled
-When lo above the earth
-Rang out the angel chorus
-That hailed our saviour's birth
-
-3. Down in a lowly manger
-Our humble Christ was born
-And God send us salvation
-That blessed Christmas morn`
-            },
-            {
-                id: 18,
-                title: "18. Astăzi S-a Născut Hristos",
-                language: "romanian",
-                lyrics: `1. Astăzi s-a nascut Hristos,
-Mesia chip luminos
-Laudați și cântați,
-Și vă bucurați!
-
-2. Mititel, înfășetel,
-În scutec de bumbăcel,
-Laudăți și cântați,
-Și vă bucurați!
-
-3. Vântul bate, nu-l răzbate,
-Neaua ninge, nu-l atinge,
-Lăudați și cântați,
-Și vă bucurați!
-
-4. Și de acum până-n vecie,
-Mila Domnului să fie,
-Laudați și cântați,
-Și vă bucurați!`
-            },
-            {
-                id: 19,
-                title: "19. O Stea pe Cer S-Arată (F)",
-                language: "romanian",
-                lyrics: `/: Steaua sus răsare! Răsare, răsare! :/ 
-
-1. Un copil ni s-a născut
-O stea pe cer se-arată
-Fiu de rege ni s-a dat
-Să Ne-nchinăm, venim îndată
-Îl vor numi Cel Minunat
-Sfetnic, Domn și Împărat,
-Mesia cel așteptat
-
-C: O stea pe cer se-arată
-Să ne-nchinăm, venim îndată
-Inima în dar să-i dăm
-Regelui Emanuel
-
-2. Ca și magii-l căutam
-O stea pe cer se arată
-Într-o iesle să-l aflăm
-Să Ne-nchinăm, venim îndată
-Pe Isus Pruncul cel Sfânt
-Mântuire pe pământ
-Bucurie-i colindăm
-
-C: O stea pe cer se-arată
-Să ne-nchinăm, venim îndată
-Inima în dar să-i dăm
-Regelui Emanuel`
-            },
-            {
-                id: 20,
-                title: "20. Veste-am Adus (F#)",
-                language: "romanian",
-                lyrics: `B: Veste-am adus, o veste,
-o veste
-Veste-am adus, o veste-am
-adus
-
-1. Voi oameni buni, ce staţi
-în casă
-Cu o creangă de brad şi
-nuci pe masă
-Noi o veste-am adus
-S-a născut, S-a născut Isus
-Cum porunci Preasfântul
-Tată
-Născu pe-al Său Fiu, Cea
-Preacurată
-Noi o veste-am adus
-S-a născut, S-a născut Isus
-
-C: S-a născut Mântuitorul,
-Domnul şi Izbăvitorul
-O veste-am adus, S-a
-nascut Isus
-
-2. Sub fulgii albi în ieslea
-săracă
-Un Prunc a venit pace să
-facă
-Noi o veste-am adus
-S-a născut, S-a născut Isus
-Pruncul e mic, mare-I
-menirea
-Din nou pe pământ
-dumnezeirea
-Noi o veste-am adus
-S-a născut, S-a născut Isus
-
-C: S-a născut Mântuitorul,
-Domnul şi Izbăvitorul
-O veste-am adus, S-a
-nascut Isus
-
-3. Din răsărit magii plecară
-Şi în Betleem I se-nchinară
-Noi o veste-am adus
-S-a născut, S-a născut Isus
-Şi lumii întregi i se arată
-Cel făr' de-nceput şi făr' de
-pată
-Noi o veste-am adus
-S-a născut, S-a născut Isus
-
-C: S-a născut Mântuitorul,
-Domnul şi Izbăvitorul
-O veste-am adus, S-a
-nascut Isus`
-            },
-            {
-                id: 21,
-                title: "21. What A Glorious Night (A)",
-                language: "english",
-                lyrics: `C: I hear the angels singing halleluiah
-Let the earth receive her king
-I know that love has come
-Singing it out
-Jesus Christ is born
-Jesus Christ is born
-
-1. The shepherds came to
-See the baby
-Stood by his mother's side
-Here laid the Savior
-Inside a manger
-Oh what a glorious night
-Oh what a glorious night
-
-C: I hear the angels singing halleluiah
-Let the earth receive her king
-I know that love has come
-Singing it out
-Jesus Christ is born
-Jesus Christ is born
-
-2. The shepherds wondered
-They couldn't hide it
-Told everyone in sight
-All were amazed
-When they heard how
-God came down on the glorious night
-God came down on this glorious night
-
-C: I hear the angels singing halleluiah
-Let the earth receive her king
-I know that love has come
-Singing it out
-Jesus Christ is born
-Jesus Christ is born
-
-B: Glorious
-Glorious
-What a Glorious night x2
-
-C: I hear the angels singing halleluiah
-Let the earth receive her king
-I know that love has come
-Singing it out
-Jesus Christ is born
-Jesus Christ is born`
-            },
-            {
-                id: 22,
-                title: "22. Colindă/ Ascultați cu toții (Em)",
-                language: "romanian",
-                lyrics: `C: Colindă, colindă, colindă, colindă x2
-
-1. Ascultaţi cu toţii când vă colindăm,
-Pe Isus Mesia azi vi-L prezentăm.
-/: El e-un rege veşnic, Domn şi Dumnezeu,
-A venit să moară chiar de dragul meu.:/
-
-C: Colindă, colindă, colindă, colindă x2
-
-2. Vrem azi să cunoaştem Pruncul minunat,
-Care din iubire viaţa ne-a salvat.
-/: A venit din slavă, de la Tatăl sfânt,
-Şi-a luat trup de moarte aici pe pământ. :/
-
-C: Colindă, colindă, colindă, colindă x2
-
-3. Veniţi azi cu toţii, lângă ieslea Lui,
-Pe toţi vă primeşte Prinţul harului
-/: Să-I aducem daruri, acum de Crăciun,
-Inima şi viaţa Domnului cel bun. :/
-
-C: Colindă, colindă, colindă, colindă...`
-            },
-            {
-                id: 23,
-                title: "23. Frumoasă zi (Em)",
-                language: "romanian",
-                lyrics: `1. Frumoasă zi de bucurii
-La noi iar a sosit,
-În coruri sfinte cu îngerii
-Cântarea ne-a unit.
-
-C: Slavă lui Dumnezeu cântăm,
-Regelui nostru ne-nchinăm;
-Pace fie pe pământ:
-S-a născut azi Domnul Sfânt!
-
-2. Când întunericul domnea,
-Lumina a venit,
-Căci Dumnezeu ne oferea
-Un dar neprețuit.
-
-C: Slavă lui Dumnezeu cântăm,
-Regelui nostru ne-nchinăm;
-Pace fie pe pământ:
-S-a născut azi Domnul Sfânt!
-
-3. Acum la ieslea Ta venim,
-La Cel glorificat,
-Umilul Prunc ce azi privim
-E Domn și Împărat!
-
-C: Slavă lui Dumnezeu cântăm,
-Regelui nostru ne-nchinăm;
-Pace fie pe pământ:
-S-a născut azi Domnul Sfânt!`
-            },
-            {
-                id: 24,
-                title: "24. Căci un copi ni s-a născut (D)",
-                language: "romanian",
-                lyrics: `1. Căci un Copil ni s-a născut
-Cel ce n-are început
-Căci un Fiu ni s-a dat
-El e Marele Împărat
-
-R: /:Îl vor numi sfetnic, minunat
-Domn al Păcii adorat,
-Dumnezeu Tare, Savaot
-Părinte al veșniciilor :/
-
-2. El, Dumnezeul nevăzut
-S-a făcut azi cunoscut
-A venit din veșnicii
-Să ne aducă bucurii
-
-R: /:Îl vor numi sfetnic, minunat
-Domn al Păcii adorat,
-Dumnezeu Tare, Savaot
-Părinte al veșniciilor :/
-
-3. Plăcerea Lui va fi mereu
-Frica de Dumnezeu
-Și Duhul Domnului cel Sfânt
-Se va odihni în El
-
-R: /:Îl vor numi sfetnic, minunat
-Domn al Păcii adorat,
-Dumnezeu Tare, Savaot
-Părinte al veșniciilor :/`
-            },
-            {
-                id: 25,
-                title: "25. O, ce veste îmbucurătoare (D)",
-                language: "romanian",
-                lyrics: `1. O, ce veste îmbucurătoare
-Care îngerii ne-au adus.
-Vestea despre mare îndurare
-Care Dumnezeu ne-a trimis de sus.
-
-R: /:Iată, iată S-a născut Isus
-Mântuire ne-a adus
-El ne scapă din nevoi
-Dumnezeu este cu noi! :/
-
-2. O, ce veste îmbucurătoare
-Cântăm toţi cu însufleţire
-Să vestească deci buzele noastre:
-Domnul ne-a dăruit mântuire.
-
-R: /:Iată, iată S-a născut Isus
-Mântuire ne-a adus
-El ne scapă din nevoi
-Dumnezeu este cu noi! :/
-
-3. O, ce veste îmbucurătoare
-Ea stâmpără orice dureri.
-Domnul de sus la noi Se coboară,
-Cel sfânt, ca să ne ridice la cer.
-
-R: /:Iată, iată S-a născut Isus
-Mântuire ne-a adus
-El ne scapă din nevoi
-Dumnezeu este cu noi! :/`
-            },
-            {
-                id: 26,
-                title: "26. Ce minunat împărat (A)",
-                language: "romanian",
-                lyrics: `1. Păstori au alergat să vadă Pruncul
-Cel care-a fost vestit
-Născut în iesle, Domn din vecie
-Ce minunat Împărat! ce minunat Împărat!
-
-R: Auzi cum îngeri cântă:
-Aleluia! Laudă, Regelui Isus!
-El a venit la noi din iubire,
-S-a născut Isus! S-a născut Isus!
-
-2. Păstorii s-au grăbit să ducă vestea
-Că Isus S-a născut
-Slăveau pe Dumnezeu că a venit din cer
-Ce minunat Împărat! O, ce minunat Împărat!
-
-R: Auzi cum îngeri cântă:
-Aleluia! Laudă, Regelui Isus!
-El a venit la noi din iubire,
-S-a născut Isus! S-a născut Isus!
-
-B: Glorie! Glorie! S-a născut Isus!
-Glorie! Glorie! S-a născut Isus!
-
-R: Auzi cum îngeri cântă:
-Aleluia! Laudă, Regelui Isus!
-El a venit la noi din iubire,
-S-a născut Isus! S-a născut Isus!
-
-3. Toți să știe, să cunoască
-Pruncul Isus venit
-El cerul a lăsat să mântuiască
-Ce minunat Împărat, ce minunat Împărat!`
-            },
-            {
-                id: 27,
-                title: "27. Departe într-o iesle",
-                language: "romanian",
-                lyrics: `1. Departe într-o iesle, în paie ascuns
-Culcat printre vite stă Pruncul Isus.
-Îi cântă şi-L leagănă stele de-argint
-/: Şi-ncet copilaşul adoarme zâmbind. :/
-
-2. Doar vitele-n grajd zgomotos Îl trezesc
-Duios le priveşte şi se liniştesc.
-O, Prunc minunat Te slăvim c-ai venit
-/: Şi-n ieslea săracă adânc Te-ai smerit. :/
-
-3. Rămâi drag Isuse cu noi, Te rugăm
-N-avem bogăţii, dar ce avem Îţi dăm
-Iar Tu dă-ne binecuvântarea Ta
-/: Şi viaţa întreagă cu Tine vom sta. :/`
-            },
-            {
-                id: 28,
-                title: "28. Se așterne, pretutindeni",
-                language: "romanian",
-                lyrics: `1. Se așterne, pretutindeni,
-Stratul proaspăt de omăt,
-Pe la case, s-au pornit copii,
-Astăzi iarăși e Crăciun
-
-B: Peste tot e (Peste tot), veselie (Veseli),
-Prăjituri și cozonaci,
-Pe la geamuri, fețe zâmbitoare,
-Astăzi iarăși e Crăciun
-
-R: Ne bucurăm că El s-a născut,
-Ca să ne dea în dar pacea Sa
-Și-n inimă să toarne Dragostea
-
-2. Strada-i plină (Este plin), de colinde (De colind),
-Iar în iesle-i înfășat (În-fă-șat),
-Este Pruncul, salvatorul nostru,
-Veșnic fiu de Împărat
-
-R: Ne bucurăm că El s-a născut,
-Ca să ne dea în dar pacea Sa
-Și-n inimă să toarne Dragostea
-
-3. Strada-i plină (Este plin), de colinde (De colind),
-Iar în iesle-i înfășat (În-fă-șat),
-Este Pruncul, salvatorul nostru,
-Veșnic fiu de Împărat
-
-4. /: Se așterne, pretutindeni,
-Stratul proaspăt de omăt,
-Pe la case, s-au pornit copii,
-Astăzi iarăși e Crăciun. :/`
-            },
-            {
-                id: 29,
-                title: "29. Veniţi cu credinţă",
-                language: "romanian",
-                lyrics: `1. Veniţi cu credinţă, plini de bucurie,
-Veniţi, o, veniți toți la Betleem!
-Iată-l în paie, Rege al măririi.
-
-R1: /:Veniţi sa ne-nchinăm Lui, :/ x3
-El e Domn!
-
-2. Voi, coruri de îngeri, glorie aduceţi
-Acelui ce-n iesle umil S-a născut;
-„Slavă lui Dumnezeu în înălţime!”
-
-R1: /:Veniţi sa ne-nchinăm Lui, :/ x3
-El e Domn!
-
-3. O, Doamne, Îţi spunem bun venit în lume;
-Isuse, a Ta fie slava-n veci!
-Tu eşti Cuvântul vieţii printre oameni!
-
-R2: /:Te adorăm, Isuse, :/ X3
-Tu eşti Domn!`
-            },
-            {
-                id: 30,
-                title: "30. Auzi corul îngeresc",
-                language: "romanian",
-                lyrics: `1. Auzi corul îngeresc,
-Dumnezeu din cer slăvesc!
-Cântă imnuri înălţând,
-Pace fie pe pământ!
-Dumnezeu cum a promis,
-Pe-al Său Fiu El L-a trimis.
-/: Auzi corul îngeresc,
-Cântând Tatălui ceresc! :/
-
-2. Cel din cerul minunat,
-Preamărit şi înălţat,
-Pe pământ jos a venit
-Şi ca noi trup a primit.
-S-a jertfit, a pătimit,
-Chiar şi moarte-a suferit,
-/: De păcate ne-a spălat,
-Viaţă nouă El ne-a dat. :/
-
-3. Toate de la El primim,
-Când prin rugăciuni venim.
-Să-I deschidem inima,
-Ca să intre El în ea
-Şi ne va conduce sus,
-Unde-s fericiri nespus!
-/: Toţi în cor Îi vom cânta:
-"Mare este slava Sa!" :/`
-            },
-            {
-                id: 31,
-                title: "31. Cu mult în urmă-n Betleem",
-                language: "romanian",
-                lyrics: `1. Cu mult în urmă-n Betleem
-Sfânta Biblie spune
-Maria a născut un fiu
-În seara de Crăciun
-Şi mii de îngeri s-au unit
-Cerul s-a întunecat.
-Universul s-a umplut
-De slavă şi cântări.
-
-R: /:Să-i cântăm cu toţii-n cor
-Noul Rege s-a născut
-Şi viaţă El ne-a dăruit
-În seara de Crăciun. :/
-
-2. Păstorii s-au înfricoşat
-Cerul când a izbucnit
-Şi-ntr-un gând au alergat
-Către pruncul iubit.
-
-R: /:Să-i cântăm cu toţii-n cor
-Noul Rege s-a născut
-Şi viaţă El ne-a dăruit
-În seara de Crăciun. :/
-
-3. Cu mult în urmă-n Betleem
-O stea mare-a răsărit.
-Ea ne spune că ceru-ntreg
-La noi s-a coborât.
-
-R: /:Să-i cântăm cu toţii-n cor
-Noul Rege s-a născut
-Şi viaţă El ne-a dăruit
-În seara de Crăciun. :/`
-            },
-            {
-                id: 32,
-                title: "32. Away in a manger",
-                language: "english",
-                lyrics: `1. Away in a manger, no crib for His bed
-The little Lord Jesus laid down His sweet head
-The stars in the bright sky looked down where He lay
-The little Lord Jesus asleep on the hay
-
-2. The cattle are lowing, the poor Baby awakes
-But little Lord Jesus, no crying He makes
-I love Thee, Lord Jesus! Look down from the sky
-And stay by my side till morning is nigh
-
-3. Be near me, Lord Jesus; I ask Thee to stay
-Close by me forever, and love me I pray
-Bless all the dear children in Thy tender care
-And take us to Heaven to live with Thee there`
-            },
-            {
-                id: 33,
-                title: "33. Maria te-ai gândit?",
-                language: "romanian",
-                lyrics: `1. Maria te-ai gândit că Fiul tău va fi cândva un Rege?
-Oare te-ai gândit că Fiul tău moartea-o să dezlege?
-Te-ai gândit c-acest Fiu al tău va face totul nou?
-Ca acest Copil al păcii va fi al păcii sol?
-
-2. Maria te-ai gândit că Fiul tău va da la orbi vedere?
-Oare te-ai gândit că Fiul tău va stăpâni furtuna?
-Te-ai gândit c-acest Fiu al tău e Rege sus în Cer?
-Când priveai la chipul Său îl priveai pe Dumnezeu?
-
-B: Și orbii văd, și surzii-aud, și șchiopii merg din nou!
-Și toți acei ce cred în El vor fi născuți din nou.
-Maria te-ai gândit?
-
-3. Maria te-ai gândit că Fiul tău va fi un Miel de jertfă?
-Oare te-ai gândit că Fiul tău trăi-va pentru moarte?
-Te-ai gândit c-acest Fiu al tău va răspândi lumina?
-Și că viața Și-o va da pentru-a ta?`
-            },
-            {
-                id: 34,
-                title: "34. A long time ago in Bethlehem",
-                language: "english",
-                lyrics: `1. A long time ago in Bethlehem
-So the Holy Bible says
-Mary's boy child, Jesus Christ
-Was born on Chris-ta-mas-day
-
-C: Listen, hear the angels sing
-A new king born today
-And man will live forever more
-Because of Chris-ta-mas-day
-
-2. While shepherds watched their flocks by night
-Them see a new [?] brighting star
-And then them hear a choir sing
-It seemed to come from afar
-
-C: Listen, hear the angels sing
-A new king born today
-And man will live forever more
-Because of Chris-ta-mas-day
-
-3. When Joseph and he wife Mary
-Came to Bethlehem that night
-They find no place to born that child
-Not a single room was in sight
-
-C: Listen, hear the angels sing
-A new king born today
-And man will live forever more
-Because of Chris-ta-mas-day
-
-4. Then bye and bye them find a little nook
-In a stable all forlorn
-And in a manger cold and dark
-Mary's little boy was born
-
-C: Listen, hear the angels sing
-A new king born today
-And man will live forever more
-Because of Christ-a-mas-day`
-            },
-            {
-                id: 35,
-                title: "35. What Child is this",
-                language: "english",
-                lyrics: `1. What Child is this who, laid to rest On Mary's lap is sleeping?
-Whom angels greet with anthems sweet, While shepherds watch are keeping?
-This, this is Christ the King, Whom shepherds guard and angels sing;
-Haste, haste, to bring Him laud, The Babe, the Son of Mary
-
-2. Why lies He in such mean estate, Where ox and ass are feeding?
-Good Christians, fear, for sinners here The silent Word is pleading
-Nails, spear shall pierce Him through, The cross be borne for me, for you
-Hail, hail the Word made flesh, The Babe, the Son of Mary
-
-3. So bring Him incense, gold and myrrh, Come peasant, king to own Him;
-The King of kings salvation brings, Let loving hearts enthrone Him
-Raise, raise a song on high, The virgin sings her lullaby
-Joy, joy for Christ is born, The Babe, the Son of Mary`
-            },
-            {
-                id: 36,
-                title: "36. Printul Pacii a venit",
-                language: "romanian",
-                lyrics: `1. Noaptea nu va domni
-Răul se va sfârși
-Peste lume o stea răsare
-Și ce-a fost profețit
-Totul s-a-mplinit
-Și de-atunci este sărbătoare
-
-B: Hei, hei, tu ai auzit
-Prințul păcii a venit,
-Fiindcă te-a iubit
-Hei, hei și eu l-am primit
-El m-a mântuit, o da!
-
-R: /:S-a născut,
-Cel făr' de început
-Domn Minunat
-Cântă azi:
-S-a născut
-Pruncul Sfânt
-Ne-a salvat :/
-
-2. Peste toți va domni
-Și nu se va sfârși
-Că domnia-i nemuritoare
-Cel ce-n iesle a venit
-E-nceput și Sfârșit
-El ne scapă de la pierzare.
-
-B: Hei, hei, tu ai auzit
-Prințul păcii a venit,
-Fiindcă te-a iubit
-Hei, hei și eu l-am primit
-El m-a mântuit, o da!
-
-R: /:S-a născut,
-Cel făr' de început
-Domn Minunat
-Cântă azi:
-S-a născut
-Pruncul Sfânt
-Ne-a salvat :/`
-            },
-            {
-                id: 37,
-                title: "37. Într-un sat ne-nsemnat din Iudeea",
-                language: "romanian",
-                lyrics: `1. Într-un sat ne-nsemnat din Iudeea,
-Într-o iesle din Betleem,
-S-a născut aşteptatul Mesia
-Să-I cântăm cu îngerii în cor!
-
-R: /:Cânt Osana :/ x3
-Rege al regilor.
-/: Cânt Osana :/ x3
-Lui Isus.
-
-2. Părăsiţi turma voastră-n câmpie,
-Alergaţi umiliţi la El!
-El este singura bucurie
-Pentru prinţ şi pentru cerşetor!
-
-R: /:Cânt Osana :/ x3
-Rege al regilor.
-/: Cânt Osana :/ x3
-Lui Isus.
-
-3. În Isus veţi găsi fericire.
-Veniţi acum degrab la El!
-Pace sfântă, și multă bucurie,
-În inimă El revarsă azi.
-
-R: /:Cânt Osana :/ x3
-Rege al regilor.
-/: Cânt Osana :/ x3
-Lui Isus.`
-            },
-            {
-                id: 38,
-                title: "38. Noapte sfântă de Crăciun",
-                language: "romanian",
-                lyrics: `1. Noapte sfântă de Crăciun,
-Noapte sfântă de Crăciun,
-/: Îngerii cântă Osana,
-Noapte sfântă de Crăciun. : /
-
-2. Jos în ieslea Betleem,
-Jos în ieslea Betleem,
-/: Dumnezeu la noi venise
-Jos în ieslea Betleem. : /
-
-3. Mântuire ne-a adus,
-Mântuire ne-a adus,
-/: Glorie în veci lui isus
-Mântuire ne-a adus. : /
-
-4. Să-i aducem toţi în dar,
-Să-i aducem toţi în dar,
-/: Inima ca mulţumire
-Să-i aducem toţi în dar. : /
-
-5. Să-i cântăm cu îngerii,
-Să-i cântăm cu îngerii,
-/: Slavă, cinste şi mărire
-Să-i cântăm cu îngerii. : /`
-            },
-            {
-                id: 39,
-                title: "39. Vestea bună din cer îngerii au adus",
-                language: "romanian",
-                lyrics: `1. Vestea bună din cer îngerii au adus
-S-a născut al lumii Salvator!
-/: Jos la oameni din cer Dumnezeu a coborât
-Să mântuiască tot ce-i pierdut :/
-
-R: /:S-a născut, în Betleem
-Mesia, Aleluia, Emanuel! :/
-
-2. Îngerii preamăresc minunatul moment,
-Căci salvarea prin El a venit.
-/: Osanale în cer, pace jos pe pământ
-Între oameni plăcuţi Domnului! :/
-
-R: /:S-a născut, în Betleem
-Mesia, Aleluia, Emanuel! :/
-
-3. Iar păstorii-au adus micului prunc Isus
-Laude, daruri, cântând bucuroși.
-/: De aceea şi noi vrem prin cânt să-L slăvim
-Pe Acela ce mult îl iubim! :/
-
-R: /:S-a născut, în Betleem
-Mesia, Aleluia, Emanuel! :/`
-            },
-            {
-                id: 40,
-                title: "40. A venit Isus pe lume",
-                language: "romanian",
-                lyrics: `1. A venit Isus pe lume într-o noapte minunata
-În Betleemul din Iudeea pe cer o stea se-arata
-Magii după stea pornesc plini de bucurie
-Sa se-nchine Celui care a coborât din veșnicie
-
-R: Ne-nchinăm si noi cu ei, Pruncului Isus
-Inima i-o dăruim, ca ne-a iubit nespus
-A coborât din strălucire să ne ofere mântuire Binecuvântat să fie în veci de veci.
-
-2. Îngerii au coborât plini de bucurie
-Să aducă vestea bună celor din câmpie
-Pastorii au rămas uimiți de această minune
-Și spre iesle au pornit și ei să I se-nchine
-
-R: Ne-nchinăm si noi cu ei, Pruncului Isus
-Inima i-o dăruim, ca ne-a iubit nespus
-A coborât din strălucire să ne ofere mântuire Binecuvântat să fie în veci de veci.`
-            },
-            {
-                id: 41,
-                title: "41. Fă-I loc lui Isus în inima ta",
-                language: "romanian",
-                lyrics: `1. Astăzi e Crăciun
-Și oamenii spun
-Că e ziua Ta.
-Casa şi-o-mpodobesc,
-Toate strălucesc,
-Este ziua Ta.
-În bucuria lor,
-Uită pe Mântuitor.
-
-R: Fă-I loc lui Isus în inima ta,
-La uşă nu Îl lăsa,
-Primeşte-L în casa ta!
-Fă-I loc în inima ta
-Lui Mesia!
-
-2. Unii se veselesc
-Alţii daruri primesc,
-Este ziua Ta,
-Ei dau tot ce-au mai bun
-Celor ce-i iubesc,
-Este ziua Ta.
-În bucuria lor,
-Uită pe Mântuitor.
-
-R: Fă-I loc lui Isus în inima ta,
-La uşă nu Îl lăsa,
-Primeşte-L în casa ta!
-Fă-I loc în inima ta
-Lui Mesia!
-
-C: Tu simplu ai venit
-Și dezbrăcat de slavă.
-Te-ai îmbrăcat, smerit,
-În haina mea de om.
-
-R: Fă-I loc lui Isus în inima ta,
-La uşă nu Îl lăsa,
-Primeşte-L în casa ta!
-Fă-I loc în inima ta
-Lui Mesia!`
-            }
-        ];
-
-        const scheduleData = {
-            dec24: {
-                title: 'December 24th - After Youth Service',
-                locations: [
-                    {
-                        city: 'San Leandro',
-                        addresses: [
-                            { name: 'Tamas + Neighbors', address: '1065 Auburn Ave' }
-                        ]
-                    },
-                    {
-                        city: 'Castro Valley',
-                        addresses: [
-                            { name: 'Gheorghiesh Fam.', address: '3700 Carlwyn Ct' },
-                            { name: 'Patricia & Bocsan', address: '4724 Mira Vista Dr.' },
-                            { name: 'Bejenariu', address: '4481 Hillsborough Dr.' }
-                        ]
-                    },
-                    {
-                        city: 'Walnut Creek',
-                        addresses: [
-                            { name: 'Mircea Ilie', address: '921 Jeffrey Lane' }
-                        ]
-                    },
-                    {
-                        city: 'Concord',
-                        addresses: [
-                            { name: 'Triff', address: '3641 Wren Ave' },
-                            { name: 'Lenuța Neagoe', address: '1530 Center Ave' },
-                            { name: 'Ruthy', address: '2708 Rio Seco Dr.' }
-                        ]
-                    }
-                ]
-            },
-            dec25: {
-                title: 'December 25th - After Evening Service',
-                locations: [
-                    {
-                        city: 'San Leandro',
-                        addresses: [
-                            { name: 'Dochita', address: '1664 Maubert Ct' }
-                        ]
-                    },
-                    {
-                        city: 'Castro Valley',
-                        addresses: [
-                            { name: 'Cami Zidaru', address: '16540 Hannah Dr' },
-                            { name: 'Rusu', address: '16737 Almond Rd' },
-                        ]
-                    },
-                    {
-                        city: 'Alamo',
-                        addresses: [
-                            { name: 'Stamatoiu', address: '1621 Via Romero' }
-                        ]
-                    },
-                    {
-                        city: 'San Ramon',
-                        addresses: [
-                            { name: 'Ploscariu', address: '3007 Bernard Ave' }
-                        ]
-                    },
-                    {
-                        city: 'Livermore',
-                        addresses: [
-                            { name: 'Sfeatcu', address: '3934 California Way' }
-                        ]
-                    }
-                ]
-            }
-        };
+        // =====================================================================
+        // Songs and schedule live in data.json (same folder).
+        // Edit mode saves changes back to data.json on GitHub, so there is no
+        // database: every save is a normal commit in the Carols repo.
+        // Open the site with ?edit at the end, or hold the logo, to edit.
+        // =====================================================================
+        const REPO = 'emanuelcira/Carols';
+        const DATA_FILE = 'data.json';
+        const BRANCH = 'main';
+        const API_URL = `https://api.github.com/repos/${REPO}/contents/${DATA_FILE}`;
+
+        let data = { songs: [], schedule: [] };
 
         const $ = (id) => document.getElementById(id);
         const carolList = $('carolList');
@@ -2021,7 +988,10 @@ Lui Mesia!`
         const noResults = $('noResults');
         const modal = $('modal');
         const modalTitle = $('modalTitle');
+        const modalKey = $('modalKey');
         const modalSubtitle = $('modalSubtitle');
+        const songView = $('songView');
+        const songForm = $('songForm');
         const lyricsText = $('lyricsText');
         const lyricsBody = $('lyricsBody');
         const prevBtn = $('prevBtn');
@@ -2030,15 +1000,21 @@ Lui Mesia!`
         const scheduleTitle = $('scheduleTitle');
         const scheduleSubtitle = $('scheduleSubtitle');
         const scheduleBody = $('scheduleBody');
+        const tokenModal = $('tokenModal');
         const filterButtons = { all: $('allBtn'), romanian: $('romanianBtn'), english: $('englishBtn') };
 
         const LANG_LABEL = { romanian: '🇷🇴 Română', english: '🇺🇸 English' };
-        const CHEVRON = '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
-        const MAP_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+        const ICON = {
+            chevron: '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+            map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+            pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+            trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>'
+        };
 
         let currentFilter = 'all';
-        let visibleCarols = carols;
+        let visibleSongs = [];
         let currentIndex = -1;
+        let currentScheduleId = null;
 
         // ---------- Theme ----------
         const themeColor = $('themeColor');
@@ -2055,18 +1031,27 @@ Lui Mesia!`
 
         // ---------- Helpers ----------
         function escapeHtml(s) {
-            return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
         }
-
-        // "12. O Holy Night" -> { num: "12", name: "O Holy Night" }
-        function splitTitle(title) {
-            const m = title.match(/^(\d+)\.\s*(.*)$/);
-            return m ? { num: m[1], name: m[2] } : { num: '', name: title };
-        }
-
         // Search ignores diacritics: "ingeri" finds "Îngeri"
         function normalize(s) {
-            return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+            return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        }
+        const songNumber = (song) => data.songs.indexOf(song) + 1;
+        const store = {
+            get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+            set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+            remove(k) { try { localStorage.removeItem(k); } catch (e) {} }
+        };
+
+        let toastTimer;
+        function toast(msg, isError) {
+            const el = $('toast');
+            el.textContent = msg;
+            el.classList.toggle('error', !!isError);
+            el.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => el.classList.remove('show'), isError ? 6000 : 3500);
         }
 
         // ---------- Sheets + Android back button ----------
@@ -2087,49 +1072,286 @@ Lui Mesia!`
         }
         window.addEventListener('popstate', () => hideSheet(true));
         document.addEventListener('keydown', (e) => {
+            if (tokenModal.classList.contains('active')) { if (e.key === 'Escape') closeToken(null); return; }
             if (!openSheet) return;
             if (e.key === 'Escape') hideSheet();
-            if (openSheet === modal && e.key === 'ArrowRight') stepCarol(1);
-            if (openSheet === modal && e.key === 'ArrowLeft') stepCarol(-1);
+            const typing = /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
+            if (openSheet === modal && !typing && e.key === 'ArrowRight') stepCarol(1);
+            if (openSheet === modal && !typing && e.key === 'ArrowLeft') stepCarol(-1);
         });
         [modal, scheduleModal].forEach(el => el.addEventListener('click', (e) => { if (e.target === el) hideSheet(); }));
+        tokenModal.addEventListener('click', (e) => { if (e.target === tokenModal) closeToken(null); });
         $('closeBtn').onclick = () => hideSheet();
         $('closeScheduleBtn').onclick = () => hideSheet();
 
+        // ---------- Edit mode ----------
+        const isEditing = () => document.body.classList.contains('editing');
+        function setEditing(on) {
+            document.body.classList.toggle('editing', on);
+            if (on) store.set('carols-edit', '1'); else store.remove('carols-edit');
+            filterCarols();
+            if (openSheet === modal && currentIndex >= 0) openCarol(currentIndex);
+            if (openSheet === scheduleModal && currentScheduleId) renderSchedule();
+        }
+        $('exitEdit').onclick = () => setEditing(false);
+
+        // Hold the logo for a second to turn edit mode on
+        (function () {
+            let t;
+            const start = () => { t = setTimeout(() => { setEditing(true); toast('Edit mode on'); }, 900); };
+            const stop = () => clearTimeout(t);
+            document.querySelectorAll('.logo').forEach(img => {
+                img.addEventListener('touchstart', start, { passive: true });
+                img.addEventListener('mousedown', start);
+                ['touchend', 'touchmove', 'mouseup', 'mouseleave'].forEach(ev => img.addEventListener(ev, stop));
+                img.addEventListener('contextmenu', e => e.preventDefault());
+            });
+        })();
+
+        // ---------- GitHub token (stored only on this device) ----------
+        // The dialog opens on top of the song or schedule, so unsaved edits stay put
+        let tokenResolver = null;
+        function closeToken(value) {
+            tokenModal.classList.remove('active');
+            if (tokenResolver) { const r = tokenResolver; tokenResolver = null; r(value); }
+        }
+        function askToken() {
+            return new Promise(resolve => {
+                tokenResolver = resolve;
+                $('tokenInput').value = '';
+                tokenModal.classList.add('active');
+                setTimeout(() => $('tokenInput').focus(), 50);
+            });
+        }
+        $('tokenForm').onsubmit = (e) => {
+            e.preventDefault();
+            const v = $('tokenInput').value.trim();
+            if (!v) return;
+            store.set('carols-gh-token', v);
+            closeToken(v);
+        };
+        $('tokenCancel').onclick = () => closeToken(null);
+        $('forgetToken').onclick = () => { store.remove('carols-gh-token'); toast('GitHub token removed from this device'); };
+
+        // ---------- Reading and saving data.json on GitHub ----------
+        function decodeBase64(b64) {
+            const bin = atob(b64.replace(/\s/g, ''));
+            return new TextDecoder().decode(Uint8Array.from(bin, ch => ch.charCodeAt(0)));
+        }
+        function encodeBase64(str) {
+            const bytes = new TextEncoder().encode(str);
+            let bin = '';
+            for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+            return btoa(bin);
+        }
+        async function ghRead(token) {
+            const res = await fetch(`${API_URL}?ref=${BRANCH}&t=${Date.now()}`, {
+                headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' },
+                cache: 'no-store'
+            });
+            if (!res.ok) { const err = new Error('read ' + res.status); err.status = res.status; throw err; }
+            const json = await res.json();
+            return { data: JSON.parse(decodeBase64(json.content)), sha: json.sha };
+        }
+
+        // save(change, message): loads the newest data.json from GitHub,
+        // applies the change to it and commits it. Nothing else is touched.
+        let saving = false;
+        async function save(change, message) {
+            if (saving) return false;
+            let token = store.get('carols-gh-token') || await askToken();
+            if (!token) return false;
+            saving = true;
+            document.body.classList.add('saving');
+            try {
+                for (let attempt = 0; attempt < 3; attempt++) {
+                    let latest;
+                    try {
+                        latest = await ghRead(token);
+                    } catch (e) {
+                        if (e.status === 401 || e.status === 403 || e.status === 404) {
+                            store.remove('carols-gh-token');
+                            toast('GitHub did not accept the token. Paste a new one.', true);
+                            token = await askToken();
+                            if (!token) return false;
+                            continue;
+                        }
+                        throw e;
+                    }
+                    change(latest.data);
+                    const res = await fetch(API_URL, {
+                        method: 'PUT',
+                        headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            message,
+                            branch: BRANCH,
+                            sha: latest.sha,
+                            content: encodeBase64(JSON.stringify(latest.data, null, 2) + '\n')
+                        })
+                    });
+                    if (res.ok) {
+                        data = latest.data;
+                        fillCityList();
+                        filterCarols();
+                        toast('Saved. Live for everyone in about a minute.');
+                        return true;
+                    }
+                    if (res.status === 409) continue; // someone saved at the same moment: retry on the newer copy
+                    if (res.status === 401 || res.status === 403) {
+                        store.remove('carols-gh-token');
+                        toast('This token cannot save to the Carols repo. Paste a token with Contents write access.', true);
+                        token = await askToken();
+                        if (!token) return false;
+                        continue;
+                    }
+                    throw new Error('save ' + res.status);
+                }
+                throw new Error('too many retries');
+            } catch (e) {
+                console.error(e);
+                toast('Could not save (' + e.message + '). Check your connection and try again.', true);
+                return false;
+            } finally {
+                saving = false;
+                document.body.classList.remove('saving');
+            }
+        }
+
+        async function loadData() {
+            const token = store.get('carols-gh-token');
+            if (token && isEditing()) {
+                // Editors read straight from GitHub, so they always see the newest copy
+                try { data = (await ghRead(token)).data; return; } catch (e) { /* fall back to the public file */ }
+            }
+            const res = await fetch(DATA_FILE + '?t=' + Date.now(), { cache: 'no-store' });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            data = await res.json();
+        }
+
         // ---------- Schedule ----------
-        function openSchedule(day) {
-            const data = scheduleData[day];
-            const [date, ...rest] = data.title.split(' - ');
-            scheduleTitle.textContent = date;
-            scheduleSubtitle.textContent = rest.join(' - ');
-
-            let n = 0;
-            scheduleBody.innerHTML = data.locations.map(location => `
-                <div class="location-group">
-                    <div class="city-name">${escapeHtml(location.city)}</div>
-                    ${location.addresses.map(addr => {
-                        n++;
-                        const url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr.address + ', ' + location.city + ', CA');
-                        return `<a class="stop" href="${url}" target="_blank" rel="noopener">
-                            <span class="stop-num">${n}</span>
-                            <span class="stop-main">
-                                <span class="stop-name">${escapeHtml(addr.name)}</span>
-                                <span class="stop-address" style="display:block">${escapeHtml(addr.address)}</span>
-                            </span>
-                            <span class="stop-map">${MAP_ICON}Open in Maps</span>
-                        </a>`;
-                    }).join('')}
-                </div>`).join('');
-
+        function openSchedule(id) {
+            currentScheduleId = id;
+            renderSchedule();
             scheduleBody.scrollTop = 0;
             showSheet(scheduleModal);
         }
         $('dec24Btn').addEventListener('click', () => openSchedule('dec24'));
         $('dec25Btn').addEventListener('click', () => openSchedule('dec25'));
 
-        // ---------- Carol list ----------
+        let editingStopId = null; // id of the stop being edited, or 'new'
+
+        function renderSchedule() {
+            const day = data.schedule.find(d => d.id === currentScheduleId);
+            if (!day) { scheduleTitle.textContent = 'Schedule'; scheduleBody.innerHTML = '<p class="muted">No schedule yet.</p>'; return; }
+            scheduleTitle.textContent = day.title;
+            scheduleSubtitle.textContent = day.subtitle || '';
+            const editing = isEditing();
+
+            // group consecutive stops by city, keeping the saved order
+            const groups = [];
+            day.stops.forEach(stop => {
+                const last = groups[groups.length - 1];
+                if (last && last.city === stop.city) last.stops.push(stop);
+                else groups.push({ city: stop.city, stops: [stop] });
+            });
+
+            let n = 0;
+            let html = groups.map(g => `
+                <div class="location-group">
+                    <div class="city-name">${escapeHtml(g.city)}</div>
+                    ${g.stops.map(stop => {
+                        n++;
+                        if (editing && editingStopId === stop.id) return stopForm(stop, n);
+                        const num = `<span class="stop-num">${n}</span>`;
+                        const main = `<span class="stop-main">
+                                <span class="stop-name">${escapeHtml(stop.name)}</span>
+                                <span class="stop-address">${escapeHtml(stop.address)}</span>
+                            </span>`;
+                        if (editing) {
+                            return `<div class="stop">${num}${main}
+                                <span class="stop-tools">
+                                    <button class="tool-btn" data-edit-stop="${stop.id}" aria-label="Edit stop">${ICON.pencil}</button>
+                                    <button class="tool-btn danger" data-delete-stop="${stop.id}" aria-label="Delete stop">${ICON.trash}</button>
+                                </span></div>`;
+                        }
+                        const url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(stop.address + ', ' + stop.city + ', CA');
+                        return `<a class="stop" href="${url}" target="_blank" rel="noopener">${num}${main}
+                            <span class="stop-map">${ICON.map}Open in Maps</span></a>`;
+                    }).join('')}
+                </div>`).join('');
+
+            if (!day.stops.length) html = '<p class="muted">No stops yet.</p>';
+            if (editing) {
+                html += editingStopId === 'new'
+                    ? stopForm({ city: day.stops.length ? day.stops[day.stops.length - 1].city : '', name: '', address: '' }, day.stops.length + 1)
+                    : `<button class="add-btn" id="addStopBtn"><span>+</span> Add stop</button>`;
+            }
+            scheduleBody.innerHTML = html;
+        }
+
+        function stopForm(stop, n) {
+            return `<form class="stop-form" id="stopForm">
+                <div class="form-head"><span class="stop-num">${n}</span>${stop.id ? 'Edit stop' : 'New stop'}</div>
+                <label class="field"><span>Family / name</span><input name="name" required value="${escapeHtml(stop.name)}" autocomplete="off"></label>
+                <label class="field"><span>Address</span><input name="address" required value="${escapeHtml(stop.address)}" autocomplete="off"></label>
+                <label class="field"><span>City</span><input name="city" required value="${escapeHtml(stop.city)}" list="cityList" autocomplete="off"></label>
+                <div class="form-actions">
+                    <span class="spacer"></span>
+                    <button type="button" class="btn" data-cancel-stop>Cancel</button>
+                    <button type="submit" class="btn primary">Save</button>
+                </div>
+            </form>`;
+        }
+
+        scheduleBody.addEventListener('click', async (e) => {
+            const edit = e.target.closest('[data-edit-stop]');
+            const del = e.target.closest('[data-delete-stop]');
+            if (edit) { editingStopId = edit.dataset.editStop; renderSchedule(); focusFirst('#stopForm'); return; }
+            if (e.target.closest('#addStopBtn')) { editingStopId = 'new'; renderSchedule(); focusFirst('#stopForm'); return; }
+            if (e.target.closest('[data-cancel-stop]')) { editingStopId = null; renderSchedule(); return; }
+            if (del) {
+                const day = data.schedule.find(d => d.id === currentScheduleId);
+                const stop = day.stops.find(s => s.id === del.dataset.deleteStop);
+                if (!stop || !confirm(`Delete "${stop.name}, ${stop.address}" from ${day.title}?`)) return;
+                const ok = await save(d => {
+                    const dd = d.schedule.find(x => x.id === currentScheduleId);
+                    dd.stops = dd.stops.filter(s => s.id !== stop.id);
+                }, `Remove ${stop.name} from ${day.title}`);
+                if (ok) renderSchedule();
+            }
+        });
+
+        scheduleBody.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const f = new FormData(e.target);
+            const values = { name: f.get('name').trim(), address: f.get('address').trim(), city: f.get('city').trim() };
+            const day = data.schedule.find(d => d.id === currentScheduleId);
+            const isNew = editingStopId === 'new';
+            const stopId = isNew ? 's' + Date.now().toString(36) : editingStopId;
+            const ok = await save(d => {
+                const dd = d.schedule.find(x => x.id === currentScheduleId);
+                if (isNew) {
+                    // put it after the last stop in the same city, otherwise at the end
+                    let at = -1;
+                    dd.stops.forEach((s, i) => { if (normalize(s.city) === normalize(values.city)) at = i; });
+                    dd.stops.splice(at >= 0 ? at + 1 : dd.stops.length, 0, { id: stopId, ...values });
+                } else {
+                    const s = dd.stops.find(x => x.id === stopId);
+                    if (s) Object.assign(s, values);
+                }
+            }, `${isNew ? 'Add' : 'Update'} ${values.name} on ${day.title}`);
+            if (ok) { editingStopId = null; renderSchedule(); }
+        });
+
+        function focusFirst(sel) { setTimeout(() => { const el = document.querySelector(sel + ' input, ' + sel + ' textarea'); if (el) el.focus(); }, 30); }
+
+        // ---------- Song list ----------
+        function keyBadge(key) {
+            return key ? `<span class="key-badge">${escapeHtml(key)}</span>` : '';
+        }
+
         function renderCarols(list) {
-            visibleCarols = list;
+            visibleSongs = list;
             carolList.innerHTML = '';
 
             if (list.length === 0) {
@@ -2144,17 +1366,16 @@ Lui Mesia!`
             resultCount.textContent = list.length + (list.length === 1 ? ' colindă / carol' : ' colinde / carols');
 
             const frag = document.createDocumentFragment();
-            list.forEach((carol, i) => {
-                const t = splitTitle(carol.title);
+            list.forEach((song, i) => {
                 const item = document.createElement('button');
                 item.className = 'carol-item';
                 item.innerHTML = `
-                    <span class="carol-num">${escapeHtml(t.num)}</span>
+                    <span class="carol-num">${songNumber(song)}</span>
                     <span class="carol-main">
-                        <span class="carol-title" style="display:block">${escapeHtml(t.name)}</span>
-                        <span class="carol-subtitle" style="display:block">${LANG_LABEL[carol.language] || ''}</span>
+                        <span class="carol-title">${escapeHtml(song.title)}${keyBadge(song.key)}</span>
+                        <span class="carol-subtitle">${LANG_LABEL[song.language] || ''}</span>
                     </span>
-                    ${CHEVRON}`;
+                    ${ICON.chevron}`;
                 item.onclick = () => openCarol(i);
                 frag.appendChild(item);
             });
@@ -2165,7 +1386,7 @@ Lui Mesia!`
             const term = normalize(searchBox.value.trim());
             clearSearch.classList.toggle('visible', searchBox.value.length > 0);
 
-            let filtered = carols;
+            let filtered = data.songs;
             if (currentFilter !== 'all') filtered = filtered.filter(c => c.language === currentFilter);
             if (term) filtered = filtered.filter(c => normalize(c.title).includes(term) || normalize(c.lyrics).includes(term));
             renderCarols(filtered);
@@ -2181,42 +1402,139 @@ Lui Mesia!`
         searchBox.addEventListener('input', filterCarols);
         clearSearch.addEventListener('click', () => { searchBox.value = ''; filterCarols(); searchBox.focus(); });
 
-        // ---------- Lyrics ----------
+        // ---------- Song view ----------
+        let editingSongId = null; // song id, 'new', or null
+
         function openCarol(index) {
-            const carol = visibleCarols[index];
-            if (!carol) return;
+            const song = visibleSongs[index];
+            if (!song) return;
             currentIndex = index;
-            const t = splitTitle(carol.title);
-            modalTitle.textContent = t.name;
-            modalSubtitle.textContent = (t.num ? '#' + t.num + '  ·  ' : '') + (LANG_LABEL[carol.language] || '');
-            lyricsText.innerHTML = carol.lyrics;
+            editingSongId = null;
+            modalTitle.textContent = song.title;
+            modalKey.textContent = song.key || (isEditing() ? '+ Key' : '');
+            modalKey.hidden = !song.key && !isEditing();
+            modalKey.classList.toggle('empty', !song.key);
+            modalSubtitle.textContent = '#' + songNumber(song) + '  ·  ' + (LANG_LABEL[song.language] || '');
+            lyricsText.textContent = song.lyrics;
+            songView.hidden = false;
+            songForm.hidden = true;
+            $('editSongBtn').hidden = false;
             prevBtn.disabled = index <= 0;
-            nextBtn.disabled = index >= visibleCarols.length - 1;
+            nextBtn.disabled = index >= visibleSongs.length - 1;
             lyricsBody.scrollTop = 0;
             if (openSheet !== modal) showSheet(modal);
         }
-        function stepCarol(dir) { openCarol(currentIndex + dir); }
+        function stepCarol(dir) { if (!editingSongId) openCarol(currentIndex + dir); }
         prevBtn.onclick = () => stepCarol(-1);
         nextBtn.onclick = () => stepCarol(1);
 
-        // Text size for reading outside in the dark
+        // ---------- Song editing ----------
+        function startSongEdit(song, focusField) {
+            editingSongId = song ? song.id : 'new';
+            const f = songForm.elements;
+            f.title.value = song ? song.title : '';
+            f.key.value = song ? song.key || '' : '';
+            f.language.value = song ? song.language : 'romanian';
+            f.lyrics.value = song ? song.lyrics : '';
+            $('deleteSongBtn').hidden = !song;
+            $('songFormHeading').textContent = song ? 'Edit song' : 'New song';
+            if (!song) {
+                modalTitle.textContent = 'New song';
+                modalSubtitle.textContent = '#' + (data.songs.length + 1);
+                modalKey.hidden = true;
+            }
+            songView.hidden = true;
+            songForm.hidden = false;
+            $('editSongBtn').hidden = true;
+            lyricsBody.scrollTop = 0;
+            if (openSheet !== modal) showSheet(modal);
+            autosize(f.lyrics);
+            setTimeout(() => (focusField === 'key' ? f.key : f.title).focus(), 50);
+        }
+
+        function autosize(t) { t.style.height = 'auto'; t.style.height = Math.max(240, t.scrollHeight + 4) + 'px'; }
+        songForm.elements.lyrics.addEventListener('input', e => autosize(e.target));
+
+        $('editSongBtn').onclick = () => startSongEdit(visibleSongs[currentIndex]);
+        modalKey.onclick = () => { if (isEditing()) startSongEdit(visibleSongs[currentIndex], 'key'); };
+        $('addSongBtn').onclick = () => { currentIndex = -1; startSongEdit(null); };
+        $('cancelSongBtn').onclick = () => {
+            if (editingSongId === 'new' || currentIndex < 0) { editingSongId = null; hideSheet(); }
+            else openCarol(currentIndex);
+        };
+
+        songForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const f = songForm.elements;
+            const values = {
+                title: f.title.value.trim(),
+                key: f.key.value.trim(),
+                language: f.language.value,
+                lyrics: f.lyrics.value.replace(/\s+$/, '')
+            };
+            if (!values.title) { f.title.focus(); return; }
+            const isNew = editingSongId === 'new';
+            const id = isNew ? Math.max(0, ...data.songs.map(s => s.id)) + 1 : editingSongId;
+            const ok = await save(d => {
+                if (isNew) {
+                    d.songs.push({ id: Math.max(id, 0, ...d.songs.map(s => s.id + 1)), ...values });
+                } else {
+                    const s = d.songs.find(x => x.id === id);
+                    if (s) Object.assign(s, values);
+                }
+            }, `${isNew ? 'Add song' : 'Update song'}: ${values.title}`);
+            if (!ok) return;
+            const saved = isNew ? data.songs[data.songs.length - 1] : data.songs.find(s => s.id === id);
+            const idx = visibleSongs.indexOf(saved);
+            if (idx >= 0) openCarol(idx);
+            else { visibleSongs = data.songs; openCarol(data.songs.indexOf(saved)); }
+        };
+
+        $('deleteSongBtn').onclick = async () => {
+            const song = data.songs.find(s => s.id === editingSongId);
+            if (!song || !confirm(`Delete the song "${song.title}"? This removes it for everyone.`)) return;
+            const ok = await save(d => { d.songs = d.songs.filter(s => s.id !== song.id); }, `Delete song: ${song.title}`);
+            if (ok) { editingSongId = null; hideSheet(); }
+        };
+
+        // City suggestions for the stop form
+        function fillCityList() {
+            const cities = new Set();
+            data.schedule.forEach(d => d.stops.forEach(s => cities.add(s.city)));
+            $('cityList').innerHTML = [...cities].map(c => `<option value="${escapeHtml(c)}">`).join('');
+        }
+
+        // ---------- Text size ----------
         // One shared text size: scales the page and the lyrics together
         const SIZES = [16, 18, 20, 23, 26, 30];
         const ZOOMS = [0.9, 0.95, 1, 1.08, 1.16, 1.25];
         let sizeIndex = 2;
-        try { const s = parseInt(localStorage.getItem('carols-size'), 10); if (SIZES[s]) sizeIndex = s; } catch (e) {}
+        { const s = parseInt(store.get('carols-size'), 10); if (SIZES[s]) sizeIndex = s; }
         function applySize() {
             document.documentElement.style.setProperty('--lyrics-size', SIZES[sizeIndex] + 'px');
             document.documentElement.style.setProperty('--page-zoom', ZOOMS[sizeIndex]);
             document.querySelectorAll('.js-smaller').forEach(b => b.disabled = sizeIndex === 0);
             document.querySelectorAll('.js-larger').forEach(b => b.disabled = sizeIndex === SIZES.length - 1);
-            try { localStorage.setItem('carols-size', sizeIndex); } catch (e) {}
+            store.set('carols-size', sizeIndex);
         }
         document.querySelectorAll('.js-smaller').forEach(b => b.onclick = () => { if (sizeIndex > 0) { sizeIndex--; applySize(); } });
         document.querySelectorAll('.js-larger').forEach(b => b.onclick = () => { if (sizeIndex < SIZES.length - 1) { sizeIndex++; applySize(); } });
         applySize();
 
-        renderCarols(carols);
+        // ---------- Start ----------
+        if (new URLSearchParams(location.search).has('edit') || store.get('carols-edit')) {
+            document.body.classList.add('editing');
+            store.set('carols-edit', '1');
+        }
+        resultCount.textContent = 'Loading…';
+        loadData()
+            .then(() => { fillCityList(); filterCarols(); })
+            .catch(err => {
+                console.error(err);
+                resultCount.textContent = '';
+                noResults.textContent = 'Could not load the songs. Check your connection and refresh.';
+                noResults.style.display = 'block';
+            });
     </script>
 </body>
 </html>
