@@ -785,6 +785,62 @@
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation: none !important; transition: none !important; }
         }
+
+        /* ----- Requests (stars) ----- */
+        .list-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 4px 8px; }
+        .list-head .result-count { margin: 0; }
+        .sort-toggle { display: flex; gap: 2px; padding: 3px; background: var(--surface-2); border-radius: 10px; flex-shrink: 0; }
+        .sort-toggle button {
+            border: none; background: transparent; color: var(--text-2);
+            font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 8px; cursor: pointer; white-space: nowrap;
+        }
+        .sort-toggle button.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1); }
+        :root[data-theme="dark"] .sort-toggle button.active { background: var(--border); box-shadow: none; }
+
+        .row-star {
+            display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+            min-width: 44px; height: 36px; padding: 0 8px; margin: -6px -6px -6px 0;
+            justify-content: flex-end;
+            border: none; background: transparent; border-radius: 10px;
+            color: var(--text-3); font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums;
+            cursor: pointer;
+        }
+        .row-star svg, .star-pill svg, .sung-pill svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .row-star:hover { background: var(--surface); }
+        .row-star.on, .star-pill.on { color: var(--accent); }
+        .row-star.on svg, .star-pill.on svg { fill: currentColor; }
+        .carol-item.sung .carol-main, .carol-item.sung .carol-num { opacity: 0.5; }
+        .sung-tag {
+            display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
+            color: var(--accent); background: var(--accent-soft); border-radius: 6px; padding: 1px 6px; margin-left: 6px;
+        }
+
+        .song-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+        .pill {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 7px 12px; border-radius: 999px;
+            border: 1px solid var(--border); background: var(--surface);
+            color: var(--text-2); font-size: 14px; font-weight: 600; cursor: pointer;
+        }
+        .pill.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+        .pill b { font-variant-numeric: tabular-nums; }
+
+        /* ----- Suggested carols waiting for approval ----- */
+        .pending {
+            background: var(--surface); border: 1px solid var(--accent); border-radius: var(--radius);
+            margin-bottom: 14px; overflow: hidden;
+        }
+        .pending-head { padding: 12px 16px; font-size: 14px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+        .pending-head .count { background: var(--accent); color: var(--accent-text); border-radius: 999px; font-size: 12px; padding: 1px 8px; }
+        .pending-item {
+            display: block; width: 100%; text-align: left; border: none; border-top: 1px solid var(--border);
+            background: transparent; padding: 12px 16px; cursor: pointer; color: var(--text);
+        }
+        .pending-item:hover { background: var(--surface-2); }
+        .pending-item strong { display: block; font-size: 15px; }
+        .pending-item span { display: block; font-size: 13px; color: var(--text-2); margin-top: 1px; }
+        .pending-empty { padding: 0 16px 12px; font-size: 13px; color: var(--text-3); }
+        .pending .btn { margin: 0 16px 14px; }
     </style>
 </head>
 <body>
@@ -839,9 +895,16 @@
             <button class="filter-btn" id="englishBtn">🇺🇸 English</button>
         </div>
 
-        <p class="result-count" id="resultCount"></p>
+        <div class="pending edit-only" id="pendingBox" hidden></div>
+        <div class="list-head">
+            <p class="result-count" id="resultCount"></p>
+            <div class="sort-toggle" role="group" aria-label="Sort">
+                <button class="active" id="sortAz">A–Z</button>
+                <button id="sortTop">Most requested</button>
+            </div>
+        </div>
         <div class="carol-list" id="carolList"></div>
-        <button class="add-btn edit-only" id="addSongBtn"><span>+</span> Add song</button>
+        <button class="add-btn" id="addSongBtn"><span>+</span> Add a carol</button>
         <div class="no-results" id="noResults" style="display: none;">
             Nu s-au găsit colinde / No carols found
         </div>
@@ -858,6 +921,10 @@
                         <button class="key-badge big" id="modalKey" aria-label="Key"></button>
                     </div>
                     <p class="sheet-subtitle" id="modalSubtitle"></p>
+                    <div class="song-actions" id="songActions">
+                        <button class="pill star-pill" id="starBtn" aria-pressed="false"></button>
+                        <button class="pill sung-pill edit-only" id="sungBtn" aria-pressed="false"></button>
+                    </div>
                 </div>
                 <div class="sheet-actions">
                     <button class="icon-btn edit-only" id="editSongBtn" aria-label="Edit song"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
@@ -890,11 +957,12 @@
                     </div>
                     <label class="field"><span>Lyrics</span><textarea name="lyrics" spellcheck="true"></textarea></label>
                     <p class="hint">Leave an empty line between verses. Repeat a line by typing it again.</p>
+                    <p class="hint" id="suggestHint" hidden>Thank you! The worship leader checks new carols before they show up for everyone.</p>
                     <div class="form-actions">
                         <button type="button" class="btn danger-text" id="deleteSongBtn">Delete song</button>
                         <span class="spacer"></span>
                         <button type="button" class="btn" id="cancelSongBtn">Cancel</button>
-                        <button type="submit" class="btn primary">Save</button>
+                        <button type="submit" class="btn primary" id="songSubmitBtn">Save</button>
                     </div>
                 </form>
                 <div id="songView">
@@ -978,6 +1046,9 @@
         const BRANCH = 'main';
         const API_URL = `https://api.github.com/repos/${REPO}/contents/${DATA_FILE}`;
 
+        // Stars and suggested carols live in a small Cloudflare Worker (see worker/)
+        const API = 'https://rbcsf-carols.elevateandcode.workers.dev';
+
         let data = { songs: [], schedule: [] };
 
         const $ = (id) => document.getElementById(id);
@@ -1008,6 +1079,8 @@
             chevron: '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
             map: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
             pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',
+            star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3l-5.6 2.9 1.1-6.2L3 9.6l6.2-.9z"/></svg>',
+            check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
             trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>'
         };
 
@@ -1090,6 +1163,7 @@
             document.body.classList.toggle('editing', on);
             if (on) store.set('carols-edit', '1'); else store.remove('carols-edit');
             filterCarols();
+            if (on) loadPending(); else renderPending();
             if (openSheet === modal && currentIndex >= 0) openCarol(currentIndex);
             if (openSheet === scheduleModal && currentScheduleId) renderSchedule();
         }
@@ -1366,17 +1440,24 @@
             resultCount.textContent = list.length + (list.length === 1 ? ' colindă / carol' : ' colinde / carols');
 
             const frag = document.createDocumentFragment();
+            const editing = isEditing();
             list.forEach((song, i) => {
-                const item = document.createElement('button');
-                item.className = 'carol-item';
+                const item = document.createElement('div');
+                const sung = editing && isSung(song.id);
+                item.className = 'carol-item' + (sung ? ' sung' : '');
+                item.setAttribute('role', 'button');
+                item.tabIndex = 0;
                 item.innerHTML = `
                     <span class="carol-num">${songNumber(song)}</span>
                     <span class="carol-main">
                         <span class="carol-title">${escapeHtml(song.title)}${keyBadge(song.key)}</span>
-                        <span class="carol-subtitle">${LANG_LABEL[song.language] || ''}</span>
+                        <span class="carol-subtitle">${LANG_LABEL[song.language] || ''}${sung ? '<span class="sung-tag">Sung</span>' : ''}</span>
                     </span>
-                    ${ICON.chevron}`;
-                item.onclick = () => openCarol(i);
+                    <button class="row-star" data-star="${song.id}" aria-label="Request this carol"></button>`;
+                paintStar(item.querySelector('.row-star'), song.id);
+                item.onclick = (e) => { if (!e.target.closest('.row-star')) openCarol(i); };
+                item.onkeydown = (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target === item) { e.preventDefault(); openCarol(i); } };
+                item.querySelector('.row-star').onclick = () => toggleStar(song.id);
                 frag.appendChild(item);
             });
             carolList.appendChild(frag);
@@ -1389,6 +1470,14 @@
             let filtered = data.songs;
             if (currentFilter !== 'all') filtered = filtered.filter(c => c.language === currentFilter);
             if (term) filtered = filtered.filter(c => normalize(c.title).includes(term) || normalize(c.lyrics).includes(term));
+            if (sortMode === 'top') {
+                const order = new Map(data.songs.map((s, i) => [s, i]));
+                const editing = isEditing();
+                filtered = [...filtered].sort((a, b) =>
+                    (editing ? (isSung(a.id) - isSung(b.id)) : 0) ||
+                    (starCount(b.id) - starCount(a.id)) ||
+                    (order.get(a) - order.get(b)));
+            }
             renderCarols(filtered);
         }
 
@@ -1416,6 +1505,8 @@
             modalKey.classList.toggle('empty', !song.key);
             modalSubtitle.textContent = '#' + songNumber(song) + '  ·  ' + (LANG_LABEL[song.language] || '');
             lyricsText.textContent = song.lyrics;
+            $('songActions').hidden = false;
+            paintSongActions(song.id);
             songView.hidden = false;
             songForm.hidden = true;
             $('editSongBtn').hidden = false;
@@ -1429,18 +1520,30 @@
         nextBtn.onclick = () => stepCarol(1);
 
         // ---------- Song editing ----------
-        function startSongEdit(song, focusField) {
-            editingSongId = song ? song.id : 'new';
+        // Form modes: editing a song, a new song (editor), a public suggestion,
+        // or reviewing a suggestion that is waiting for approval
+        let formMode = 'edit';
+        let reviewing = null;
+
+        function startSongEdit(song, focusField, mode) {
+            formMode = mode || (song ? 'edit' : 'new');
+            editingSongId = formMode === 'edit' ? song.id : formMode;
+            reviewing = formMode === 'review' ? song : null;
             const f = songForm.elements;
             f.title.value = song ? song.title : '';
             f.key.value = song ? song.key || '' : '';
-            f.language.value = song ? song.language : 'romanian';
+            f.language.value = song ? song.language : (currentFilter === 'english' ? 'english' : 'romanian');
             f.lyrics.value = song ? song.lyrics : '';
-            $('deleteSongBtn').hidden = !song;
-            $('songFormHeading').textContent = song ? 'Edit song' : 'New song';
-            if (!song) {
-                modalTitle.textContent = 'New song';
-                modalSubtitle.textContent = '#' + (data.songs.length + 1);
+            const heading = { edit: 'Edit song', new: 'New song', suggest: 'Add a carol', review: 'Suggested carol' }[formMode];
+            $('songFormHeading').textContent = heading;
+            $('deleteSongBtn').hidden = formMode === 'new' || formMode === 'suggest';
+            $('deleteSongBtn').textContent = formMode === 'review' ? 'Reject' : 'Delete song';
+            $('songSubmitBtn').textContent = { edit: 'Save', new: 'Save', suggest: 'Send', review: 'Approve' }[formMode];
+            $('suggestHint').hidden = formMode !== 'suggest';
+            $('songActions').hidden = true;
+            if (formMode !== 'edit') {
+                modalTitle.textContent = heading;
+                modalSubtitle.textContent = formMode === 'suggest' ? 'Română or English' : '#' + (data.songs.length + 1);
                 modalKey.hidden = true;
             }
             songView.hidden = true;
@@ -1457,9 +1560,9 @@
 
         $('editSongBtn').onclick = () => startSongEdit(visibleSongs[currentIndex]);
         modalKey.onclick = () => { if (isEditing()) startSongEdit(visibleSongs[currentIndex], 'key'); };
-        $('addSongBtn').onclick = () => { currentIndex = -1; startSongEdit(null); };
+        $('addSongBtn').onclick = () => { currentIndex = -1; startSongEdit(null, null, isEditing() ? 'new' : 'suggest'); };
         $('cancelSongBtn').onclick = () => {
-            if (editingSongId === 'new' || currentIndex < 0) { editingSongId = null; hideSheet(); }
+            if (formMode !== 'edit' || currentIndex < 0) { editingSongId = null; reviewing = null; hideSheet(); }
             else openCarol(currentIndex);
         };
 
@@ -1473,7 +1576,9 @@
                 lyrics: f.lyrics.value.replace(/\s+$/, '')
             };
             if (!values.title) { f.title.focus(); return; }
-            const isNew = editingSongId === 'new';
+            if (formMode === 'suggest') return sendSuggestion(values);
+            const fromReview = formMode === 'review' ? reviewing : null;
+            const isNew = editingSongId === 'new' || !!fromReview;
             const id = isNew ? Math.max(0, ...data.songs.map(s => s.id)) + 1 : editingSongId;
             const ok = await save(d => {
                 if (isNew) {
@@ -1482,8 +1587,9 @@
                     const s = d.songs.find(x => x.id === id);
                     if (s) Object.assign(s, values);
                 }
-            }, `${isNew ? 'Add song' : 'Update song'}: ${values.title}`);
+            }, `${isNew ? 'Add song' : 'Update song'}: ${values.title}${fromReview ? ' (suggested)' : ''}`);
             if (!ok) return;
+            if (fromReview) removeSubmission(fromReview.submissionId);
             const saved = isNew ? data.songs[data.songs.length - 1] : data.songs.find(s => s.id === id);
             const idx = visibleSongs.indexOf(saved);
             if (idx >= 0) openCarol(idx);
@@ -1491,11 +1597,219 @@
         };
 
         $('deleteSongBtn').onclick = async () => {
+            if (formMode === 'review') {
+                if (!reviewing || !confirm(`Reject "${reviewing.title}"? It will not be added.`)) return;
+                if (await removeSubmission(reviewing.submissionId)) { toast('Suggestion removed'); editingSongId = null; reviewing = null; hideSheet(); }
+                return;
+            }
             const song = data.songs.find(s => s.id === editingSongId);
             if (!song || !confirm(`Delete the song "${song.title}"? This removes it for everyone.`)) return;
             const ok = await save(d => { d.songs = d.songs.filter(s => s.id !== song.id); }, `Delete song: ${song.title}`);
-            if (ok) { editingSongId = null; hideSheet(); }
+            if (ok) {
+                editingSongId = null;
+                hideSheet();
+                // Clear its stars so a future song with the same number starts at zero
+                api('/requests/' + song.id, { method: 'DELETE', auth: true }).catch(() => {});
+                delete starCounts[song.id];
+            }
         };
+
+        // =====================================================================
+        // Requests (stars). One star per phone per song. The worship leader
+        // sorts by "Most requested" and marks songs as Sung (Sung is kept only
+        // on the leader's phone and clears itself after 12 hours).
+        // =====================================================================
+        async function api(path, opts = {}) {
+            const headers = { 'Content-Type': 'application/json' };
+            if (opts.auth) {
+                const token = store.get('carols-gh-token') || await askToken();
+                if (!token) throw Object.assign(new Error('No token'), { status: 0 });
+                headers.Authorization = 'Bearer ' + token;
+            }
+            const res = await fetch(API + path, {
+                method: opts.method || 'GET',
+                headers,
+                body: opts.body ? JSON.stringify(opts.body) : undefined
+            });
+            const body = await res.json().catch(() => ({}));
+            if (!res.ok) throw Object.assign(new Error(body.error || ('HTTP ' + res.status)), { status: res.status });
+            return body;
+        }
+
+        const deviceId = (() => {
+            let id = store.get('carols-device');
+            if (!id || !/^[a-z0-9-]{8,64}$/i.test(id)) {
+                id = (crypto.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 12)));
+                store.set('carols-device', id);
+            }
+            return id;
+        })();
+        const readJsonStore = (k, fallback) => { try { return JSON.parse(store.get(k)) || fallback; } catch (e) { return fallback; } };
+
+        let starCounts = {};
+        const myStars = new Set(readJsonStore('carols-stars', []));
+        const starCount = (id) => starCounts[id] || 0;
+        let sortMode = 'az';
+
+        const SUNG_HOURS = 12;
+        let sung = readJsonStore('carols-sung', {});
+        for (const id in sung) if (Date.now() - sung[id] > SUNG_HOURS * 3600_000) delete sung[id];
+        store.set('carols-sung', JSON.stringify(sung));
+        const isSung = (id) => !!sung[id] && Date.now() - sung[id] < SUNG_HOURS * 3600_000;
+
+        function paintStar(btn, id) {
+            const on = myStars.has(id);
+            const n = starCount(id);
+            btn.classList.toggle('on', on);
+            btn.setAttribute('aria-pressed', on);
+            btn.innerHTML = (n ? `<span>${n}</span>` : '') + ICON.star;
+        }
+        function paintSongActions(id) {
+            const on = myStars.has(id);
+            const n = starCount(id);
+            const star = $('starBtn');
+            star.classList.toggle('on', on);
+            star.setAttribute('aria-pressed', on);
+            star.innerHTML = `${ICON.star}<span>${on ? 'Requested' : 'Request'}</span>${n ? `<b>${n}</b>` : ''}`;
+            const s = $('sungBtn');
+            s.classList.toggle('on', isSung(id));
+            s.setAttribute('aria-pressed', isSung(id));
+            s.innerHTML = `${ICON.check}<span>${isSung(id) ? 'Sung tonight' : 'Mark as sung'}</span>`;
+        }
+        function repaintStars(id) {
+            document.querySelectorAll(`.row-star[data-star="${id}"]`).forEach(b => paintStar(b, id));
+            const open = visibleSongs[currentIndex];
+            if (open && open.id === id && openSheet === modal && !editingSongId) paintSongActions(id);
+        }
+
+        async function toggleStar(id) {
+            const on = !myStars.has(id);
+            const before = starCount(id);
+            on ? myStars.add(id) : myStars.delete(id);
+            starCounts[id] = Math.max(0, before + (on ? 1 : -1));
+            store.set('carols-stars', JSON.stringify([...myStars]));
+            repaintStars(id);
+            try {
+                const res = await api('/requests', { method: 'POST', body: { song: id, device: deviceId, on } });
+                starCounts[id] = res.count;
+            } catch (e) {
+                on ? myStars.delete(id) : myStars.add(id);
+                starCounts[id] = before;
+                store.set('carols-stars', JSON.stringify([...myStars]));
+                toast(e.status === 429 ? e.message : 'Could not send your request. Check your connection.', true);
+            }
+            repaintStars(id);
+        }
+        $('starBtn').onclick = () => { const s = visibleSongs[currentIndex]; if (s) toggleStar(s.id); };
+        $('sungBtn').onclick = () => {
+            const s = visibleSongs[currentIndex];
+            if (!s) return;
+            if (isSung(s.id)) delete sung[s.id]; else sung[s.id] = Date.now();
+            store.set('carols-sung', JSON.stringify(sung));
+            paintSongActions(s.id);
+            const row = document.querySelector(`.row-star[data-star="${s.id}"]`);
+            if (row) {
+                const item = row.closest('.carol-item');
+                item.classList.toggle('sung', isSung(s.id));
+                const sub = item.querySelector('.carol-subtitle');
+                const tag = sub.querySelector('.sung-tag');
+                if (isSung(s.id) && !tag) sub.insertAdjacentHTML('beforeend', '<span class="sung-tag">Sung</span>');
+                if (!isSung(s.id) && tag) tag.remove();
+            }
+        };
+
+        async function loadStars() {
+            try {
+                const res = await api('/requests');
+                starCounts = res.counts || {};
+                // Keep the list still while someone is scrolling: only repaint the numbers,
+                // except in "Most requested" where the order itself is the point
+                if (sortMode === 'top' && !openSheet) filterCarols();
+                else data.songs.forEach(s => repaintStars(s.id));
+            } catch (e) { /* offline: stars just stay as they were */ }
+        }
+        setInterval(() => { if (document.visibilityState === 'visible') loadStars(); }, 30000);
+        document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') loadStars(); });
+
+        function setSort(mode) {
+            sortMode = mode;
+            $('sortAz').classList.toggle('active', mode === 'az');
+            $('sortTop').classList.toggle('active', mode === 'top');
+            filterCarols();
+        }
+        $('sortAz').onclick = () => setSort('az');
+        $('sortTop').onclick = () => { setSort('top'); loadStars(); };
+
+        // =====================================================================
+        // Suggested carols: anyone can send one, editors approve or reject
+        // =====================================================================
+        let sending = false;
+        async function sendSuggestion(values) {
+            if (sending) return;
+            const dupe = data.songs.find(s => normalize(s.title) === normalize(values.title));
+            if (dupe && !confirm(`"${dupe.title}" is already in the list. Send it anyway?`)) return;
+            if (values.lyrics.trim().length < 10) { toast('Add the lyrics too', true); songForm.elements.lyrics.focus(); return; }
+            sending = true;
+            document.body.classList.add('saving');
+            try {
+                await api('/submissions', { method: 'POST', body: values });
+                editingSongId = null;
+                hideSheet();
+                toast('Thank you! Your carol was sent for review.');
+            } catch (e) {
+                toast(e.status ? e.message : 'Could not send. Check your connection and try again.', true);
+            } finally {
+                sending = false;
+                document.body.classList.remove('saving');
+            }
+        }
+
+        let pending = null; // null = not loaded yet
+        async function loadPending(ask) {
+            if (!isEditing()) return;
+            if (!store.get('carols-gh-token') && !ask) { pending = null; renderPending(); return; }
+            try {
+                const res = await api('/submissions', { auth: true });
+                pending = res.submissions.map(s => ({ submissionId: s.id, title: s.title, key: s.key, language: s.language, lyrics: s.lyrics, created: s.created_at }));
+            } catch (e) {
+                if (e.status === 401) toast('This GitHub token cannot see suggestions. It needs write access to the Carols repo.', true);
+                else if (e.status !== 0) toast('Could not load suggested carols', true);
+                pending = null;
+            }
+            renderPending();
+        }
+        function renderPending() {
+            const box = $('pendingBox');
+            if (!isEditing()) { box.hidden = true; return; }
+            if (pending === null) {
+                box.hidden = false;
+                box.innerHTML = `<div class="pending-head">Suggested carols</div>
+                    <button class="btn" id="showPendingBtn">Show suggested carols</button>`;
+                $('showPendingBtn').onclick = () => loadPending(true);
+                return;
+            }
+            box.hidden = pending.length === 0;
+            box.innerHTML = `<div class="pending-head">Waiting for approval <span class="count">${pending.length}</span></div>` +
+                pending.map((p, i) => `<button class="pending-item" data-i="${i}">
+                    <strong>${escapeHtml(p.title)}${keyBadge(p.key)}</strong>
+                    <span>${LANG_LABEL[p.language] || ''} · sent ${new Date(p.created).toLocaleDateString()}</span>
+                </button>`).join('');
+            box.querySelectorAll('.pending-item').forEach(b => b.onclick = () => {
+                currentIndex = -1;
+                startSongEdit(pending[+b.dataset.i], null, 'review');
+            });
+        }
+        async function removeSubmission(id) {
+            try {
+                await api('/submissions/' + id, { method: 'DELETE', auth: true });
+                if (pending) pending = pending.filter(p => p.submissionId !== id);
+                renderPending();
+                return true;
+            } catch (e) {
+                toast('Could not remove the suggestion (' + e.message + ')', true);
+                return false;
+            }
+        }
 
         // City suggestions for the stop form
         function fillCityList() {
@@ -1528,7 +1842,7 @@
         }
         resultCount.textContent = 'Loading…';
         loadData()
-            .then(() => { fillCityList(); filterCarols(); })
+            .then(() => { fillCityList(); filterCarols(); loadStars(); loadPending(); })
             .catch(err => {
                 console.error(err);
                 resultCount.textContent = '';

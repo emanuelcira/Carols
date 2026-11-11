@@ -1,0 +1,17 @@
+{
+  // Small API for the carols site: song requests (stars) and carols suggested
+  // by the public, which wait for approval. Deploy: npx wrangler deploy
+  "name": "rbcsf-carols",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-01",
+  "account_id": "9b41c00b1c9623392fa493722408a0f6",
+  "workers_dev": true,
+  "preview_urls": false,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rbcsf-carols",
+      "database_id": "4f7bdb11-008e-4845-8885-91cc68fe5202"
+    }
+  ]
+}
