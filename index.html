@@ -834,22 +834,6 @@
         .pill.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
         .pill b { font-variant-numeric: tabular-nums; }
 
-        /* ----- Suggested carols waiting for approval ----- */
-        .pending {
-            background: var(--surface); border: 1px solid var(--accent); border-radius: var(--radius);
-            margin-bottom: 14px; overflow: hidden;
-        }
-        .pending-head { padding: 12px 16px; font-size: 14px; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 8px; }
-        .pending-head .count { background: var(--accent); color: var(--accent-text); border-radius: 999px; font-size: 12px; padding: 1px 8px; }
-        .pending-item {
-            display: block; width: 100%; text-align: left; border: none; border-top: 1px solid var(--border);
-            background: transparent; padding: 12px 16px; cursor: pointer; color: var(--text);
-        }
-        .pending-item:hover { background: var(--surface-2); }
-        .pending-item strong { display: block; font-size: 15px; }
-        .pending-item span { display: block; font-size: 13px; color: var(--text-2); margin-top: 1px; }
-        .pending-empty { padding: 0 16px 12px; font-size: 13px; color: var(--text-3); }
-        .pending .btn { margin: 0 16px 14px; }
     </style>
 </head>
 <body>
@@ -904,7 +888,6 @@
             <button class="filter-btn" id="englishBtn">🇺🇸 English</button>
         </div>
 
-        <div class="pending edit-only" id="pendingBox" hidden></div>
         <div class="list-head">
             <div class="sort-toggle" role="group" aria-label="Sort">
                 <button class="active" id="sortAz">A–Z</button>
@@ -968,7 +951,7 @@
                     </div>
                     <label class="field"><span>Lyrics</span><textarea name="lyrics" spellcheck="true"></textarea></label>
                     <p class="hint">Leave an empty line between verses. Repeat a line by typing it again.</p>
-                    <p class="hint" id="suggestHint" hidden>Thank you! The worship leader checks new carols before they show up for everyone.</p>
+                    <p class="hint" id="suggestHint" hidden>It shows up for everyone right away, so please double-check the words.</p>
                     <div class="form-actions">
                         <button type="button" class="btn danger-text" id="deleteSongBtn">Delete song</button>
                         <span class="spacer"></span>
@@ -1057,10 +1040,15 @@
         const BRANCH = 'main';
         const API_URL = `https://api.github.com/repos/${REPO}/contents/${DATA_FILE}`;
 
-        // Stars and suggested carols live in a small Cloudflare Worker (see worker/)
+        // Stars and carols added by anyone live in a small Cloudflare Worker (see worker/).
+        // Added carols get ids from 100000 up so they never clash with songs in data.json.
         const API = 'https://rbcsf-carols.elevateandcode.workers.dev';
 
         let data = { songs: [], schedule: [] };
+        let communitySongs = [];
+        const COMMUNITY_BASE = 100000;
+        const allSongs = () => data.songs.concat(communitySongs);
+        const nextSongId = (songs) => Math.max(0, ...songs.filter(s => s.id < COMMUNITY_BASE).map(s => s.id)) + 1;
 
         const $ = (id) => document.getElementById(id);
         const carolList = $('carolList');
@@ -1121,7 +1109,7 @@
         function normalize(s) {
             return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
         }
-        const songNumber = (song) => data.songs.indexOf(song) + 1;
+        const songNumber = (song) => allSongs().indexOf(song) + 1;
         const store = {
             get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
             set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
@@ -1174,7 +1162,6 @@
             document.body.classList.toggle('editing', on);
             if (on) store.set('carols-edit', '1'); else store.remove('carols-edit');
             filterCarols();
-            if (on) loadPending(); else renderPending();
             if (openSheet === modal && currentIndex >= 0) openCarol(currentIndex);
             if (openSheet === scheduleModal && currentScheduleId) renderSchedule();
         }
@@ -1480,11 +1467,11 @@
             const term = normalize(searchBox.value.trim());
             clearSearch.classList.toggle('visible', searchBox.value.length > 0);
 
-            let filtered = data.songs;
+            let filtered = allSongs();
             if (currentFilter !== 'all') filtered = filtered.filter(c => c.language === currentFilter);
             if (term) filtered = filtered.filter(c => normalize(c.title).includes(term) || normalize(c.lyrics).includes(term));
             if (sortMode === 'top') {
-                const order = new Map(data.songs.map((s, i) => [s, i]));
+                const order = new Map(allSongs().map((s, i) => [s, i]));
                 const editing = isEditing();
                 filtered = [...filtered].sort((a, b) =>
                     (editing ? (isSung(a.id) - isSung(b.id)) : 0) ||
@@ -1533,30 +1520,26 @@
         nextBtn.onclick = () => stepCarol(1);
 
         // ---------- Song editing ----------
-        // Form modes: editing a song, a new song (editor), a public suggestion,
-        // or reviewing a suggestion that is waiting for approval
+        // Form modes: editing a song, a new song (editor), or a carol added by anyone
         let formMode = 'edit';
-        let reviewing = null;
 
         function startSongEdit(song, focusField, mode) {
             formMode = mode || (song ? 'edit' : 'new');
             editingSongId = formMode === 'edit' ? song.id : formMode;
-            reviewing = formMode === 'review' ? song : null;
             const f = songForm.elements;
             f.title.value = song ? song.title : '';
             f.key.value = song ? song.key || '' : '';
             f.language.value = song ? song.language : (currentFilter === 'english' ? 'english' : 'romanian');
             f.lyrics.value = song ? song.lyrics : '';
-            const heading = { edit: 'Edit song', new: 'New song', suggest: 'Add a carol', review: 'Suggested carol' }[formMode];
+            const heading = { edit: 'Edit song', new: 'New song', suggest: 'Add a carol' }[formMode];
             $('songFormHeading').textContent = heading;
             $('deleteSongBtn').hidden = formMode === 'new' || formMode === 'suggest';
-            $('deleteSongBtn').textContent = formMode === 'review' ? 'Reject' : 'Delete song';
-            $('songSubmitBtn').textContent = { edit: 'Save', new: 'Save', suggest: 'Send', review: 'Approve' }[formMode];
+            $('songSubmitBtn').textContent = formMode === 'suggest' ? 'Add' : 'Save';
             $('suggestHint').hidden = formMode !== 'suggest';
             $('songActions').hidden = true;
             if (formMode !== 'edit') {
                 modalTitle.textContent = heading;
-                modalSubtitle.textContent = formMode === 'suggest' ? 'Română or English' : '#' + (data.songs.length + 1);
+                modalSubtitle.textContent = formMode === 'suggest' ? 'Română or English' : '#' + (allSongs().length + 1);
                 modalKey.hidden = true;
             }
             songView.hidden = true;
@@ -1575,7 +1558,7 @@
         modalKey.onclick = () => { if (isEditing()) startSongEdit(visibleSongs[currentIndex], 'key'); };
         $('addSongBtn').onclick = () => { currentIndex = -1; startSongEdit(null, null, isEditing() ? 'new' : 'suggest'); };
         $('cancelSongBtn').onclick = () => {
-            if (formMode !== 'edit' || currentIndex < 0) { editingSongId = null; reviewing = null; hideSheet(); }
+            if (formMode !== 'edit' || currentIndex < 0) { editingSongId = null; hideSheet(); }
             else openCarol(currentIndex);
         };
 
@@ -1589,30 +1572,38 @@
                 lyrics: f.lyrics.value.replace(/\s+$/, '')
             };
             if (!values.title) { f.title.focus(); return; }
-            if (formMode === 'suggest') return sendSuggestion(values);
-            const fromReview = formMode === 'review' ? reviewing : null;
-            const isNew = editingSongId === 'new' || !!fromReview;
-            const id = isNew ? Math.max(0, ...data.songs.map(s => s.id)) + 1 : editingSongId;
+            if (formMode === 'suggest') return addCommunitySong(values);
+            const isNew = editingSongId === 'new';
+            // Editing a carol someone added moves it into data.json (keeping its id, so its stars stay)
+            const community = !isNew && communitySongs.find(s => s.id === editingSongId);
+            const id = isNew ? null : editingSongId;
+            let newId = null;
             const ok = await save(d => {
                 if (isNew) {
-                    d.songs.push({ id: Math.max(id, 0, ...d.songs.map(s => s.id + 1)), ...values });
+                    newId = nextSongId(d.songs);
+                    d.songs.push({ id: newId, ...values });
+                } else if (community) {
+                    if (!d.songs.some(x => x.id === id)) d.songs.push({ id, ...values });
                 } else {
                     const s = d.songs.find(x => x.id === id);
                     if (s) Object.assign(s, values);
                 }
-            }, `${isNew ? 'Add song' : 'Update song'}: ${values.title}${fromReview ? ' (suggested)' : ''}`);
+            }, `${isNew || community ? 'Add song' : 'Update song'}: ${values.title}`);
             if (!ok) return;
-            if (fromReview) removeSubmission(fromReview.submissionId);
-            const saved = isNew ? data.songs[data.songs.length - 1] : data.songs.find(s => s.id === id);
-            const idx = visibleSongs.indexOf(saved);
-            if (idx >= 0) openCarol(idx);
-            else { visibleSongs = data.songs; openCarol(data.songs.indexOf(saved)); }
+            if (community) {
+                communitySongs = communitySongs.filter(s => s !== community);
+                filterCarols();
+                deleteCommunitySong(community, true);
+            }
+            const saved = data.songs.find(s => s.id === (isNew ? newId : id));
+            showSong(saved);
         };
 
         $('deleteSongBtn').onclick = async () => {
-            if (formMode === 'review') {
-                if (!reviewing || !confirm(`Reject "${reviewing.title}"? It will not be added.`)) return;
-                if (await removeSubmission(reviewing.submissionId)) { toast('Suggestion removed'); editingSongId = null; reviewing = null; hideSheet(); }
+            const added = communitySongs.find(s => s.id === editingSongId);
+            if (added) {
+                if (!confirm(`Delete the song "${added.title}"? This removes it for everyone.`)) return;
+                if (await deleteCommunitySong(added)) { editingSongId = null; hideSheet(); toast('Song deleted'); }
                 return;
             }
             const song = data.songs.find(s => s.id === editingSongId);
@@ -1738,7 +1729,7 @@
                 // Keep the list still while someone is scrolling: only repaint the numbers,
                 // except in "Most requested" where the order itself is the point
                 if (sortMode === 'top' && !openSheet) filterCarols();
-                else data.songs.forEach(s => repaintStars(s.id));
+                else allSongs().forEach(s => repaintStars(s.id));
             } catch (e) { /* offline: stars just stay as they were */ }
         }
         setInterval(() => { if (document.visibilityState === 'visible') loadStars(); }, 30000);
@@ -1754,72 +1745,61 @@
         $('sortTop').onclick = () => { setSort('top'); loadStars(); };
 
         // =====================================================================
-        // Suggested carols: anyone can send one, editors approve or reject
+        // Carols added by anyone: they show up for everyone right away.
+        // In edit mode they can be fixed (which moves them into data.json) or deleted.
         // =====================================================================
+        function showSong(song) {
+            if (!song) return;
+            let idx = visibleSongs.indexOf(song);
+            if (idx < 0) { visibleSongs = allSongs(); idx = visibleSongs.indexOf(song); }
+            openCarol(idx);
+        }
+        const toCommunitySong = (s) => ({ id: COMMUNITY_BASE + s.id, communityId: s.id, title: s.title, key: s.key || '', language: s.language, lyrics: s.lyrics });
+
+        async function loadCommunity() {
+            try {
+                const res = await api('/submissions');
+                const inData = new Set(data.songs.map(s => s.id));
+                communitySongs = res.submissions.map(toCommunitySong).filter(s => !inData.has(s.id));
+                filterCarols();
+            } catch (e) { /* offline: show just the main list */ }
+        }
+
         let sending = false;
-        async function sendSuggestion(values) {
+        async function addCommunitySong(values) {
             if (sending) return;
-            const dupe = data.songs.find(s => normalize(s.title) === normalize(values.title));
-            if (dupe && !confirm(`"${dupe.title}" is already in the list. Send it anyway?`)) return;
+            const dupe = allSongs().find(s => normalize(s.title) === normalize(values.title));
+            if (dupe && !confirm(`"${dupe.title}" is already in the list. Add it anyway?`)) return;
             if (values.lyrics.trim().length < 10) { toast('Add the lyrics too', true); songForm.elements.lyrics.focus(); return; }
             sending = true;
             document.body.classList.add('saving');
             try {
-                await api('/submissions', { method: 'POST', body: values });
-                editingSongId = null;
-                hideSheet();
-                toast('Thank you! Your carol was sent for review.');
+                const res = await api('/submissions', { method: 'POST', body: values });
+                const song = toCommunitySong(res.song);
+                communitySongs.push(song);
+                filterCarols();
+                showSong(song);
+                toast('Added. Everyone can see it now.');
             } catch (e) {
-                toast(e.status ? e.message : 'Could not send. Check your connection and try again.', true);
+                toast(e.status ? e.message : 'Could not add the carol. Check your connection and try again.', true);
             } finally {
                 sending = false;
                 document.body.classList.remove('saving');
             }
         }
 
-        let pending = null; // null = not loaded yet
-        async function loadPending(ask) {
-            if (!isEditing()) return;
-            if (!store.get('carols-gh-token') && !ask) { pending = null; renderPending(); return; }
+        async function deleteCommunitySong(song, keepStars) {
             try {
-                const res = await api('/submissions', { auth: true });
-                pending = res.submissions.map(s => ({ submissionId: s.id, title: s.title, key: s.key, language: s.language, lyrics: s.lyrics, created: s.created_at }));
-            } catch (e) {
-                if (e.status === 401) toast('This GitHub token cannot see suggestions. It needs write access to the Carols repo.', true);
-                else if (e.status !== 0) toast('Could not load suggested carols', true);
-                pending = null;
-            }
-            renderPending();
-        }
-        function renderPending() {
-            const box = $('pendingBox');
-            if (!isEditing()) { box.hidden = true; return; }
-            if (pending === null) {
-                box.hidden = false;
-                box.innerHTML = `<div class="pending-head">Suggested carols</div>
-                    <button class="btn" id="showPendingBtn">Show suggested carols</button>`;
-                $('showPendingBtn').onclick = () => loadPending(true);
-                return;
-            }
-            box.hidden = pending.length === 0;
-            box.innerHTML = `<div class="pending-head">Waiting for approval <span class="count">${pending.length}</span></div>` +
-                pending.map((p, i) => `<button class="pending-item" data-i="${i}">
-                    <strong>${escapeHtml(p.title)}${keyBadge(p.key)}</strong>
-                    <span>${LANG_LABEL[p.language] || ''} · sent ${new Date(p.created).toLocaleDateString()}</span>
-                </button>`).join('');
-            box.querySelectorAll('.pending-item').forEach(b => b.onclick = () => {
-                currentIndex = -1;
-                startSongEdit(pending[+b.dataset.i], null, 'review');
-            });
-        }
-        async function removeSubmission(id) {
-            try {
-                await api('/submissions/' + id, { method: 'DELETE', auth: true });
-                if (pending) pending = pending.filter(p => p.submissionId !== id);
-                renderPending();
+                await api('/submissions/' + song.communityId, { method: 'DELETE', auth: true });
+                communitySongs = communitySongs.filter(s => s !== song);
+                if (!keepStars) {
+                    api('/requests/' + song.id, { method: 'DELETE', auth: true }).catch(() => {});
+                    delete starCounts[song.id];
+                }
+                filterCarols();
                 return true;
             } catch (e) {
-                toast('Could not remove the suggestion (' + e.message + ')', true);
+                if (e.status !== 0) toast('Could not delete the song (' + e.message + ')', true);
                 return false;
             }
         }
@@ -1855,7 +1835,7 @@
         }
         resultCount.textContent = 'Loading…';
         loadData()
-            .then(() => { fillCityList(); filterCarols(); loadStars(); loadPending(); })
+            .then(() => { fillCityList(); filterCarols(); loadStars(); loadCommunity(); })
             .catch(err => {
                 console.error(err);
                 resultCount.textContent = '';

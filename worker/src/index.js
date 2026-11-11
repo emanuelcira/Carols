@@ -3,10 +3,10 @@
 // Public:
 //   GET    /requests                 -> { counts: { songId: n } }
 //   POST   /requests                 { song, device, on } -> { count }
-//   POST   /submissions              { title, key, language, lyrics } -> { ok }
+//   GET    /submissions              -> { submissions: [...] }  carols added by anyone
+//   POST   /submissions              { title, key, language, lyrics } -> { song }
 // Editors (Authorization: Bearer <GitHub token with push access to the repo>):
-//   GET    /submissions              -> { submissions: [...] }
-//   DELETE /submissions/:id
+//   DELETE /submissions/:id          remove an added carol (or after moving it into data.json)
 //   DELETE /requests/:songId         clear the stars of one song
 //   DELETE /requests                 clear all stars (new season)
 
@@ -51,7 +51,7 @@ export default {
           const body = await readJson(request);
           const song = Number(body.song);
           const device = String(body.device || '');
-          if (!Number.isInteger(song) || song < 1 || song > 100000 || !/^[a-z0-9-]{8,64}$/i.test(device)) {
+          if (!Number.isInteger(song) || song < 1 || song > 2000000 || !/^[a-z0-9-]{8,64}$/i.test(device)) {
             return json({ error: 'Bad request' }, 400);
           }
           if (body.on) {
@@ -88,15 +88,14 @@ export default {
           const { n } = await env.DB.prepare('SELECT COUNT(*) AS n FROM submissions WHERE ip = ? AND created_at > ?').bind(ip, since).first();
           if (n >= MAX_SUBMISSIONS_PER_IP_PER_HOUR) return json({ error: 'Too many carols sent. Try again in an hour.' }, 429);
           const total = await env.DB.prepare('SELECT COUNT(*) AS n FROM submissions').first();
-          if (total.n >= MAX_PENDING) return json({ error: 'The review list is full right now. Try again later.' }, 429);
+          if (total.n >= MAX_PENDING) return json({ error: 'The list of added carols is full right now. Try again later.' }, 429);
 
-          await env.DB.prepare('INSERT INTO submissions (title, song_key, language, lyrics, ip, created_at) VALUES (?, ?, ?, ?, ?, ?)')
-            .bind(title, key, language, lyrics, ip, Date.now()).run();
-          return json({ ok: true });
+          const row = await env.DB.prepare('INSERT INTO submissions (title, song_key, language, lyrics, ip, created_at) VALUES (?, ?, ?, ?, ?, ?) RETURNING id')
+            .bind(title, key, language, lyrics, ip, Date.now()).first();
+          return json({ song: { id: row.id, title, key, language, lyrics } });
         }
 
         if (request.method === 'GET' && parts.length === 1) {
-          if (!(await isEditor(request))) return json({ error: 'Not allowed' }, 401);
           const { results } = await env.DB.prepare(
             'SELECT id, title, song_key AS key, language, lyrics, created_at FROM submissions ORDER BY created_at'
           ).all();
