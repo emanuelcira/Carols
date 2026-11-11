@@ -788,7 +788,14 @@
 
         /* ----- Requests (stars) ----- */
         .list-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 4px 8px; }
-        .list-head .result-count { margin: 0; }
+        .list-head .result-count { margin: 0; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .add-carol-btn {
+            width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; border: none;
+            background: var(--accent); color: var(--accent-text);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+        }
+        .add-carol-btn svg { width: 18px; height: 18px; }
+        .add-carol-btn:hover { background: var(--accent-hover); }
         .sort-toggle { display: flex; gap: 2px; padding: 3px; background: var(--surface-2); border-radius: 10px; flex-shrink: 0; }
         .sort-toggle button {
             border: none; background: transparent; color: var(--text-2);
@@ -902,9 +909,11 @@
                 <button class="active" id="sortAz">A–Z</button>
                 <button id="sortTop">Most requested</button>
             </div>
+            <button class="add-carol-btn" id="addSongBtn" aria-label="Add a carol" title="Add a carol">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
         </div>
         <div class="carol-list" id="carolList"></div>
-        <button class="add-btn" id="addSongBtn"><span>+</span> Add a carol</button>
         <div class="no-results" id="noResults" style="display: none;">
             Nu s-au găsit colinde / No carols found
         </div>
@@ -1437,7 +1446,7 @@
 
             carolList.style.display = 'block';
             noResults.style.display = 'none';
-            resultCount.textContent = list.length + (list.length === 1 ? ' colindă / carol' : ' colinde / carols');
+            resultCount.textContent = list.length + (list.length === 1 ? ' carol' : ' carols');
 
             const frag = document.createDocumentFragment();
             const editing = isEditing();
