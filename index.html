@@ -1,462 +1,720 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colinde / Christmas Carols</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>RBCSF Caroling 2026</title>
+    <meta name="theme-color" content="#f5f6f8" id="themeColor">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <script>
+        // Apply the saved theme before the page paints, so it never flashes
+        (function () {
+            var t = null;
+            try { t = localStorage.getItem('carols-theme'); } catch (e) {}
+            if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', t);
+        })();
+    </script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #f5f6f8;
+            --surface: #ffffff;
+            --surface-2: #eef0f4;
+            --border: #e2e5eb;
+            --text: #141a2b;
+            --text-2: #5b6377;
+            --text-3: #8b92a3;
+            --accent: #1f3466;
+            --accent-hover: #182a54;
+            --accent-text: #ffffff;
+            --accent-soft: #e6eaf3;
+            --overlay: rgba(10, 14, 26, 0.45);
+            --shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+            --radius: 14px;
         }
+
+        :root[data-theme="dark"] {
+            --bg: #0d111b;
+            --surface: #161b28;
+            --surface-2: #1e2433;
+            --border: #262d3e;
+            --text: #eef1f7;
+            --text-2: #a3abbd;
+            --text-3: #6f7890;
+            --accent: #9db3e6;
+            --accent-hover: #b6c7ee;
+            --accent-text: #0d111b;
+            --accent-soft: #1f2a44;
+            --overlay: rgba(0, 0, 0, 0.6);
+            --shadow: none;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { -webkit-text-size-adjust: 100%; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            padding: 16px;
-            color: #333;
+            line-height: 1.45;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
+
+        button { font: inherit; color: inherit; }
 
         .container {
-            max-width: 800px;
+            max-width: 640px;
             margin: 0 auto;
+            padding: 12px 16px calc(32px + env(safe-area-inset-bottom));
         }
 
+        /* Top bar */
+        .topbar {
+            max-width: 640px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-end;
+            padding: calc(12px + env(safe-area-inset-top)) 16px 0;
+        }
+
+        .container { padding-top: 0; }
+
+        /* Page-wide text size (main page + schedule) */
+        .scalable { zoom: var(--page-zoom, 1); }
+
+        /* Text size + theme control group */
+        .controls {
+            display: inline-flex;
+            align-items: center;
+            height: 40px;
+            padding: 3px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            flex-shrink: 0;
+        }
+
+        .ctrl {
+            width: 34px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            border-radius: 999px;
+            color: var(--text-2);
+            cursor: pointer;
+            transition: background-color 0.12s, color 0.12s;
+        }
+
+        .ctrl:hover { color: var(--text); }
+        .ctrl:active { background: var(--surface-2); }
+        .ctrl:disabled { opacity: 0.3; cursor: default; }
+        .ctrl svg { width: 17px; height: 17px; }
+        .a-small { font-size: 12px; font-weight: 700; }
+        .a-large { font-size: 17px; font-weight: 700; }
+
+        .ctrl-divider {
+            width: 1px;
+            height: 18px;
+            background: var(--border);
+            margin: 0 2px;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text-2);
+            cursor: pointer;
+            transition: background-color 0.15s, color 0.15s;
+            flex-shrink: 0;
+        }
+
+        .icon-btn:hover { color: var(--text); }
+        .icon-btn:active { background: var(--surface-2); }
+        .icon-btn svg { width: 18px; height: 18px; }
+        .icon-btn:disabled { opacity: 0.35; cursor: default; }
+
+        .theme-toggle .icon-sun { display: none; }
+        :root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+        :root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+        /* Header */
         header {
             text-align: center;
-            padding: 24px 16px;
-            background: white;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 4px 0 24px;
+        }
+
+        .logo {
+            display: block;
+            width: 112px;
+            height: 112px;
+            margin: -8px auto -4px;
+        }
+
+        .logo-dark { display: none; }
+        :root[data-theme="dark"] .logo-light { display: none; }
+        :root[data-theme="dark"] .logo-dark { display: block; }
+
+        .church-name {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-3);
+            margin-bottom: 6px;
         }
 
         h1 {
             font-size: 28px;
-            color: #667eea;
-            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-top: 6px;
+            line-height: 1.15;
+            color: var(--text);
         }
 
-        .subtitle {
-            font-size: 14px;
-            color: #666;
+        h1 .alt {
+            display: block;
+            font-weight: 500;
+            color: var(--text-2);
+            font-size: 20px;
+            letter-spacing: -0.01em;
+            margin-top: 2px;
         }
+
+        /* Schedule */
+        .section-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin: 0 4px 8px;
+        }
+
         .schedule-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 16px;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 24px;
         }
 
         .schedule-btn {
-            padding: 10px 20px;
-            background: #667eea;
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .schedule-btn:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        .schedule-btn:active {
-            transform: scale(0.98);
-        }
-
-        .schedule-section {
-            margin-bottom: 24px;
-        }
-
-        .schedule-section h3 {
-            font-size: 18px;
-            color: #667eea;
-            margin-bottom: 12px;
-            font-weight: 600;
-        }
-
-        .schedule-location {
-            margin-bottom: 16px;
-        }
-
-        .schedule-location h4 {
-            font-size: 16px;
-            color: #764ba2;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .schedule-item {
-            padding: 8px 12px;
-            background: #f8f8f8;
-            border-radius: 8px;
-            margin-bottom: 6px;
-            font-size: 15px;
-        }
-
-        .address {
-            color: #666;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .schedule-btn:hover {
-            background: #5568d3;
-        }
-
-        .schedule-btn:active {
-            transform: scale(0.98);
-        }
-
-        .schedule-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            padding: 16px;
-            overflow-y: auto;
-        }
-
-        .schedule-modal.active {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            text-align: left;
+            transition: border-color 0.15s, transform 0.1s;
+        }
+
+        .schedule-btn:hover { border-color: var(--accent); }
+        .schedule-btn:active { transform: scale(0.98); }
+
+        .date-badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: var(--accent-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            padding-top: 40px;
+            line-height: 1;
+            flex-shrink: 0;
         }
 
-        .schedule-content {
-            background: white;
-            border-radius: 16px;
-            max-width: 600px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
+        .date-badge .m { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; }
+        .date-badge .d { font-size: 19px; font-weight: 700; margin-top: 2px; }
+
+        @media (max-width: 480px) {
+            .schedule-btn { flex-direction: column; align-items: flex-start; gap: 10px; }
+        }
+
+        .schedule-btn .t1 { display: block; font-size: 15px; font-weight: 600; color: var(--text); }
+        .schedule-btn .t2 { display: block; font-size: 13px; color: var(--text-2); margin-top: 1px; }
+
+        /* Search + filters */
+        .search-wrap {
             position: relative;
-            margin-bottom: 40px;
-        }
-
-        .schedule-header {
-            position: sticky;
-            top: 0;
-            background: white;
-            padding: 20px;
-            border-bottom: 1px solid #e0e0e0;
-            border-radius: 16px 16px 0 0;
-            z-index: 10;
-        }
-
-        .schedule-title {
-            font-size: 24px;
-            color: #667eea;
-            margin-bottom: 4px;
-            padding-right: 40px;
-        }
-
-        .schedule-body {
-            padding: 20px;
-        }
-
-        .location-group {
-            margin-bottom: 24px;
-        }
-
-        .city-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: #667eea;
-            margin-bottom: 12px;
-        }
-
-        .address-item {
             margin-bottom: 10px;
-            padding-left: 20px;
-            line-height: 1.6;
-            color: #333;
         }
 
-        .address-item strong {
-            color: #555;
-        }
-
-        .address-link {
-            color: #667eea;
-            text-decoration: none;
-            font-style: italic;
-        }
-
-        .address-link:hover {
-            text-decoration: underline;
-        }
-
-        .search-container {
-            background: white;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        .search-wrap svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            color: var(--text-3);
+            pointer-events: none;
         }
 
         .search-box {
             width: 100%;
-            padding: 12px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
+            padding: 13px 40px 13px 42px;
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             font-size: 16px;
-            transition: border-color 0.3s;
+            font-family: inherit;
+            -webkit-appearance: none;
+            appearance: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
+
+        .search-box::placeholder { color: var(--text-3); }
 
         .search-box:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
         }
 
-        .filter-container {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
+        .search-box::-webkit-search-cancel-button { display: none; }
 
-        .filter-btn {
-            flex: 1;
-            padding: 12px 16px;
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: #666;
-        }
-
-        .filter-btn:active {
-            transform: scale(0.98);
-        }
-
-        .filter-btn.active {
-            background: #667eea;
-            border-color: #667eea;
-            color: white;
-        }
-
-        .carol-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .carol-item {
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .carol-item:active {
-            transform: scale(0.98);
-        }
-
-        .carol-item:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        .carol-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #667eea;
-            margin-bottom: 4px;
-        }
-
-        .carol-subtitle {
-            font-size: 14px;
-            color: #999;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            padding: 16px;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .modal.active {
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 40px;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 16px;
-            max-width: 800px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            position: relative;
-            margin-bottom: 40px;
-        }
-
-        .modal-header {
-            position: sticky;
-            top: 0;
-            background: white;
-            padding: 20px;
-            border-bottom: 1px solid #e0e0e0;
-            border-radius: 16px 16px 0 0;
-            z-index: 10;
-        }
-
-        .close-btn {
+        .clear-search {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
             width: 32px;
             height: 32px;
             border: none;
-            background: #f5f5f5;
+            background: transparent;
+            color: var(--text-3);
             border-radius: 50%;
             cursor: pointer;
-            font-size: 20px;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
-            color: #666;
         }
 
-        .close-btn:active {
-            background: #e0e0e0;
-        }
+        .clear-search.visible { display: flex; }
+        .clear-search svg { position: static; transform: none; width: 16px; height: 16px; }
 
-        .modal-title {
-            font-size: 24px;
-            color: #667eea;
-            margin-bottom: 4px;
-            padding-right: 40px;
-        }
-
-        .modal-subtitle {
-            font-size: 14px;
-            color: #999;
-        }
-
-        .lyrics-container {
-            padding: 20px;
-        }
-
-        .lyrics-section {
+        .filter-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            padding: 4px;
+            background: var(--surface-2);
+            border-radius: 12px;
             margin-bottom: 16px;
         }
 
-        .lyrics-section h3 {
-            font-size: 22px;
-            color: #667eea;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .filter-btn {
+            padding: 9px 6px;
+            background: transparent;
+            border: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-2);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.15s, color 0.15s;
         }
 
-        .lyrics-text {
-            font-size: 20px;
-            line-height: 1.8;
-            white-space: pre-line;
-            color: #333;
+        .filter-btn.active {
+            background: var(--surface);
+            color: var(--text);
+            box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1);
         }
 
-        .verse {
-            margin-bottom: 20px;
+        :root[data-theme="dark"] .filter-btn.active { background: var(--border); box-shadow: none; }
+
+        .result-count {
+            font-size: 13px;
+            color: var(--text-3);
+            margin: 0 4px 8px;
         }
+
+        /* Carol list */
+        .carol-list {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .carol-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 14px 14px 14px 16px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.12s;
+        }
+
+        .carol-item:last-child { border-bottom: none; }
+        .carol-item:hover { background: var(--surface-2); }
+        .carol-item:active { background: var(--surface-2); }
+
+        .carol-num {
+            min-width: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-3);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .carol-main { flex: 1; min-width: 0; }
+
+        .carol-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .carol-subtitle {
+            font-size: 13px;
+            color: var(--text-2);
+            margin-top: 1px;
+        }
+
+        .chevron { width: 16px; height: 16px; color: var(--text-3); flex-shrink: 0; }
 
         .no-results {
             text-align: center;
             padding: 40px 20px;
-            color: white;
-            font-size: 16px;
+            color: var(--text-2);
+            font-size: 15px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
         }
 
-        @media (max-width: 640px) {
-            h1 {
-                font-size: 24px;
-            }
+        footer {
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-3);
+            margin-top: 28px;
+        }
 
-            .modal-content {
-                max-height: 90vh;
-            }
+        /* Sheets (lyrics + schedule) */
+        .sheet {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--overlay);
+            z-index: 1000;
+        }
 
-            .lyrics-text {
-                font-size: 18px;
-            }
+        .sheet.active {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .sheet-panel {
+            background: var(--surface);
+            width: 100%;
+            max-width: 640px;
+            height: calc(100% - 24px - env(safe-area-inset-top));
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.22s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(16px); }
+            to { transform: translateY(0); }
+        }
+
+        @media (min-width: 700px) {
+            .sheet.active { align-items: center; padding: 32px; }
+            .sheet-panel { height: auto; max-height: 88vh; border-radius: 20px; }
+        }
+
+        .sheet-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 18px 16px 14px 20px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .sheet-heading { flex: 1; min-width: 0; }
+
+        .sheet-title {
+            font-size: 21px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            line-height: 1.25;
+            color: var(--text);
+        }
+
+        .sheet-subtitle {
+            font-size: 14px;
+            color: var(--text-2);
+            margin-top: 3px;
+        }
+
+        .sheet-actions { display: flex; align-items: center; gap: 8px; }
+        .sheet-header .controls { background: var(--surface-2); border-color: transparent; }
+
+        .sheet-body {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            padding: 20px 20px calc(32px + env(safe-area-inset-bottom));
+        }
+
+        /* Lyrics */
+        .lyrics-text {
+            font-size: var(--lyrics-size, 20px);
+            line-height: 1.75;
+            white-space: pre-line;
+            color: var(--text);
+        }
+
+        .lyrics-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .nav-btn:disabled { opacity: 0.35; cursor: default; }
+        .nav-btn:not(:disabled):active { background: var(--surface-2); }
+        .nav-btn svg { width: 16px; height: 16px; }
+
+
+        /* Schedule sheet */
+        .location-group { margin-bottom: 22px; }
+        .location-group:last-child { margin-bottom: 0; }
+
+        .city-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-3);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 8px;
+        }
+
+        .stop {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 12px 12px 14px;
+            background: var(--surface-2);
+            border-radius: 12px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: background-color 0.12s;
+        }
+
+        .stop:hover { background: var(--border); }
+
+        .stop-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--accent-text);
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .stop-main { flex: 1; min-width: 0; }
+        .stop-name { font-size: 16px; font-weight: 600; color: var(--text); }
+        .stop-address { font-size: 14px; color: var(--text-2); margin-top: 1px; }
+
+        .stop-map {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 11px;
+            border-radius: 999px;
+            background: var(--accent);
+            color: var(--accent-text);
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: background-color 0.12s;
+        }
+
+        .stop:hover .stop-map { background: var(--accent-hover); }
+        .stop-map svg { width: 15px; height: 15px; }
+
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="topbar">
+                <div class="controls" role="group" aria-label="Display">
+                    <button class="ctrl js-smaller" aria-label="Smaller text"><span class="a-small">A</span></button>
+                    <button class="ctrl js-larger" aria-label="Larger text"><span class="a-large">A</span></button>
+                    <span class="ctrl-divider"></span>
+                    <button class="ctrl theme-toggle js-theme" aria-label="Switch light / dark mode">
+                        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    </button>
+                </div>
+    </div>
+
+    <div class="container scalable">
+
         <header>
-            <h1>🎄 Colinde / Christmas Carols 🎄</h1>
-            <p class="subtitle">RBCSF Caroling 2024</p>
-            <div class="schedule-buttons">
-                <button class="schedule-btn" id="dec24Btn">📅 December 24th</button>
-                <button class="schedule-btn" id="dec25Btn">📅 December 25th</button>
-            </div>
+            <img class="logo logo-light" src="logo.png" alt="RBCSF">
+            <img class="logo logo-dark" src="logo-white.png" alt="RBCSF">
+            <h1>RBCSF Caroling 2026</h1>
         </header>
 
-        <div class="search-container">
-            <input type="text" class="search-box" id="searchBox" placeholder="Search carols... / Caută colinde...">
+        <p class="section-label">Program / Schedule</p>
+        <div class="schedule-buttons">
+            <button class="schedule-btn" id="dec24Btn">
+                <span class="date-badge"><span class="m">DEC</span><span class="d">24</span></span>
+                <span><span class="t1">Christmas Eve</span><span class="t2">After youth service</span></span>
+            </button>
+            <button class="schedule-btn" id="dec25Btn">
+                <span class="date-badge"><span class="m">DEC</span><span class="d">25</span></span>
+                <span><span class="t1">Christmas Day</span><span class="t2">After evening service</span></span>
+            </button>
+        </div>
+
+        <div class="search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input type="search" class="search-box" id="searchBox" placeholder="Caută colinde / Search carols" autocomplete="off">
+            <button class="clear-search" id="clearSearch" aria-label="Clear search">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
         </div>
 
         <div class="filter-container">
-            <button class="filter-btn active" id="allBtn">All / Toate</button>
+            <button class="filter-btn active" id="allBtn">Toate / All</button>
             <button class="filter-btn" id="romanianBtn">🇷🇴 Română</button>
             <button class="filter-btn" id="englishBtn">🇺🇸 English</button>
         </div>
 
+        <p class="result-count" id="resultCount"></p>
         <div class="carol-list" id="carolList"></div>
         <div class="no-results" id="noResults" style="display: none;">
-            No carols found / Nu s-au găsit colinde
+            Nu s-au găsit colinde / No carols found
+        </div>
+
+        <footer>RBCSF · Crăciun Fericit / Merry Christmas</footer>
+    </div>
+
+    <div class="sheet" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="sheet-panel">
+            <div class="sheet-header">
+                <div class="sheet-heading">
+                    <h2 class="sheet-title" id="modalTitle"></h2>
+                    <p class="sheet-subtitle" id="modalSubtitle"></p>
+                </div>
+                <div class="sheet-actions">
+                <div class="controls" role="group" aria-label="Display">
+                    <button class="ctrl js-smaller" aria-label="Smaller text"><span class="a-small">A</span></button>
+                    <button class="ctrl js-larger" aria-label="Larger text"><span class="a-large">A</span></button>
+                    <span class="ctrl-divider"></span>
+                    <button class="ctrl theme-toggle js-theme" aria-label="Switch light / dark mode">
+                        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    </button>
+                </div>
+                    <button class="icon-btn" id="closeBtn" aria-label="Close">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="sheet-body" id="lyricsBody">
+                <div class="lyrics-text" id="lyricsText"></div>
+                <div class="lyrics-footer">
+                    <button class="nav-btn" id="prevBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                        Previous
+                    </button>
+                    <button class="nav-btn" id="nextBtn">
+                        Next
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="modal" id="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close-btn" id="closeBtn">×</button>
-                <h2 class="modal-title" id="modalTitle"></h2>
-                <p class="modal-subtitle" id="modalSubtitle"></p>
+    <div class="sheet" id="scheduleModal" role="dialog" aria-modal="true" aria-labelledby="scheduleTitle">
+        <div class="sheet-panel">
+            <div class="sheet-header">
+                <div class="sheet-heading">
+                    <h2 class="sheet-title" id="scheduleTitle"></h2>
+                    <p class="sheet-subtitle" id="scheduleSubtitle"></p>
+                </div>
+                <div class="sheet-actions">
+                <div class="controls" role="group" aria-label="Display">
+                    <button class="ctrl js-smaller" aria-label="Smaller text"><span class="a-small">A</span></button>
+                    <button class="ctrl js-larger" aria-label="Larger text"><span class="a-large">A</span></button>
+                    <span class="ctrl-divider"></span>
+                    <button class="ctrl theme-toggle js-theme" aria-label="Switch light / dark mode">
+                        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                    </button>
+                </div>
+                    <button class="icon-btn" id="closeScheduleBtn" aria-label="Close">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
             </div>
-            <div class="lyrics-container" id="lyricsContainer"></div>
-        </div>
-    </div>
-
-    <div class="schedule-modal" id="scheduleModal">
-        <div class="schedule-content">
-            <div class="schedule-header">
-                <button class="close-btn" id="closeScheduleBtn">×</button>
-                <h2 class="schedule-title" id="scheduleTitle"></h2>
-            </div>
-            <div class="schedule-body" id="scheduleBody"></div>
+            <div class="sheet-body scalable" id="scheduleBody"></div>
         </div>
     </div>
 
@@ -1683,26 +1941,6 @@ Lui Mesia!`
             }
         ];
 
-const carolList = document.getElementById('carolList');
-        const searchBox = document.getElementById('searchBox');
-        const modal = document.getElementById('modal');
-        const closeBtn = document.getElementById('closeBtn');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalSubtitle = document.getElementById('modalSubtitle');
-        const lyricsContainer = document.getElementById('lyricsContainer');
-        const noResults = document.getElementById('noResults');
-        const allBtn = document.getElementById('allBtn');
-        const romanianBtn = document.getElementById('romanianBtn');
-        const englishBtn = document.getElementById('englishBtn');
-        const dec24Btn = document.getElementById('dec24Btn');
-        const dec25Btn = document.getElementById('dec25Btn');
-        const scheduleModal = document.getElementById('scheduleModal');
-        const closeScheduleBtn = document.getElementById('closeScheduleBtn');
-        const scheduleTitle = document.getElementById('scheduleTitle');
-        const scheduleBody = document.getElementById('scheduleBody');
-
-        let currentFilter = 'all';
-
         const scheduleData = {
             dec24: {
                 title: 'December 24th - After Youth Service',
@@ -1754,6 +1992,12 @@ const carolList = document.getElementById('carolList');
                         ]
                     },
                     {
+                        city: 'Alamo',
+                        addresses: [
+                            { name: 'Stamatoiu', address: '1621 Via Romero' }
+                        ]
+                    },
+                    {
                         city: 'San Ramon',
                         addresses: [
                             { name: 'Ploscariu', address: '3007 Bernard Ave' }
@@ -1769,148 +2013,209 @@ const carolList = document.getElementById('carolList');
             }
         };
 
-        function openSchedule(day) {
-            const data = scheduleData[day];
-            scheduleTitle.textContent = data.title;
-            
-            let html = '';
-            data.locations.forEach(location => {
-                html += `<div class="location-group">`;
-                html += `<div class="city-name">${location.city}</div>`;
-                location.addresses.forEach((addr, index) => {
-                    const addressForUrl = encodeURIComponent(addr.address);
-                    html += `<div class="address-item">`;
-                    html += `${index + 1}. <strong>${addr.name}</strong> - `;
-                    html += `<a href="https://www.google.com/maps/search/?api=1&query=${addressForUrl}" target="_blank" class="address-link">${addr.address}</a>`;
-                    html += `</div>`;
-                });
-                html += `</div>`;
-            });
-            
-            scheduleBody.innerHTML = html;
-            scheduleModal.classList.add('active');
+        const $ = (id) => document.getElementById(id);
+        const carolList = $('carolList');
+        const searchBox = $('searchBox');
+        const clearSearch = $('clearSearch');
+        const resultCount = $('resultCount');
+        const noResults = $('noResults');
+        const modal = $('modal');
+        const modalTitle = $('modalTitle');
+        const modalSubtitle = $('modalSubtitle');
+        const lyricsText = $('lyricsText');
+        const lyricsBody = $('lyricsBody');
+        const prevBtn = $('prevBtn');
+        const nextBtn = $('nextBtn');
+        const scheduleModal = $('scheduleModal');
+        const scheduleTitle = $('scheduleTitle');
+        const scheduleSubtitle = $('scheduleSubtitle');
+        const scheduleBody = $('scheduleBody');
+        const filterButtons = { all: $('allBtn'), romanian: $('romanianBtn'), english: $('englishBtn') };
+
+        const LANG_LABEL = { romanian: '🇷🇴 Română', english: '🇺🇸 English' };
+        const CHEVRON = '<svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+        const MAP_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+
+        let currentFilter = 'all';
+        let visibleCarols = carols;
+        let currentIndex = -1;
+
+        // ---------- Theme ----------
+        const themeColor = $('themeColor');
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            themeColor.setAttribute('content', theme === 'dark' ? '#0d111b' : '#f5f6f8');
+        }
+        applyTheme(document.documentElement.getAttribute('data-theme') || 'light');
+        document.querySelectorAll('.js-theme').forEach(b => b.addEventListener('click', () => {
+            const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            applyTheme(next);
+            try { localStorage.setItem('carols-theme', next); } catch (e) {}
+        }));
+
+        // ---------- Helpers ----------
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        // "12. O Holy Night" -> { num: "12", name: "O Holy Night" }
+        function splitTitle(title) {
+            const m = title.match(/^(\d+)\.\s*(.*)$/);
+            return m ? { num: m[1], name: m[2] } : { num: '', name: title };
+        }
+
+        // Search ignores diacritics: "ingeri" finds "Îngeri"
+        function normalize(s) {
+            return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+        }
+
+        // ---------- Sheets + Android back button ----------
+        let openSheet = null;
+        function showSheet(el) {
+            if (!openSheet) history.pushState({ sheet: true }, '');
+            if (openSheet && openSheet !== el) openSheet.classList.remove('active');
+            openSheet = el;
+            el.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
-        function closeSchedule() {
-            scheduleModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
+        function hideSheet(fromPopstate) {
+            if (!openSheet) return;
+            openSheet.classList.remove('active');
+            openSheet = null;
+            document.body.style.overflow = '';
+            if (!fromPopstate && history.state && history.state.sheet) history.back();
         }
+        window.addEventListener('popstate', () => hideSheet(true));
+        document.addEventListener('keydown', (e) => {
+            if (!openSheet) return;
+            if (e.key === 'Escape') hideSheet();
+            if (openSheet === modal && e.key === 'ArrowRight') stepCarol(1);
+            if (openSheet === modal && e.key === 'ArrowLeft') stepCarol(-1);
+        });
+        [modal, scheduleModal].forEach(el => el.addEventListener('click', (e) => { if (e.target === el) hideSheet(); }));
+        $('closeBtn').onclick = () => hideSheet();
+        $('closeScheduleBtn').onclick = () => hideSheet();
 
-        function renderCarols(carolsToRender) {
+        // ---------- Schedule ----------
+        function openSchedule(day) {
+            const data = scheduleData[day];
+            const [date, ...rest] = data.title.split(' - ');
+            scheduleTitle.textContent = date;
+            scheduleSubtitle.textContent = rest.join(' - ');
+
+            let n = 0;
+            scheduleBody.innerHTML = data.locations.map(location => `
+                <div class="location-group">
+                    <div class="city-name">${escapeHtml(location.city)}</div>
+                    ${location.addresses.map(addr => {
+                        n++;
+                        const url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(addr.address + ', ' + location.city + ', CA');
+                        return `<a class="stop" href="${url}" target="_blank" rel="noopener">
+                            <span class="stop-num">${n}</span>
+                            <span class="stop-main">
+                                <span class="stop-name">${escapeHtml(addr.name)}</span>
+                                <span class="stop-address" style="display:block">${escapeHtml(addr.address)}</span>
+                            </span>
+                            <span class="stop-map">${MAP_ICON}Open in Maps</span>
+                        </a>`;
+                    }).join('')}
+                </div>`).join('');
+
+            scheduleBody.scrollTop = 0;
+            showSheet(scheduleModal);
+        }
+        $('dec24Btn').addEventListener('click', () => openSchedule('dec24'));
+        $('dec25Btn').addEventListener('click', () => openSchedule('dec25'));
+
+        // ---------- Carol list ----------
+        function renderCarols(list) {
+            visibleCarols = list;
             carolList.innerHTML = '';
-            
-            if (carolsToRender.length === 0) {
+
+            if (list.length === 0) {
                 carolList.style.display = 'none';
                 noResults.style.display = 'block';
+                resultCount.textContent = '';
                 return;
             }
 
-            carolList.style.display = 'flex';
+            carolList.style.display = 'block';
             noResults.style.display = 'none';
+            resultCount.textContent = list.length + (list.length === 1 ? ' colindă / carol' : ' colinde / carols');
 
-            carolsToRender.forEach(carol => {
-                const carolItem = document.createElement('div');
-                carolItem.className = 'carol-item';
-                carolItem.innerHTML = `
-                    <div class="carol-title">${carol.title}</div>
-                    <div class="carol-subtitle">${carol.language === 'romanian' ? '🇷🇴 Română' : '🇺🇸 English'}</div>
-                `;
-                carolItem.onclick = () => openModal(carol);
-                carolList.appendChild(carolItem);
+            const frag = document.createDocumentFragment();
+            list.forEach((carol, i) => {
+                const t = splitTitle(carol.title);
+                const item = document.createElement('button');
+                item.className = 'carol-item';
+                item.innerHTML = `
+                    <span class="carol-num">${escapeHtml(t.num)}</span>
+                    <span class="carol-main">
+                        <span class="carol-title" style="display:block">${escapeHtml(t.name)}</span>
+                        <span class="carol-subtitle" style="display:block">${LANG_LABEL[carol.language] || ''}</span>
+                    </span>
+                    ${CHEVRON}`;
+                item.onclick = () => openCarol(i);
+                frag.appendChild(item);
             });
-        }
-
-        function openModal(carol) {
-            modalTitle.textContent = carol.title;
-            modalSubtitle.textContent = carol.language === 'romanian' ? '🇷🇴 Română' : '🇺🇸 English';
-            
-            lyricsContainer.innerHTML = `
-                <div class="lyrics-section">
-                    <div class="lyrics-text">${carol.lyrics}</div>
-                </div>
-            `;
-            
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
+            carolList.appendChild(frag);
         }
 
         function filterCarols() {
-            const searchTerm = searchBox.value.toLowerCase();
+            const term = normalize(searchBox.value.trim());
+            clearSearch.classList.toggle('visible', searchBox.value.length > 0);
+
             let filtered = carols;
-
-            // Apply language filter
-            if (currentFilter === 'romanian') {
-                filtered = filtered.filter(carol => carol.language === 'romanian');
-            } else if (currentFilter === 'english') {
-                filtered = filtered.filter(carol => carol.language === 'english');
-            }
-
-            // Apply search filter
-            if (searchTerm) {
-                filtered = filtered.filter(carol => 
-                    carol.title.toLowerCase().includes(searchTerm) ||
-                    carol.lyrics.toLowerCase().includes(searchTerm)
-                );
-            }
-
+            if (currentFilter !== 'all') filtered = filtered.filter(c => c.language === currentFilter);
+            if (term) filtered = filtered.filter(c => normalize(c.title).includes(term) || normalize(c.lyrics).includes(term));
             renderCarols(filtered);
         }
 
         function setActiveFilter(filter) {
             currentFilter = filter;
-            
-            // Update button styles
-            allBtn.classList.remove('active');
-            romanianBtn.classList.remove('active');
-            englishBtn.classList.remove('active');
-            
-            if (filter === 'all') {
-                allBtn.classList.add('active');
-            } else if (filter === 'romanian') {
-                romanianBtn.classList.add('active');
-            } else if (filter === 'english') {
-                englishBtn.classList.add('active');
-            }
-            
+            Object.entries(filterButtons).forEach(([key, btn]) => btn.classList.toggle('active', key === filter));
             filterCarols();
         }
-
-        closeBtn.onclick = closeModal;
-        modal.onclick = (e) => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        };
-
-        closeScheduleBtn.onclick = closeSchedule;
-        scheduleModal.onclick = (e) => {
-            if (e.target === scheduleModal) {
-                closeSchedule();
-            }
-        };
-
-        dec24Btn.addEventListener('click', () => openSchedule('dec24'));
-        dec25Btn.addEventListener('click', () => openSchedule('dec25'));
+        Object.entries(filterButtons).forEach(([key, btn]) => btn.addEventListener('click', () => setActiveFilter(key)));
 
         searchBox.addEventListener('input', filterCarols);
-        allBtn.addEventListener('click', () => setActiveFilter('all'));
-        romanianBtn.addEventListener('click', () => setActiveFilter('romanian'));
-        englishBtn.addEventListener('click', () => setActiveFilter('english'));
+        clearSearch.addEventListener('click', () => { searchBox.value = ''; filterCarols(); searchBox.focus(); });
 
-        // Handle back button on Android
-        window.addEventListener('popstate', () => {
-            if (modal.classList.contains('active')) {
-                closeModal();
-            }
-        });
+        // ---------- Lyrics ----------
+        function openCarol(index) {
+            const carol = visibleCarols[index];
+            if (!carol) return;
+            currentIndex = index;
+            const t = splitTitle(carol.title);
+            modalTitle.textContent = t.name;
+            modalSubtitle.textContent = (t.num ? '#' + t.num + '  ·  ' : '') + (LANG_LABEL[carol.language] || '');
+            lyricsText.innerHTML = carol.lyrics;
+            prevBtn.disabled = index <= 0;
+            nextBtn.disabled = index >= visibleCarols.length - 1;
+            lyricsBody.scrollTop = 0;
+            if (openSheet !== modal) showSheet(modal);
+        }
+        function stepCarol(dir) { openCarol(currentIndex + dir); }
+        prevBtn.onclick = () => stepCarol(-1);
+        nextBtn.onclick = () => stepCarol(1);
 
-        // Initial render
+        // Text size for reading outside in the dark
+        // One shared text size: scales the page and the lyrics together
+        const SIZES = [16, 18, 20, 23, 26, 30];
+        const ZOOMS = [0.9, 0.95, 1, 1.08, 1.16, 1.25];
+        let sizeIndex = 2;
+        try { const s = parseInt(localStorage.getItem('carols-size'), 10); if (SIZES[s]) sizeIndex = s; } catch (e) {}
+        function applySize() {
+            document.documentElement.style.setProperty('--lyrics-size', SIZES[sizeIndex] + 'px');
+            document.documentElement.style.setProperty('--page-zoom', ZOOMS[sizeIndex]);
+            document.querySelectorAll('.js-smaller').forEach(b => b.disabled = sizeIndex === 0);
+            document.querySelectorAll('.js-larger').forEach(b => b.disabled = sizeIndex === SIZES.length - 1);
+            try { localStorage.setItem('carols-size', sizeIndex); } catch (e) {}
+        }
+        document.querySelectorAll('.js-smaller').forEach(b => b.onclick = () => { if (sizeIndex > 0) { sizeIndex--; applySize(); } });
+        document.querySelectorAll('.js-larger').forEach(b => b.onclick = () => { if (sizeIndex < SIZES.length - 1) { sizeIndex++; applySize(); } });
+        applySize();
+
         renderCarols(carols);
     </script>
 </body>
