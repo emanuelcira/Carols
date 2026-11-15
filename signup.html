@@ -311,24 +311,29 @@
             color: var(--accent); font-size: 30px; letter-spacing: 0.08em; text-transform: uppercase;
         }
 
-        /* Opening: logo + Begin (the tap also lets the bells play) */
-        .opening { display: none; }
-        .intro.is-opening .intro-stage, .intro.is-opening .intro-nav { display: none; }
-        .intro.is-opening .opening {
-            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 22px; text-align: center; animation: riseIn 0.7s ease-out both;
+        /* Last card: the trailer video */
+        .slide.video-slide { display: flex; flex-direction: column; align-items: center; }
+        .trailer {
+            position: relative; height: min(calc(100vh - 210px), 640px); height: min(calc(100svh - 210px), 640px); aspect-ratio: 9 / 16; max-width: 100%;
+            border-radius: 22px; overflow: hidden; background: #000; box-shadow: 0 18px 44px rgba(16, 24, 40, 0.22);
         }
-        .opening .logo { width: 128px; height: 128px; margin: 0; }
-        .begin-btn {
-            padding: 16px 48px; border: none; border-radius: 999px; cursor: pointer;
-            background: var(--accent); color: var(--accent-text); font-size: 19px; font-weight: 800; letter-spacing: 0.02em;
-            box-shadow: 0 10px 28px rgba(31, 52, 102, 0.28); animation: breathe 2.4s ease-in-out infinite;
+        .trailer video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .trailer-btn {
+            position: absolute; border: none; cursor: pointer; color: #fff;
+            background: rgba(0, 0, 0, 0.45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700;
         }
-        @keyframes breathe { 50% { transform: scale(1.05); } }
-        .opening-hint { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-3); }
-        .opening-hint svg { width: 16px; height: 16px; }
-        .opening.leaving { animation: fadeOut 0.35s ease-in both !important; }
-        @keyframes fadeOut { to { opacity: 0; transform: scale(0.97); } }
+        .trailer-btn svg { width: 18px; height: 18px; }
+        .trailer-sound { right: 12px; bottom: 12px; height: 38px; min-width: 38px; padding: 0 12px; border-radius: 999px; font-size: 13px; }
+        .trailer-sound .label { display: none; }
+        .trailer.muted .trailer-sound .label { display: inline; }
+        .trailer .icon-on { display: block; } .trailer .icon-off { display: none; }
+        .trailer.muted .icon-on { display: none; } .trailer.muted .icon-off { display: block; }
+        .trailer-replay { left: 50%; top: 50%; transform: translate(-50%, -50%); width: 64px; height: 64px; border-radius: 50%; }
+        .trailer-replay svg { width: 26px; height: 26px; }
+        .trailer:not(.ended) .trailer-replay { display: none; }
+        .next-btn.ready { animation: breathe 1.6s ease-in-out infinite; }
+        @keyframes breathe { 50% { transform: scale(1.06); } }
 
         /* "CAROLING 2026" types in letter by letter */
         .floater.title.opening-title { font-size: 40px; }
@@ -352,9 +357,6 @@
         .topbar, .container { position: relative; z-index: 1; }
 
         .top-actions { display: flex; gap: 8px; }
-        .sound-btn .icon-sound-off { display: none; }
-        .sound-btn.off .icon-sound-on { display: none; }
-        .sound-btn.off .icon-sound-off { display: block; }
 
         /* Word-by-word text */
         .slide .w { display: inline-block; opacity: 0; animation: wordIn 0.32s ease-out both; }
@@ -414,7 +416,7 @@
             .slide.enter, .slide.leave, .slide .wait, .slide .pop, .slide .land, .slide .fade, .slide .jump, .slide .wiggle, .slide .w { animation: none !important; opacity: 1 !important; transform: none !important; }
             .floater { display: none; }
             .snow { display: none; }
-            .begin-btn { animation: none; }
+            .next-btn.ready { animation: none; }
         }
 
         footer { text-align: center; color: var(--text-3); font-size: 13px; margin-top: 28px; }
@@ -427,10 +429,6 @@
             <span id="topBackText">Carols</span>
         </a>
         <div class="top-actions">
-        <button class="icon-btn sound-btn" id="soundBtn" aria-label="Sound on" aria-pressed="true">
-            <svg class="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
-            <svg class="icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
-        </button>
         <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch light / dark mode">
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
@@ -442,15 +440,6 @@
     <div class="container">
         <!-- ===== Intro cards (first visit) ===== -->
         <section id="view-intro" class="intro" hidden>
-            <div class="opening">
-                <img class="logo logo-light" src="logo.png" alt="RBCSF">
-                <img class="logo logo-dark" src="logo-white.png" alt="RBCSF">
-                <button class="begin-btn" id="beginBtn">Begin</button>
-                <p class="opening-hint">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
-                    Turn your sound on
-                </p>
-            </div>
             <div class="intro-stage" id="introStage"></div>
             <div class="intro-nav">
                 <button class="prev-btn" id="introPrev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
@@ -711,10 +700,12 @@
                 body: 'We love caroling our church family. <strong>Sign up your own home too</strong>, and we\'ll come by as time allows.</p>' +
                     '<p class="body">We\'re not expecting <strong>sarmale</strong>. (Unless it\'s <strong>ciorbă de burtă</strong>. Then we might stay for one bowl.) We just want to bring the good news to you too and pray over your home. Please don\'t expect us to stay long: our priority is to reach as many homes as we can, and the non-believers come first.</p>' +
                     '<p class="body">We\'ll let you know about how many carolers are coming before we get to your house.'
-            }
+            },
+            { video: true }
         ];
 
         function slideHtml(sl, animate) {
+            if (sl.video) return animate ? '<div class="slide video-slide"><div id="trailerSlot"></div></div>' : '';
             // While animating, the Sing/Pray/Dip pieces and the text after them wait hidden
             const w = animate && sl.dip ? ' wait' : '';
             // Verse cards and the opening card: the small title shows big first, then moves up
@@ -741,13 +732,17 @@
                 stage.innerHTML = slideHtml(SLIDES[slideIndex], true);
                 stage.querySelector('.slide').classList.add('enter');
                 const slide = stage.querySelector('.slide');
-                if (SLIDES[slideIndex].dip) playDip(slide);
+                if (SLIDES[slideIndex].video) { $('trailerSlot').replaceWith(trailerBox); startTrailer(false); }
+                else { stopTrailer(); }
+                if (SLIDES[slideIndex].video) { /* the video is the whole card */ }
+                else if (SLIDES[slideIndex].dip) playDip(slide);
                 else if (!SLIDES[slideIndex].title || SLIDES[slideIndex].opening) playTitle(slide, !!SLIDES[slideIndex].opening);
                 else playText(slide, 450);
                 [...$('introDots').children].forEach((d, i) => d.classList.toggle('on', i === slideIndex));
                 $('introPrev').disabled = slideIndex === 0;
                 const last = slideIndex === SLIDES.length - 1;
                 $('introNext').firstElementChild.textContent = last ? 'Sign up' : 'Next';
+                $('introNext').classList.remove('ready');
             };
             cancelDip();
             const old = stage.querySelector('.slide');
@@ -777,7 +772,6 @@
                 f.className = 'floater';
                 f.textContent = box.dataset.say;
                 document.body.appendChild(f);
-                bell([1046.5, 1318.5, 1568.0][boxes.indexOf(box)], 0, 0.06, 1.5);
                 f.animate([{ opacity: 0, transform: 'translate(-50%, -50%) scale(0.6)' }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1.06)', offset: 0.7 }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }],
                     { duration: 380, easing: 'ease-out', fill: 'forwards' });
                 await wait(620);
@@ -884,7 +878,6 @@
             } else {
                 f.animate([{ opacity: 0, transform: 'translate(-50%, -50%) scale(0.7)' }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1.05)', offset: 0.7 }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }],
                     { duration: 420, easing: 'ease-out', fill: 'forwards' });
-                bell(1318.5, 0, 0.06, 1.6);
                 await wait(900);
             }
             if (!alive()) { f.remove(); return; }
@@ -912,11 +905,9 @@
             const typeIn = async (text) => {
                 f.innerHTML = [...text].map(c => `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
                 fit();
-                let note = 0;
                 for (const ch of f.querySelectorAll('.ch')) {
                     if (!alive()) return false;
                     ch.classList.add('on');
-                    if (ch.textContent.trim()) bell(TYPE_NOTES[note++ % TYPE_NOTES.length], 0, 0.05, 1.1);
                     await wait(ch.textContent.trim() ? 140 : 220);
                 }
                 return alive();
@@ -928,7 +919,6 @@
                 document.body.appendChild(c);
                 c.animate([{ opacity: 0, transform: `translate(-50%, ${y + 10}px)` }, { opacity: 1, transform: `translate(-50%, ${y}px)` }],
                     { duration: 550, easing: 'ease-out', fill: 'forwards' });
-                bell(1568.0, 0, 0.045, 1.6);
                 return c;
             };
             const fadeOut = (el) => settle(el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 450, fill: 'forwards' }), 450);
@@ -953,7 +943,6 @@
             await wait(1000);
             if (!alive()) return false;
             if (!(await typeIn('CAROLING 2026'))) return false;
-            chord();
             pulse();
             await wait(1400);
             if (!alive()) return false;
@@ -961,51 +950,6 @@
             c2.remove();
             return alive();
         }
-
-        // ----- Bells (Web Audio, no sound files). Phones only allow sound after a tap. -----
-        let actx = null;
-        let soundOn = store.get('carols-sound') !== 'off';
-        const TYPE_NOTES = [1046.5, 1174.7, 1318.5, 1568.0, 1760.0, 2093.0, 1760.0, 1568.0, 1318.5, 1568.0, 1760.0, 2093.0];
-        function ensureAudio() {
-            try {
-                const AC = window.AudioContext || window.webkitAudioContext;
-                if (!actx && AC) actx = new AC();
-                if (actx && actx.state === 'suspended') actx.resume();
-            } catch (e) {}
-            return actx;
-        }
-        function bell(freq, when = 0, vol = 0.06, dur = 1.4) {
-            if (!soundOn || !actx || actx.state !== 'running') return;
-            const t = actx.currentTime + when;
-            const g = actx.createGain();
-            g.gain.setValueAtTime(0.0001, t);
-            g.gain.exponentialRampToValueAtTime(vol, t + 0.008);
-            g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-            g.connect(actx.destination);
-            // a bell is a few out-of-tune partials that fade together
-            [[1, 1], [2.76, 0.32], [5.4, 0.1]].forEach(([m, a]) => {
-                const o = actx.createOscillator();
-                const og = actx.createGain();
-                o.type = 'sine';
-                o.frequency.value = freq * m;
-                og.gain.value = a;
-                o.connect(og); og.connect(g);
-                o.start(t); o.stop(t + dur + 0.05);
-            });
-        }
-        function chord() { [523.25, 659.25, 783.99, 1046.5, 1568.0].forEach((f, i) => bell(f, i * 0.06, 0.045, 2.6)); }
-        function paintSound() {
-            $('soundBtn').classList.toggle('off', !soundOn);
-            $('soundBtn').setAttribute('aria-pressed', soundOn);
-            $('soundBtn').setAttribute('aria-label', soundOn ? 'Sound on' : 'Sound off');
-        }
-        $('soundBtn').onclick = () => {
-            soundOn = !soundOn;
-            store.set('carols-sound', soundOn ? 'on' : 'off');
-            paintSound();
-            if (soundOn) { ensureAudio(); setTimeout(() => bell(1568, 0, 0.05, 0.9), 30); }
-        };
-        paintSound();
 
         // ----- Snow -----
         (() => {
@@ -1023,24 +967,12 @@
             snow.innerHTML = html;
         })();
 
-        // ----- Opening screen -----
+        // ----- Opening: starts by itself when the intro opens -----
         function startOpening() {
-            cancelDip();
             slideIndex = 0;
             $('introStage').innerHTML = '';
-            $('view-intro').classList.add('is-opening');
-            document.querySelector('.opening').classList.remove('leaving');
+            renderSlide(0);
         }
-        $('beginBtn').onclick = () => {
-            ensureAudio();
-            const op = document.querySelector('.opening');
-            op.classList.add('leaving');
-            setTimeout(() => {
-                $('view-intro').classList.remove('is-opening');
-                op.classList.remove('leaving');
-                renderSlide(0);
-            }, 330);
-        };
 
         // Wait for an animation, but never longer than its length (+ a bit). Browsers pause
         // animations in background tabs, and the intro must never get stuck.
@@ -1050,13 +982,53 @@
 
         function cancelDip() { dipRun++; document.querySelectorAll('.floater').forEach(f => f.remove()); }
 
+        // ----- The trailer (last card). It starts inside the Next tap, which is what
+        // lets phones play it with sound. If sound is still blocked it plays muted
+        // with a "Tap for sound" button. -----
+        const trailerBox = document.createElement('div');
+        trailerBox.className = 'trailer';
+        trailerBox.innerHTML = `<video playsinline preload="metadata" poster="media/caroling-trailer-poster.jpg" src="media/caroling-trailer.mp4"></video>
+            <button class="trailer-btn trailer-sound" aria-label="Sound">
+                <svg class="icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+                <svg class="icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+                <span class="label">Tap for sound</span>
+            </button>
+            <button class="trailer-btn trailer-replay" aria-label="Play again">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>
+            </button>`;
+        const trailer = trailerBox.querySelector('video');
+        const paintTrailer = () => trailerBox.classList.toggle('muted', trailer.muted);
+        function startTrailer(fromTap) {
+            trailerBox.classList.remove('ended');
+            if (fromTap) { try { trailer.currentTime = 0; } catch (e) {} }
+            if (!fromTap && !trailer.paused) return;           // already started by the tap
+            trailer.muted = false;
+            const p = trailer.play();
+            if (p && p.catch) p.catch(() => { trailer.muted = true; paintTrailer(); trailer.play().catch(() => {}); });
+            paintTrailer();
+        }
+        function stopTrailer() { if (!trailer.paused) trailer.pause(); }
+        trailer.addEventListener('ended', () => { trailerBox.classList.add('ended'); $('introNext').classList.add('ready'); });
+        trailer.addEventListener('click', () => { if (trailer.paused) startTrailer(true); else trailer.pause(); });
+        trailerBox.querySelector('.trailer-sound').onclick = () => {
+            trailer.muted = !trailer.muted;
+            if (!trailer.muted && trailer.paused && !trailerBox.classList.contains('ended')) trailer.play().catch(() => {});
+            paintTrailer();
+        };
+        trailerBox.querySelector('.trailer-replay').onclick = () => startTrailer(true);
+        const VIDEO_INDEX = SLIDES.findIndex(sl => sl.video);
+
         function finishIntro() {
+            stopTrailer();
             cancelDip();
             location.replace('#start');
         }
         $('introNext').onclick = () => {
-            if (slideIndex < SLIDES.length - 1) { slideIndex++; renderSlide(1); }
-            else finishIntro();
+            if (slideIndex < SLIDES.length - 1) {
+                slideIndex++;
+                if (slideIndex === VIDEO_INDEX) startTrailer(true);   // must happen during the tap
+                renderSlide(1);
+            } else finishIntro();
         };
         $('introPrev').onclick = () => { if (slideIndex > 0) { slideIndex--; renderSlide(-1); } };
         $('replayIntro').onclick = () => { slideIndex = 0; location.hash = 'intro'; };
@@ -1082,7 +1054,7 @@
             const toCarols = view === 'start' || view === 'done' || view === 'intro';
             $('topBackText').textContent = toCarols ? 'Carols' : 'Back';
             $('topBack').setAttribute('href', toCarols ? './' : '#');
-            if (view === 'intro') startOpening(); else cancelDip();
+            if (view === 'intro') startOpening(); else { cancelDip(); stopTrailer(); }
             document.body.classList.toggle('intro-on', view === 'intro');
             window.scrollTo(0, 0);
             if (view !== 'start' && view !== 'done' && view !== 'intro') {
