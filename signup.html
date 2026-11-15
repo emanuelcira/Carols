@@ -256,7 +256,7 @@
             font: 800 64px/1 Georgia, serif; color: var(--accent);
         }
         .verse q { quotes: none; display: block; font-size: 20px; line-height: 1.5; font-weight: 600; color: var(--text); }
-        .verse cite { display: block; margin-top: 12px; font-style: normal; font-size: 14px; font-weight: 700; color: var(--accent); }
+        .verse cite { display: block; margin-top: 14px; font-style: normal; font-size: 22px; font-weight: 800; letter-spacing: -0.01em; color: var(--accent); }
         .verse + p.body { margin-top: 20px; }
         .hl { background: linear-gradient(transparent 60%, var(--accent-soft) 60%); padding: 0 2px; }
 
@@ -273,21 +273,26 @@
         .dip span:nth-child(3).wiggle { animation: pop 0.4s cubic-bezier(.3, 1.6, .5, 1) 0.95s forwards, dipOut 0.6s ease-in-out 1.6s 1; }
         @keyframes pop { to { opacity: 1; transform: none; } }
         @keyframes dipOut { 0%, 100% { transform: none; } 40% { transform: translateX(10px) rotate(4deg); } 70% { transform: translateX(-3px); } }
-        .quote-row { display: flex; align-items: flex-end; gap: 10px; margin-top: 18px; }
-        .avatar {
-            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-            background: var(--accent); color: var(--accent-text);
-            display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px;
-        }
-        .quote-ema { padding: 14px 16px; border-radius: 16px 16px 16px 4px;
-            background: var(--surface-2); position: relative; max-width: 330px;
-        }
-        .quote-ema q { quotes: none; display: block; font-size: 17px; font-weight: 700; color: var(--text); }
-        .quote-ema cite { display: block; font-style: normal; font-size: 13px; color: var(--text-2); margin-top: 6px; }
-        .quote-ema cite small { display: block; font-size: 12px; color: var(--text-3); }
-        .no-list { list-style: none; margin-top: 14px; display: grid; gap: 6px; }
-        .no-list li { font-size: 16px; color: var(--text-2); display: flex; gap: 8px; align-items: baseline; }
-        .no-list li::before { content: ''; width: 10px; height: 2px; background: var(--text-3); flex-shrink: 0; transform: translateY(-4px); }
+
+        .dip { align-items: center; flex-wrap: nowrap; gap: 6px; }
+        .slide .dip span { font-size: clamp(19px, 6vw, 26px); padding: 9px 12px; }
+        .dip .qm { font: 800 40px/1 Georgia, serif; color: var(--accent); align-self: flex-start; margin-top: -4px; flex-shrink: 0; }
+        .dip .qm:last-of-type { align-self: flex-end; margin-bottom: -18px; }
+        .dip.by { margin-top: 10px; }
+        .dip.by .qm { font: 800 26px/1 -apple-system, BlinkMacSystemFont, sans-serif; align-self: center; margin: 0; }
+        .dip.by span { animation-delay: 1.35s; background: var(--accent-soft); color: var(--accent); }
+        .dip + .dip.by + p.body { margin-top: 18px; }
+
+        /* "Our priority": red and blue sweep across, then the words come in */
+        .sweep { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
+        .sweep i { position: absolute; inset: 0; transform: translateX(-101%); animation: sweep 1s cubic-bezier(.75, 0, .25, 1) forwards; }
+        .sweep .r { background: #c62828; }
+        .sweep .b { background: #1f3466; animation-delay: 0.14s; }
+        @keyframes sweep { 0% { transform: translateX(-101%); } 45%, 55% { transform: translateX(0); } 100% { transform: translateX(101%); } }
+        .slide.sweeping .eyebrow, .slide.sweeping h2 { opacity: 0; animation: riseIn 0.55s cubic-bezier(.2, .7, .2, 1) 0.85s forwards; }
+        .slide.sweeping h2 { animation-delay: 0.95s; }
+        .slide.sweeping p.body { opacity: 0; animation: riseIn 0.6s ease-out 1.6s forwards; }
+        @keyframes riseIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
         .intro-nav { display: flex; align-items: center; gap: 12px; }
         .dots { display: flex; gap: 6px; flex: 1; }
@@ -319,11 +324,13 @@
         .why-card .slide .eyebrow { margin-bottom: 8px; }
         .why-card .verse { box-shadow: none; background: var(--bg); margin-top: 14px; }
         .why-card .verse q { font-size: 17px; }
+        .why-card .verse cite { font-size: 18px; }
         .why-card .dip span { font-size: 20px; padding: 7px 12px; opacity: 1; transform: none; animation: none; }
         .replay { display: block; margin: 14px auto 0; border: none; background: none; color: var(--accent); font-size: 15px; font-weight: 600; cursor: pointer; }
 
         @media (prefers-reduced-motion: reduce) {
-            .slide.enter, .slide.leave, .dip span { animation: none !important; opacity: 1; transform: none; }
+            .slide.enter, .slide.leave, .dip span, .slide.sweeping * { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .sweep { display: none; }
         }
 
         footer { text-align: center; color: var(--text-3); font-size: 13px; margin-top: 28px; }
@@ -561,44 +568,39 @@
             },
             {
                 eyebrow: 'Why we go',
-                verse: ['How then will they call on him in whom they have not believed? And how are they to believe in him of whom they have never heard? And how are they to hear without someone preaching?', 'Romans 10:14'],
-                body: 'They won\'t hear unless someone goes. <strong>So we go.</strong>'
+                verse: ['How then will they call on him in whom they have not believed? And how are they to believe in him of whom they have never heard? And how are they to hear without someone preaching?', 'Romans 10:14']
             },
             {
                 eyebrow: 'What we bring',
-                verse: ['Fear not, for behold, I bring you good news of great joy that will be for all the people. For unto you is born this day in the city of David a Savior, who is Christ the Lord.', 'Luke 2:10–11'],
-                body: '<span class="hl">For all the people.</span> Not just the ones already in church.'
+                verse: ['Fear not, for behold, I bring you good news of great joy that will be for all the people. For unto you is born this day in the city of David a Savior, who is Christ the Lord.', 'Luke 2:10–11']
             },
             {
                 eyebrow: 'Our priority',
+                sweep: true,
                 title: 'So this year, they come first.',
-                body: 'Ask a neighbor or friend who isn\'t a Christian if we can come sing for them. <strong>If they say yes, sign them up.</strong> Those homes are at the top of our route.'
+                body: 'Ask a neighbor or friend who isn\'t a Christian if we can come sing for them. <strong>If they say yes, sign them up.</strong> Those homes are our priority.'
             },
             {
                 eyebrow: 'At their door',
                 title: 'We keep it simple.',
                 dip: true,
-                html: `<ul class="no-list">
-                        <li><span>No going inside</span></li>
-                        <li><span>No sarmale (we know, we know)</span></li>
-                        <li><span>No staying till midnight</span></li>
-                    </ul>
-                    <p class="body">We respect their time and their home.</p>
-                    <div class="quote-row"><span class="avatar">E</span><div class="quote-ema"><q>Sing, pray, and dip. That's the whole plan.</q><cite>Ema<small>Worship leader &amp; official caroling strategist</small></cite></div></div>`
+                body: '<strong>We respect their time and their home.</strong> We sing the good news to them, ask if we can pray over their family and their home, and then head to the next house. We keep it quick so we can make it to every home on the list.'
             },
             {
                 eyebrow: 'Church family',
                 title: 'That doesn\'t mean we forgot about you.',
-                body: 'We love caroling our church family. <strong>Sign up your own home too</strong>, and we\'ll come by as time allows.'
+                body: 'We love caroling our church family. <strong>Sign up your own home too</strong>, and we\'ll come by as time allows. Please understand that we\'re putting the non-believers first.'
             }
         ];
 
         function slideHtml(sl, animate) {
-            return `<div class="slide">
+            const sweep = animate && sl.sweep;
+            return `${sweep ? '<div class="sweep" aria-hidden="true"><i class="r"></i><i class="b"></i></div>' : ''}<div class="slide${sweep ? ' sweeping' : ''}">
                 <p class="eyebrow">${sl.eyebrow}</p>
                 ${sl.title ? `<h2>${sl.title}</h2>` : ''}
                 ${sl.verse ? `<blockquote class="verse"><q>${sl.verse[0]}</q><cite>${sl.verse[1]}</cite></blockquote>` : ''}
-                ${sl.dip ? `<div class="dip"><span>Sing.</span><span>Pray.</span><span class="${animate ? 'wiggle' : ''}">Dip.</span></div>` : ''}
+                ${sl.dip ? `<div class="dip"><b class="qm">&ldquo;</b><span>Sing.</span><span>Pray.</span><span class="${animate ? 'wiggle' : ''}">Dip.</span><b class="qm">&rdquo;</b></div>
+                    <div class="dip by"><b class="qm">…</b><span>Ema</span></div>` : ''}
                 ${sl.body ? `<p class="body">${sl.body}</p>` : ''}
                 ${sl.html || ''}
             </div>`;
@@ -611,14 +613,16 @@
             const stage = $('introStage');
             const draw = () => {
                 stage.innerHTML = slideHtml(SLIDES[slideIndex], true);
-                stage.firstElementChild.classList.add('enter');
+                stage.querySelector('.slide').classList.add('enter');
+                const sw = stage.querySelector('.sweep');
+                if (sw) setTimeout(() => sw.remove(), 1400);
                 [...$('introDots').children].forEach((d, i) => d.classList.toggle('on', i === slideIndex));
                 $('introPrev').disabled = slideIndex === 0;
                 const last = slideIndex === SLIDES.length - 1;
                 $('introNext').firstElementChild.textContent = last ? 'Sign up' : 'Next';
                 $('introSkip').hidden = last;
             };
-            const old = stage.firstElementChild;
+            const old = stage.querySelector('.slide');
             if (old && dir) { old.classList.remove('enter'); old.classList.add('leave'); setTimeout(draw, 200); }
             else draw();
         }
