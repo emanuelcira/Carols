@@ -8,11 +8,11 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <script>
-        // Apply the saved theme before the page paints, so it never flashes
+        // Light by default; dark only if the person switched to it. Applied before paint so it never flashes
         (function () {
             var t = null;
             try { t = localStorage.getItem('carols-theme'); } catch (e) {}
-            if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            if (t !== 'dark') t = 'light'; // light unless the person picked dark
             document.documentElement.setAttribute('data-theme', t);
         })();
     </script>

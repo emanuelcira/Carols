@@ -11,7 +11,7 @@
         (function () {
             var t = null;
             try { t = localStorage.getItem('carols-theme'); } catch (e) {}
-            if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            if (t !== 'dark') t = 'light'; // light unless the person picked dark
             document.documentElement.setAttribute('data-theme', t);
         })();
     </script>
@@ -234,6 +234,98 @@
             border: 1px solid var(--border); background: var(--surface); color: var(--text); font-size: 16px; font-weight: 600; cursor: pointer;
         }
 
+        /* ----- Intro cards ----- */
+        .intro { min-height: calc(100vh - 80px); min-height: calc(100svh - 80px); display: flex; flex-direction: column; padding-bottom: 8px; }
+        .intro-stage { flex: 1; display: flex; align-items: center; position: relative; }
+        .slide { width: 100%; padding: 8px 4px 24px; }
+        .slide.enter { animation: slideIn 0.45s cubic-bezier(.2, .7, .2, 1) both; }
+        .slide.leave { animation: slideOut 0.22s ease-in both; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+        @keyframes slideOut { to { opacity: 0; transform: translateY(-12px); } }
+        .slide .eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+        .slide h2 { font-size: 31px; line-height: 1.15; font-weight: 800; letter-spacing: -0.025em; color: var(--text); }
+        .slide p.body { font-size: 18px; color: var(--text-2); margin-top: 16px; line-height: 1.5; }
+        .slide p.body strong { color: var(--text); }
+        .verse {
+            margin-top: 4px; padding: 20px 20px 18px; border-radius: 18px;
+            background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+            position: relative;
+        }
+        .verse::before {
+            content: '\201C'; position: absolute; top: -18px; left: 14px;
+            font: 800 64px/1 Georgia, serif; color: var(--accent);
+        }
+        .verse q { quotes: none; display: block; font-size: 20px; line-height: 1.5; font-weight: 600; color: var(--text); }
+        .verse cite { display: block; margin-top: 12px; font-style: normal; font-size: 14px; font-weight: 700; color: var(--accent); }
+        .verse + p.body { margin-top: 20px; }
+        .hl { background: linear-gradient(transparent 60%, var(--accent-soft) 60%); padding: 0 2px; }
+
+        .dip { display: flex; gap: 8px; margin: 18px 0 4px; flex-wrap: wrap; }
+        .dip span {
+            font-size: 26px; font-weight: 800; letter-spacing: -0.02em;
+            padding: 10px 16px; border-radius: 14px; background: var(--accent); color: var(--accent-text);
+            opacity: 0; transform: translateY(10px) scale(0.9);
+            animation: pop 0.4s cubic-bezier(.3, 1.6, .5, 1) forwards;
+        }
+        .dip span:nth-child(1) { animation-delay: 0.25s; }
+        .dip span:nth-child(2) { animation-delay: 0.6s; }
+        .dip span:nth-child(3) { animation-delay: 0.95s; transform-origin: bottom left; }
+        .dip span:nth-child(3).wiggle { animation: pop 0.4s cubic-bezier(.3, 1.6, .5, 1) 0.95s forwards, dipOut 0.6s ease-in-out 1.6s 1; }
+        @keyframes pop { to { opacity: 1; transform: none; } }
+        @keyframes dipOut { 0%, 100% { transform: none; } 40% { transform: translateX(10px) rotate(4deg); } 70% { transform: translateX(-3px); } }
+        .quote-row { display: flex; align-items: flex-end; gap: 10px; margin-top: 18px; }
+        .avatar {
+            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+            background: var(--accent); color: var(--accent-text);
+            display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px;
+        }
+        .quote-ema { padding: 14px 16px; border-radius: 16px 16px 16px 4px;
+            background: var(--surface-2); position: relative; max-width: 330px;
+        }
+        .quote-ema q { quotes: none; display: block; font-size: 17px; font-weight: 700; color: var(--text); }
+        .quote-ema cite { display: block; font-style: normal; font-size: 13px; color: var(--text-2); margin-top: 6px; }
+        .quote-ema cite small { display: block; font-size: 12px; color: var(--text-3); }
+        .no-list { list-style: none; margin-top: 14px; display: grid; gap: 6px; }
+        .no-list li { font-size: 16px; color: var(--text-2); display: flex; gap: 8px; align-items: baseline; }
+        .no-list li::before { content: ''; width: 10px; height: 2px; background: var(--text-3); flex-shrink: 0; transform: translateY(-4px); }
+
+        .intro-nav { display: flex; align-items: center; gap: 12px; }
+        .dots { display: flex; gap: 6px; flex: 1; }
+        .dots i { width: 7px; height: 7px; border-radius: 99px; background: var(--border); transition: width 0.25s, background-color 0.25s; }
+        .dots i.on { width: 22px; background: var(--accent); }
+        .next-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 22px; border-radius: 999px; border: none; cursor: pointer;
+            background: var(--accent); color: var(--accent-text); font-size: 17px; font-weight: 700;
+        }
+        .next-btn svg { width: 18px; height: 18px; }
+        .next-btn:active { transform: scale(0.97); }
+        .skip-btn { border: none; background: none; color: var(--text-3); font-size: 15px; font-weight: 600; cursor: pointer; padding: 8px; }
+        .prev-btn {
+            width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--border); background: var(--surface);
+            color: var(--text-2); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+        }
+        .prev-btn svg { width: 18px; height: 18px; }
+        .prev-btn:disabled { visibility: hidden; }
+
+        /* The full story under the buttons */
+        .why { margin-top: 32px; }
+        .why h3 { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-3); margin: 0 4px 10px; }
+        .why-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 16px; box-shadow: var(--shadow); }
+        .why-card .slide { padding: 0; }
+        .why-card .slide + .slide { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--border); }
+        .why-card .slide h2 { font-size: 21px; }
+        .why-card .slide p.body { font-size: 16px; margin-top: 8px; }
+        .why-card .slide .eyebrow { margin-bottom: 8px; }
+        .why-card .verse { box-shadow: none; background: var(--bg); margin-top: 14px; }
+        .why-card .verse q { font-size: 17px; }
+        .why-card .dip span { font-size: 20px; padding: 7px 12px; opacity: 1; transform: none; animation: none; }
+        .replay { display: block; margin: 14px auto 0; border: none; background: none; color: var(--accent); font-size: 15px; font-weight: 600; cursor: pointer; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .slide.enter, .slide.leave, .dip span { animation: none !important; opacity: 1; transform: none; }
+        }
+
         footer { text-align: center; color: var(--text-3); font-size: 13px; margin-top: 28px; }
     </style>
 </head>
@@ -250,13 +342,24 @@
     </div>
 
     <div class="container">
-        <!-- ===== Start: explanation + three choices ===== -->
+        <!-- ===== Intro cards (first visit) ===== -->
+        <section id="view-intro" class="intro" hidden>
+            <div class="intro-stage" id="introStage"></div>
+            <div class="intro-nav">
+                <button class="prev-btn" id="introPrev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+                <div class="dots" id="introDots"></div>
+                <button class="skip-btn" id="introSkip">Skip</button>
+                <button class="next-btn" id="introNext"><span>Next</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </div>
+        </section>
+
+        <!-- ===== Start: three choices, then the full story ===== -->
         <section id="view-start">
             <header>
                 <img class="logo logo-light" src="logo.png" alt="RBCSF">
                 <img class="logo logo-dark" src="logo-white.png" alt="RBCSF">
                 <h1>Caroling Sign-up</h1>
-                <p class="lead">This Christmas we want to bring carols to people who don't know Jesus yet: your neighbors, coworkers and friends. Ask them if we can come sing for them, and if they say yes, sign them up here.</p>
+                <p class="lead">Invite a friend who doesn't know Jesus yet, tell us you're coming, or sign up your own home.</p>
             </header>
 
             <div class="info">
@@ -296,6 +399,11 @@
                     <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
                 </button>
             </div>
+            <section class="why">
+                <h3>Why we're doing this</h3>
+                <div class="why-card" id="whyCard"></div>
+                <button class="replay" id="replayIntro">Replay the intro</button>
+            </section>
             <footer>Sign-ups close December 20 · RBCSF</footer>
         </section>
 
@@ -318,7 +426,7 @@
                         <label><input type="radio" name="day" value="either">Either<small>night</small></label>
                     </div>
                 </fieldset>
-                <label class="field"><span>Notes <span class="opt">(optional)</span></span><textarea name="notes" maxlength="500" placeholder="Language they speak, kids, dog, gate code, best way in…"></textarea></label>
+                <label class="field"><span>Notes <span class="opt">(optional)</span></span><textarea name="notes" maxlength="500" placeholder="Parking info, if needed. For example: park down the street, don't park in the driveway."></textarea></label>
 
                 <p class="group-label">About you</p>
                 <div class="field-row">
@@ -442,21 +550,119 @@
             store.set('carols-theme', next);
         };
 
+        // ----- Intro cards -----
+        // Short cards that fade one into the next. Shown the first time on a phone,
+        // and always written out in full under the buttons.
+        const SLIDES = [
+            {
+                eyebrow: 'Caroling 2026',
+                title: 'This Christmas, we\'re going to the ones who haven\'t heard.',
+                body: 'Our neighbors. Our coworkers. Our friends who don\'t know Jesus yet.'
+            },
+            {
+                eyebrow: 'Why we go',
+                verse: ['How then will they call on him in whom they have not believed? And how are they to believe in him of whom they have never heard? And how are they to hear without someone preaching?', 'Romans 10:14'],
+                body: 'They won\'t hear unless someone goes. <strong>So we go.</strong>'
+            },
+            {
+                eyebrow: 'What we bring',
+                verse: ['Fear not, for behold, I bring you good news of great joy that will be for all the people. For unto you is born this day in the city of David a Savior, who is Christ the Lord.', 'Luke 2:10–11'],
+                body: '<span class="hl">For all the people.</span> Not just the ones already in church.'
+            },
+            {
+                eyebrow: 'Our priority',
+                title: 'So this year, they come first.',
+                body: 'Ask a neighbor or friend who isn\'t a Christian if we can come sing for them. <strong>If they say yes, sign them up.</strong> Those homes are at the top of our route.'
+            },
+            {
+                eyebrow: 'At their door',
+                title: 'We keep it simple.',
+                dip: true,
+                html: `<ul class="no-list">
+                        <li><span>No going inside</span></li>
+                        <li><span>No sarmale (we know, we know)</span></li>
+                        <li><span>No staying till midnight</span></li>
+                    </ul>
+                    <p class="body">We respect their time and their home.</p>
+                    <div class="quote-row"><span class="avatar">E</span><div class="quote-ema"><q>Sing, pray, and dip. That's the whole plan.</q><cite>Ema<small>Worship leader &amp; official caroling strategist</small></cite></div></div>`
+            },
+            {
+                eyebrow: 'Church family',
+                title: 'That doesn\'t mean we forgot about you.',
+                body: 'We love caroling our church family. <strong>Sign up your own home too</strong>, and we\'ll come by as time allows.'
+            }
+        ];
+
+        function slideHtml(sl, animate) {
+            return `<div class="slide">
+                <p class="eyebrow">${sl.eyebrow}</p>
+                ${sl.title ? `<h2>${sl.title}</h2>` : ''}
+                ${sl.verse ? `<blockquote class="verse"><q>${sl.verse[0]}</q><cite>${sl.verse[1]}</cite></blockquote>` : ''}
+                ${sl.dip ? `<div class="dip"><span>Sing.</span><span>Pray.</span><span class="${animate ? 'wiggle' : ''}">Dip.</span></div>` : ''}
+                ${sl.body ? `<p class="body">${sl.body}</p>` : ''}
+                ${sl.html || ''}
+            </div>`;
+        }
+        $('whyCard').innerHTML = SLIDES.map(sl => slideHtml(sl, false)).join('');
+
+        let slideIndex = 0;
+        $('introDots').innerHTML = SLIDES.map(() => '<i></i>').join('');
+        function renderSlide(dir) {
+            const stage = $('introStage');
+            const draw = () => {
+                stage.innerHTML = slideHtml(SLIDES[slideIndex], true);
+                stage.firstElementChild.classList.add('enter');
+                [...$('introDots').children].forEach((d, i) => d.classList.toggle('on', i === slideIndex));
+                $('introPrev').disabled = slideIndex === 0;
+                const last = slideIndex === SLIDES.length - 1;
+                $('introNext').firstElementChild.textContent = last ? 'Sign up' : 'Next';
+                $('introSkip').hidden = last;
+            };
+            const old = stage.firstElementChild;
+            if (old && dir) { old.classList.remove('enter'); old.classList.add('leave'); setTimeout(draw, 200); }
+            else draw();
+        }
+        function finishIntro() {
+            store.set('carols-intro-seen', '1');
+            location.replace('#start');
+        }
+        $('introNext').onclick = () => {
+            if (slideIndex < SLIDES.length - 1) { slideIndex++; renderSlide(1); }
+            else finishIntro();
+        };
+        $('introPrev').onclick = () => { if (slideIndex > 0) { slideIndex--; renderSlide(-1); } };
+        $('introSkip').onclick = finishIntro;
+        $('replayIntro').onclick = () => { slideIndex = 0; location.hash = 'intro'; };
+        // Swipe left / right between cards
+        (() => {
+            let x0 = null, y0 = null;
+            const el = $('view-intro');
+            el.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+            el.addEventListener('touchend', e => {
+                if (x0 === null) return;
+                const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+                x0 = null;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) (dx < 0 ? $('introNext') : $('introPrev')).click();
+            });
+        })();
+
         // ----- Views (the phone's back button works between them) -----
-        const VIEWS = ['start', 'invite', 'coming', 'home', 'done'];
+        const VIEWS = ['intro', 'start', 'invite', 'coming', 'home', 'done'];
         const closed = Date.now() >= CLOSES_AT;
         function show(view) {
             if (!VIEWS.includes(view) || (closed && view !== 'start')) view = 'start';
             VIEWS.forEach(v => { $('view-' + v).hidden = v !== view; });
-            $('topBackText').textContent = view === 'start' || view === 'done' ? 'Carols' : 'Back';
-            $('topBack').setAttribute('href', view === 'start' || view === 'done' ? './' : '#');
+            const toCarols = view === 'start' || view === 'done' || view === 'intro';
+            $('topBackText').textContent = toCarols ? 'Carols' : 'Back';
+            $('topBack').setAttribute('href', toCarols ? './' : '#');
+            if (view === 'intro') renderSlide(0);
             window.scrollTo(0, 0);
             if (view !== 'start' && view !== 'done') {
                 const form = $('view-' + view).querySelector('form');
                 form.querySelectorAll('[data-remember]').forEach(i => { if (!i.value) i.value = store.get('carols-signup-' + i.dataset.remember) || ''; });
             }
         }
-        const route = () => show(location.hash.slice(1) || 'start');
+        const route = () => show(location.hash.slice(1) || (store.get('carols-intro-seen') || closed ? 'start' : 'intro'));
         window.addEventListener('hashchange', route);
         $('topBack').onclick = (e) => {
             if ($('topBack').getAttribute('href') === '#') { e.preventDefault(); history.length > 1 ? history.back() : (location.hash = ''); }
