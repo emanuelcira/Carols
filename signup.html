@@ -333,6 +333,10 @@
         /* "CAROLING 2026" types in letter by letter */
         .floater.title.opening-title { font-size: 40px; }
         .floater .ch { opacity: 0; display: inline-block; }
+        .floater.cap {
+            background: none; box-shadow: none; padding: 0; border-radius: 0;
+            color: var(--text-2); font-size: 23px; font-weight: 700; letter-spacing: -0.01em;
+        }
         .floater .ch.on { animation: chIn 0.28s cubic-bezier(.3, 1.6, .5, 1) both; }
         @keyframes chIn { from { opacity: 0; transform: translateY(8px) scale(0.6); } to { opacity: 1; transform: none; } }
 
@@ -783,9 +787,9 @@
                 const dx = (b.left + b.width / 2) - (a.left + a.width / 2);
                 const dy = (b.top + b.height / 2) - (a.top + a.height / 2);
                 const sc = b.height / a.height;
-                await f.animate([{ transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                await settle(f.animate([{ transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
                     { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${sc})`, opacity: 0.2 }],
-                    { duration: 400, easing: 'cubic-bezier(.5, 0, .3, 1)', fill: 'forwards' }).finished.catch(() => {});
+                    { duration: 400, easing: 'cubic-bezier(.5, 0, .3, 1)', fill: 'forwards' }), 400);
                 f.remove();
                 if (!alive()) return;
                 show(box, 'land');
@@ -876,19 +880,7 @@
             const room = window.innerWidth - 40;
             if (f.offsetWidth > room) f.style.fontSize = (parseFloat(getComputedStyle(f).fontSize) * room / f.offsetWidth) + 'px';
             if (opening) {
-                // type it in, one bell per letter, then a chord
-                const chars = [...f.querySelectorAll('.ch')];
-                let note = 0;
-                for (const ch of chars) {
-                    if (!alive()) { f.remove(); return; }
-                    ch.classList.add('on');
-                    if (ch.textContent.trim()) bell(TYPE_NOTES[note++ % TYPE_NOTES.length], 0, 0.05, 1.1);
-                    await wait(ch.textContent.trim() ? 130 : 200);
-                }
-                chord();
-                f.animate([{ transform: 'translate(-50%, -50%) scale(1)' }, { transform: 'translate(-50%, -50%) scale(1.08)' }, { transform: 'translate(-50%, -50%) scale(1)' }],
-                    { duration: 600, easing: 'ease-in-out' });
-                await wait(1100);
+                if (!(await openingShow(f, alive, wait))) { f.remove(); return; }
             } else {
                 f.animate([{ opacity: 0, transform: 'translate(-50%, -50%) scale(0.7)' }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1.05)', offset: 0.7 }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }],
                     { duration: 420, easing: 'ease-out', fill: 'forwards' });
@@ -900,12 +892,74 @@
             const dx = b.left - a.left, dy = (b.top + b.height / 2) - (a.top + a.height / 2);
             const sc = b.height / a.height;
             f.style.transformOrigin = 'left center';
-            await f.animate([{ transform: 'translate(-50%, -50%) scale(1)' },
+            await settle(f.animate([{ transform: 'translate(-50%, -50%) scale(1)' },
                 { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${sc})` }],
-                { duration: 520, easing: 'cubic-bezier(.5, 0, .25, 1)', fill: 'forwards' }).finished.catch(() => {});
+                { duration: 520, easing: 'cubic-bezier(.5, 0, .25, 1)', fill: 'forwards' }), 520);
             f.remove();
             if (!alive()) return;
             finish(h2 ? 350 : 80);
+        }
+
+        // ----- The opening (about 10-12 seconds):
+        //   CHRISTMAS 2026 types in, "is here." fades in under it, both fade away,
+        //   "So we're going" appears, CAROLING 2026 types in, then it glides up into card 1.
+        async function openingShow(f, alive, wait) {
+            const fit = () => {
+                f.style.fontSize = '';
+                const room = window.innerWidth - 40;
+                if (f.offsetWidth > room) f.style.fontSize = (parseFloat(getComputedStyle(f).fontSize) * room / f.offsetWidth) + 'px';
+            };
+            const typeIn = async (text) => {
+                f.innerHTML = [...text].map(c => `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
+                fit();
+                let note = 0;
+                for (const ch of f.querySelectorAll('.ch')) {
+                    if (!alive()) return false;
+                    ch.classList.add('on');
+                    if (ch.textContent.trim()) bell(TYPE_NOTES[note++ % TYPE_NOTES.length], 0, 0.05, 1.1);
+                    await wait(ch.textContent.trim() ? 140 : 220);
+                }
+                return alive();
+            };
+            const caption = (text, y) => {
+                const c = document.createElement('div');
+                c.className = 'floater cap';
+                c.textContent = text;
+                document.body.appendChild(c);
+                c.animate([{ opacity: 0, transform: `translate(-50%, ${y + 10}px)` }, { opacity: 1, transform: `translate(-50%, ${y}px)` }],
+                    { duration: 550, easing: 'ease-out', fill: 'forwards' });
+                bell(1568.0, 0, 0.045, 1.6);
+                return c;
+            };
+            const fadeOut = (el) => settle(el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 450, fill: 'forwards' }), 450);
+            const pulse = () => f.animate([{ transform: 'translate(-50%, -50%) scale(1)' }, { transform: 'translate(-50%, -50%) scale(1.08)' }, { transform: 'translate(-50%, -50%) scale(1)' }],
+                { duration: 600, easing: 'ease-in-out' });
+
+            await wait(250);
+            if (!(await typeIn('CHRISTMAS 2026'))) return false;
+            pulse();
+            await wait(700);
+            if (!alive()) return false;
+            const c1 = caption('is here.', 34);
+            await wait(1800);
+            if (!alive()) return false;
+            await Promise.all([fadeOut(f), fadeOut(c1)]);
+            c1.remove();
+            f.innerHTML = '';                              // clear before it becomes visible again
+            f.getAnimations().forEach(a => a.cancel());
+            if (!alive()) return false;
+            await wait(250);
+            const c2 = caption('So we\'re going', -66);
+            await wait(1000);
+            if (!alive()) return false;
+            if (!(await typeIn('CAROLING 2026'))) return false;
+            chord();
+            pulse();
+            await wait(1400);
+            if (!alive()) return false;
+            await fadeOut(c2);
+            c2.remove();
+            return alive();
         }
 
         // ----- Bells (Web Audio, no sound files). Phones only allow sound after a tap. -----
@@ -987,6 +1041,12 @@
                 renderSlide(0);
             }, 330);
         };
+
+        // Wait for an animation, but never longer than its length (+ a bit). Browsers pause
+        // animations in background tabs, and the intro must never get stuck.
+        function settle(anim, ms) {
+            return Promise.race([anim.finished.catch(() => {}), new Promise(r => setTimeout(r, ms + 120))]);
+        }
 
         function cancelDip() { dipRun++; document.querySelectorAll('.floater').forEach(f => f.remove()); }
 
