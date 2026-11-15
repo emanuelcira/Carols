@@ -627,7 +627,7 @@
                 verse: ['Fear not, for behold, I bring you good news of great joy that will be for all the people. For unto you is born this day in the city of David a Savior, who is Christ the Lord.', 'Luke 2:10–11']
             },
             {
-                eyebrow: 'What we pray over them',
+                eyebrow: 'Our prayer',
                 verses: [
                     ['Believe in the Lord Jesus, and you will be saved, you and your household.', 'Acts 16:31'],
                     ['Everyone who calls on the name of the Lord will be saved.', 'Romans 10:13']
@@ -810,6 +810,9 @@
             f.className = 'floater title';
             f.textContent = eyebrow.textContent;
             document.body.appendChild(f);
+            // never wider than the screen
+            const room = window.innerWidth - 40;
+            if (f.offsetWidth > room) f.style.fontSize = (30 * room / f.offsetWidth) + 'px';
             f.animate([{ opacity: 0, transform: 'translate(-50%, -50%) scale(0.7)' }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1.05)', offset: 0.7 }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }],
                 { duration: 420, easing: 'ease-out', fill: 'forwards' });
             await wait(900);
