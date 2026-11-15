@@ -306,6 +306,11 @@
             box-shadow: 0 18px 40px rgba(16, 24, 40, 0.18);
         }
 
+        .floater.title {
+            background: none; box-shadow: none; padding: 0; border-radius: 0;
+            color: var(--accent); font-size: 30px; letter-spacing: 0.08em; text-transform: uppercase;
+        }
+
         /* Word-by-word text */
         .slide .w { display: inline-block; opacity: 0; animation: wordIn 0.32s ease-out both; }
         @keyframes wordIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
@@ -651,10 +656,11 @@
         function slideHtml(sl, animate) {
             // While animating, the Sing/Pray/Dip pieces and the text after them wait hidden
             const w = animate && sl.dip ? ' wait' : '';
+            const bigTitle = animate && !sl.title && (sl.verse || sl.verses);   // verse cards: title shows big first
             return `<div class="slide">
-                <p class="eyebrow">${sl.eyebrow}</p>
+                <p class="eyebrow${bigTitle ? ' wait' : ''}">${sl.eyebrow}</p>
                 ${sl.title ? `<h2 class="${animate ? 'jump' : ''}">${sl.title}</h2>` : ''}
-                ${(sl.verses || (sl.verse ? [sl.verse] : [])).map(v => `<blockquote class="verse"><q>${v[0]}</q><cite>${v[1]}</cite></blockquote>`).join('')}
+                ${(sl.verses || (sl.verse ? [sl.verse] : [])).map(v => `<blockquote class="verse${bigTitle ? ' wait' : ''}"><q>${v[0]}</q><cite>${v[1]}</cite></blockquote>`).join('')}
                 ${sl.dip ? `<div class="dip-line">
                         <span class="dip-group"><b class="qm${w}">&ldquo;</b><span class="box${w}" data-say="We sing.">Sing.</span><span class="box${w}" data-say="We pray.">Pray.</span><span class="box${w}" data-say="We dip.">Dip.</span><b class="qm close${w}">&rdquo;</b></span>
                         <span class="dip-group by${w}"><span class="dots3">…</span><span class="box soft">Ema</span></span>
@@ -674,7 +680,8 @@
                 stage.querySelector('.slide').classList.add('enter');
                 const slide = stage.querySelector('.slide');
                 if (SLIDES[slideIndex].dip) playDip(slide);
-                else playText(slide, SLIDES[slideIndex].title ? 450 : 150);
+                else if (!SLIDES[slideIndex].title) playTitle(slide);
+                else playText(slide, 450);
                 [...$('introDots').children].forEach((d, i) => d.classList.toggle('on', i === slideIndex));
                 $('introPrev').disabled = slideIndex === 0;
                 const last = slideIndex === SLIDES.length - 1;
@@ -785,6 +792,39 @@
                     t += 450;
                 } else t += 200;
             });
+        }
+
+        // Verse cards: the title ("Why we go") appears big in the middle of the screen,
+        // then shrinks up into its place, then the verse comes in word by word.
+        async function playTitle(slide) {
+            const run = ++dipRun;
+            const alive = () => run === dipRun && slide.isConnected;
+            const wait = (ms) => new Promise(r => setTimeout(r, ms));
+            const eyebrow = slide.querySelector('.eyebrow');
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !document.body.animate) {
+                eyebrow.classList.remove('wait');
+                playText(slide, 0);
+                return;
+            }
+            const f = document.createElement('div');
+            f.className = 'floater title';
+            f.textContent = eyebrow.textContent;
+            document.body.appendChild(f);
+            f.animate([{ opacity: 0, transform: 'translate(-50%, -50%) scale(0.7)' }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1.05)', offset: 0.7 }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }],
+                { duration: 420, easing: 'ease-out', fill: 'forwards' });
+            await wait(900);
+            if (!alive()) { f.remove(); return; }
+            const a = f.getBoundingClientRect(), b = eyebrow.getBoundingClientRect();
+            const dx = b.left - a.left, dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+            const sc = b.height / a.height;
+            f.style.transformOrigin = 'left center';
+            await f.animate([{ transform: 'translate(-50%, -50%) scale(1)' },
+                { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${sc})` }],
+                { duration: 520, easing: 'cubic-bezier(.5, 0, .25, 1)', fill: 'forwards' }).finished.catch(() => {});
+            f.remove();
+            if (!alive()) return;
+            eyebrow.classList.remove('wait');
+            playText(slide, 80);
         }
 
         function cancelDip() { dipRun++; document.querySelectorAll('.floater').forEach(f => f.remove()); }
