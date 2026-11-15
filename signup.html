@@ -272,7 +272,7 @@
         .verse + .verse { margin-top: 30px; }
         .hl { background: linear-gradient(transparent 60%, var(--accent-soft) 60%); padding: 0 2px; }
 
-        /* Sing. Pray. Dip. … Ema  (one line when it fits) */
+        /* “ Sing. Pray. Dip. ” */
         .dip-line { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 8px; margin: 18px 0 4px; }
         .dip-group { display: flex; align-items: center; gap: 5px; flex-wrap: nowrap; }
         .dip-line .box {
@@ -716,7 +716,6 @@
                 ${(sl.verses || (sl.verse ? [sl.verse] : [])).map(v => `<blockquote class="verse${bigTitle ? ' wait' : ''}"><q>${v[0]}</q><cite>${v[1]}</cite></blockquote>`).join('')}
                 ${sl.dip ? `<div class="dip-line">
                         <span class="dip-group"><b class="qm${w}">&ldquo;</b><span class="box${w}" data-say="We sing.">Sing.</span><span class="box${w}" data-say="We pray.">Pray.</span><span class="box${w}" data-say="We dip.">Dip.</span><b class="qm close${w}">&rdquo;</b></span>
-                        <span class="dip-group by${w}"><span class="dots3">…</span><span class="box soft">Ema</span></span>
                     </div>` : ''}
                 ${sl.body ? `<p class="body${w}${bigTitle ? ' wait' : ''}">${sl.body}</p>` : ''}
                 ${sl.html || ''}
@@ -795,9 +794,6 @@
             void boxes[2].offsetWidth;
             boxes[2].classList.add('wiggle');
             await wait(450);
-            if (!alive()) return;
-            show(slide.querySelector('.dip-group.by'), 'pop');
-            await wait(350);
             if (!alive()) return;
             playText(slide, 0);
         }
