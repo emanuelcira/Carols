@@ -306,7 +306,12 @@
             box-shadow: 0 18px 40px rgba(16, 24, 40, 0.18);
         }
 
-        /* "Our priority": the title jumps in with a little wiggle */
+        /* Word-by-word text */
+        .slide .w { display: inline-block; opacity: 0; animation: wordIn 0.32s ease-out both; }
+        @keyframes wordIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+        .verse.jump { transform-origin: left center; }
+
+        /* Headlines (and verse boxes) jump in with a little wiggle */
         .slide .jump { animation: jump 0.75s cubic-bezier(.3, 1.5, .5, 1) both; transform-origin: left bottom; }
         @keyframes jump {
             0% { opacity: 0; transform: translateY(24px) scale(0.92); }
@@ -356,7 +361,7 @@
         .replay { display: block; margin: 14px auto 0; border: none; background: none; color: var(--accent); font-size: 15px; font-weight: 600; cursor: pointer; }
 
         @media (prefers-reduced-motion: reduce) {
-            .slide.enter, .slide.leave, .slide .wait, .slide .pop, .slide .land, .slide .fade, .slide .jump, .slide .wiggle { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .slide.enter, .slide.leave, .slide .wait, .slide .pop, .slide .land, .slide .fade, .slide .jump, .slide .wiggle, .slide .w { animation: none !important; opacity: 1 !important; transform: none !important; }
             .floater { display: none; }
         }
 
@@ -625,7 +630,6 @@
             },
             {
                 eyebrow: 'Our priority',
-                jump: true,
                 title: 'So this year, they come first.',
                 body: 'Ask a neighbor or friend who isn\'t a Christian if we can come carol for them. <strong>If they say yes, sign them up.</strong> Those homes are our priority.'
             },
@@ -649,13 +653,13 @@
             const w = animate && sl.dip ? ' wait' : '';
             return `<div class="slide">
                 <p class="eyebrow">${sl.eyebrow}</p>
-                ${sl.title ? `<h2 class="${animate && sl.jump ? 'jump' : ''}">${sl.title}</h2>` : ''}
+                ${sl.title ? `<h2 class="${animate ? 'jump' : ''}">${sl.title}</h2>` : ''}
                 ${(sl.verses || (sl.verse ? [sl.verse] : [])).map(v => `<blockquote class="verse"><q>${v[0]}</q><cite>${v[1]}</cite></blockquote>`).join('')}
                 ${sl.dip ? `<div class="dip-line">
                         <span class="dip-group"><b class="qm${w}">&ldquo;</b><span class="box${w}" data-say="We sing.">Sing.</span><span class="box${w}" data-say="We pray.">Pray.</span><span class="box${w}" data-say="We dip.">Dip.</span><b class="qm close${w}">&rdquo;</b></span>
                         <span class="dip-group by${w}"><span class="dots3">…</span><span class="box soft">Ema</span></span>
                     </div>` : ''}
-                ${sl.body ? `<p class="body${w}${animate && sl.jump ? ' fade" style="animation-delay:0.55s' : ''}">${sl.body}</p>` : ''}
+                ${sl.body ? `<p class="body${w}">${sl.body}</p>` : ''}
                 ${sl.html || ''}
             </div>`;
         }
@@ -668,7 +672,9 @@
             const draw = () => {
                 stage.innerHTML = slideHtml(SLIDES[slideIndex], true);
                 stage.querySelector('.slide').classList.add('enter');
-                if (SLIDES[slideIndex].dip) playDip(stage.querySelector('.slide'));
+                const slide = stage.querySelector('.slide');
+                if (SLIDES[slideIndex].dip) playDip(slide);
+                else playText(slide, SLIDES[slideIndex].title ? 450 : 150);
                 [...$('introDots').children].forEach((d, i) => d.classList.toggle('on', i === slideIndex));
                 $('introPrev').disabled = slideIndex === 0;
                 const last = slideIndex === SLIDES.length - 1;
@@ -729,8 +735,58 @@
             show(slide.querySelector('.dip-group.by'), 'pop');
             await wait(350);
             if (!alive()) return;
-            slide.querySelectorAll('p.body.wait').forEach(el => show(el, 'fade'));
+            playText(slide, 0);
         }
+        // Verses and descriptions appear word by word (headlines jump in whole).
+        // Everything is scheduled with CSS animation delays, so a new card simply replaces it.
+        const WORD_MS = 45;
+        function wrapWords(el) {
+            const words = [];
+            const walk = (node) => {
+                [...node.childNodes].forEach(n => {
+                    if (n.nodeType === 3) {
+                        const frag = document.createDocumentFragment();
+                        n.textContent.split(/(\s+)/).forEach(part => {
+                            if (!part) return;
+                            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+                            const sp = document.createElement('span');
+                            sp.className = 'w';
+                            sp.textContent = part;
+                            words.push(sp);
+                            frag.appendChild(sp);
+                        });
+                        n.replaceWith(frag);
+                    } else if (n.nodeType === 1) walk(n);
+                });
+            };
+            walk(el);
+            return words;
+        }
+        function playText(slide, start) {
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let t = start;
+            slide.querySelectorAll('.verse, p.body').forEach(block => {
+                block.classList.remove('wait');
+                if (reduce) return;
+                const isVerse = block.classList.contains('verse');
+                if (isVerse) {
+                    block.classList.add('jump');
+                    block.style.animationDelay = t + 'ms';
+                    t += 300;
+                }
+                wrapWords(isVerse ? block.querySelector('q') : block).forEach(w => {
+                    w.style.animationDelay = t + 'ms';
+                    t += WORD_MS;
+                });
+                if (isVerse) {
+                    const cite = block.querySelector('cite');
+                    cite.classList.add('fade');
+                    cite.style.animationDelay = (t + 100) + 'ms';
+                    t += 450;
+                } else t += 200;
+            });
+        }
+
         function cancelDip() { dipRun++; document.querySelectorAll('.floater').forEach(f => f.remove()); }
 
         function finishIntro() {
