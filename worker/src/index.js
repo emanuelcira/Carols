@@ -135,9 +135,9 @@ export default {
           if (total.n >= MAX_SIGNUPS) return json({ error: 'Sign-ups are full right now.' }, 429);
 
           await env.DB.prepare(`INSERT INTO signups
-              (kind, name, phone, address, city, day, contact_name, contact_phone, transport, seats, people, notes, ip, created_at)
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
-            .bind(v.kind, v.name, v.phone, v.address, v.city, v.day, v.contact_name, v.contact_phone,
+              (kind, name, phone, address, city, day, time_pref, contact_name, contact_phone, transport, seats, people, notes, ip, created_at)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+            .bind(v.kind, v.name, v.phone, v.address, v.city, v.day, v.time_pref, v.contact_name, v.contact_phone,
                   v.transport, v.seats, v.people, v.notes, ip, Date.now()).run();
           return json({ ok: true });
         }
@@ -145,7 +145,7 @@ export default {
         if (!(await isEditor(request))) return json({ error: 'Not allowed' }, 401);
 
         if (request.method === 'GET' && parts.length === 1) {
-          const { results } = await env.DB.prepare(`SELECT id, kind, name, phone, address, city, day, contact_name,
+          const { results } = await env.DB.prepare(`SELECT id, kind, name, phone, address, city, day, time_pref, contact_name,
               contact_phone, transport, seats, people, notes, created_at FROM signups ORDER BY created_at`).all();
           return json({ signups: results, closesAt: SIGNUPS_CLOSE_AT });
         }
@@ -182,6 +182,7 @@ function validateSignup(b) {
     transport: '',
     seats: 0,
     people: 1,
+    time_pref: '',
     notes: String(b.notes || '').replace(/\r\n/g, '\n').trim().slice(0, 500)
   };
   if (!v.name) return { error: 'Add a name' };
@@ -195,6 +196,8 @@ function validateSignup(b) {
     v.address = ''; v.city = ''; v.contact_name = ''; v.contact_phone = '';
   } else {
     if (!['24', '25', 'either'].includes(v.day)) return { error: 'Choose which night' };
+    v.time_pref = ['early', 'late', 'any'].includes(b.time_pref) ? b.time_pref : '';
+    if (!v.time_pref) return { error: 'Choose a preferred time' };
     if (!v.address || !v.city) return { error: 'Add the address and city' };
     if (kind === 'neighbor') {
       if (!v.contact_name || !v.contact_phone) return { error: 'Add your name and phone' };

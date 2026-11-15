@@ -448,6 +448,14 @@
                         <label><input type="radio" name="day" value="either">Either<small>night</small></label>
                     </div>
                 </fieldset>
+                <fieldset>
+                    <span class="legend">Preferred time</span>
+                    <div class="seg">
+                        <label><input type="radio" name="time_pref" value="early" required>Earlier<small>first half of the night</small></label>
+                        <label><input type="radio" name="time_pref" value="late">Later<small>second half</small></label>
+                        <label><input type="radio" name="time_pref" value="any">Any time<small>works for them</small></label>
+                    </div>
+                </fieldset>
                 <label class="field"><span>Notes <span class="opt">(optional)</span></span><textarea name="notes" maxlength="500" placeholder="Parking info, if needed. For example: park down the street, don't park in the driveway."></textarea></label>
 
                 <p class="group-label">About you</p>
@@ -529,6 +537,14 @@
                         <label><input type="radio" name="day" value="either">Either<small>night</small></label>
                     </div>
                 </fieldset>
+                <fieldset>
+                    <span class="legend">Preferred time</span>
+                    <div class="seg">
+                        <label><input type="radio" name="time_pref" value="early" required>Earlier<small>first half of the night</small></label>
+                        <label><input type="radio" name="time_pref" value="late">Later<small>second half</small></label>
+                        <label><input type="radio" name="time_pref" value="any">Any time<small>works for us</small></label>
+                    </div>
+                </fieldset>
                 <label class="field"><span>Notes <span class="opt">(optional)</span></span><textarea name="notes" maxlength="500" placeholder="Gate code, parking, anything helpful"></textarea></label>
                 <p class="error-msg" hidden></p>
                 <button class="submit" type="submit">Sign up my home</button>
@@ -604,7 +620,9 @@
             {
                 eyebrow: 'Church family',
                 title: 'That doesn\'t mean we forgot about you.',
-                body: 'We love caroling our church family. <strong>Sign up your own home too</strong>, and we\'ll come by as time allows. Please understand that we\'re putting the non-believers first.'
+                body: 'We love caroling our church family. <strong>Sign up your own home too</strong>, and we\'ll come by as time allows.</p>' +
+                    '<p class="body">We\'re not expecting sarmale. We just want to bring the good news to you too and pray over your home. Please don\'t expect us to stay long: our priority is to reach as many homes as we can, and the non-believers come first.</p>' +
+                    '<p class="body">We\'ll let you know about how many carolers are coming before we get to your house.'
             }
         ];
 

@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS signups (
   address       TEXT    NOT NULL DEFAULT '',
   city          TEXT    NOT NULL DEFAULT '',
   day           TEXT    NOT NULL,
+  time_pref     TEXT    NOT NULL DEFAULT '',   -- homes: early, late or any
   contact_name  TEXT    NOT NULL DEFAULT '',
   contact_phone TEXT    NOT NULL DEFAULT '',
   transport     TEXT    NOT NULL DEFAULT '',

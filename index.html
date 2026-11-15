@@ -1889,6 +1889,8 @@
         let signups = null;
         let signupsTab = 'homes';
         const NIGHT = { '24': 'Dec 24', '25': 'Dec 25', either: 'Either night', both: 'Both nights' };
+        const TIME_PREF = { early: 'Earlier', late: 'Later', any: 'Any time' };
+        const TIME_ORDER = { early: 0, late: 1, any: 2, '': 3 };
         const TRANSPORT = { seats: 'Driving, has free seats', full: 'Driving, car full', ride: 'Needs a ride' };
         const mapsUrl = (x) => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(x.address + ', ' + x.city + ', CA');
         const telLink = (p) => p ? `<a href="tel:${escapeHtml(p.replace(/[^\d+]/g, ''))}">${escapeHtml(p)}</a>` : '';
@@ -1956,7 +1958,8 @@
             </div>`;
 
             if (signupsTab === 'homes') {
-                const byPriority = (a, b) => (a.kind === 'neighbor' ? 0 : 1) - (b.kind === 'neighbor' ? 0 : 1) || a.created_at - b.created_at;
+                const byPriority = (a, b) => (a.kind === 'neighbor' ? 0 : 1) - (b.kind === 'neighbor' ? 0 : 1) ||
+                    TIME_ORDER[a.time_pref || ''] - TIME_ORDER[b.time_pref || ''] || a.created_at - b.created_at;
                 html += ['24', '25', 'either'].map(n => {
                     const list = homes.filter(x => x.day === n).sort(byPriority);
                     return list.length ? `<div class="su-group"><h4>${NIGHT[n]}</h4>${list.map(homeItem).join('')}</div>` : '';
@@ -1989,6 +1992,7 @@
                     <span class="su-tag ${x.kind === 'neighbor' ? 'inv' : 'mem'}">${x.kind === 'neighbor' ? 'Invited' : 'Church'}</span>
                 </div>
                 <p class="su-line">${escapeHtml(x.address)}, ${escapeHtml(x.city)}</p>
+                ${x.time_pref ? `<p class="su-line">Preferred time: <strong>${TIME_PREF[x.time_pref]}</strong></p>` : ''}
                 <p class="su-line">${x.kind === 'neighbor'
                     ? `Invited by ${escapeHtml(x.contact_name)} · ${telLink(x.contact_phone)}`
                     : telLink(x.phone)}</p>
@@ -2067,6 +2071,7 @@
             const cols = [
                 ['Type', x => ({ neighbor: 'Invited home', member: 'Church home', caroler: 'Caroler' }[x.kind])],
                 ['Night', x => NIGHT[x.day]],
+                ['Preferred time', x => TIME_PREF[x.time_pref] || ''],
                 ['Name', x => x.name],
                 ['Address', x => x.address],
                 ['City', x => x.city],
