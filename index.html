@@ -1426,7 +1426,7 @@
                     }).join('')}
                 </div>`).join('');
 
-            if (!day.stops.length) html = '<p class="muted">No stops yet.</p>';
+            if (!day.stops.length) html = `<p class="muted">${editing ? 'No stops yet. Add one below, or use Add to route from the sign-up list.' : 'The route will be posted here before Christmas.'}</p>`;
             if (editing) {
                 html += editingStopId === 'new'
                     ? stopForm(stopPrefill || { city: day.stops.length ? day.stops[day.stops.length - 1].city : '', name: '', address: '' }, day.stops.length + 1)

@@ -293,99 +293,13 @@
       "id": "dec24",
       "title": "December 24th",
       "subtitle": "After Youth Service",
-      "stops": [
-        {
-          "id": "s1",
-          "city": "San Leandro",
-          "name": "Tamas + Neighbors",
-          "address": "1065 Auburn Ave"
-        },
-        {
-          "id": "s2",
-          "city": "Castro Valley",
-          "name": "Gheorghiesh Fam.",
-          "address": "3700 Carlwyn Ct"
-        },
-        {
-          "id": "s3",
-          "city": "Castro Valley",
-          "name": "Patricia & Bocsan",
-          "address": "4724 Mira Vista Dr."
-        },
-        {
-          "id": "s4",
-          "city": "Castro Valley",
-          "name": "Bejenariu",
-          "address": "4481 Hillsborough Dr."
-        },
-        {
-          "id": "s5",
-          "city": "Walnut Creek",
-          "name": "Mircea Ilie",
-          "address": "921 Jeffrey Lane"
-        },
-        {
-          "id": "s6",
-          "city": "Concord",
-          "name": "Triff",
-          "address": "3641 Wren Ave"
-        },
-        {
-          "id": "s7",
-          "city": "Concord",
-          "name": "Lenuța Neagoe",
-          "address": "1530 Center Ave"
-        },
-        {
-          "id": "s8",
-          "city": "Concord",
-          "name": "Ruthy",
-          "address": "2708 Rio Seco Dr."
-        }
-      ]
+      "stops": []
     },
     {
       "id": "dec25",
       "title": "December 25th",
       "subtitle": "After Evening Service",
-      "stops": [
-        {
-          "id": "s9",
-          "city": "San Leandro",
-          "name": "Dochita",
-          "address": "1664 Maubert Ct"
-        },
-        {
-          "id": "s10",
-          "city": "Castro Valley",
-          "name": "Cami Zidaru",
-          "address": "16540 Hannah Dr"
-        },
-        {
-          "id": "s11",
-          "city": "Castro Valley",
-          "name": "Rusu",
-          "address": "16737 Almond Rd"
-        },
-        {
-          "id": "s12",
-          "city": "Alamo",
-          "name": "Stamatoiu",
-          "address": "1621 Via Romero"
-        },
-        {
-          "id": "s13",
-          "city": "San Ramon",
-          "name": "Ploscariu",
-          "address": "3007 Bernard Ave"
-        },
-        {
-          "id": "s14",
-          "city": "Livermore",
-          "name": "Sfeatcu",
-          "address": "3934 California Way"
-        }
-      ]
+      "stops": []
     }
   ]
 }
