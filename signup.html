@@ -162,7 +162,17 @@
         .field > span, .legend { font-size: 14px; font-weight: 600; color: var(--text-2); }
         .field .opt { font-weight: 400; color: var(--text-3); }
         .field-row { display: flex; gap: 12px; }
-        .field input[type="time"] { min-height: 48px; text-align: left; }
+        .time-row { display: flex; align-items: center; gap: 8px; }
+        .time-row select {
+            flex: 1; min-width: 0; padding: 12px 30px 12px 12px; font-size: 17px; font-weight: 600;
+            border: 1px solid var(--border); border-radius: 10px; background-color: var(--bg); color: var(--text);
+            -webkit-appearance: none; appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b92a3' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 10px center; background-size: 16px;
+        }
+        .time-row select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+        .time-row b { font-size: 18px; color: var(--text-2); }
+        .time-row .pm { font-size: 17px; font-weight: 700; color: var(--accent); background: var(--accent-soft); border-radius: 10px; padding: 12px 14px; }
         .field input, .field textarea {
             width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px;
             background: var(--bg); color: var(--text); font-size: 16px; -webkit-appearance: none; appearance: none;
@@ -450,7 +460,14 @@
                         <label><input type="radio" name="day" value="either">Either<small>night</small></label>
                     </div>
                 </fieldset>
-                <label class="field"><span>Preferred time</span><input type="time" name="time_pref" required step="300"></label>
+                <div class="field"><span>Preferred time</span>
+                    <div class="time-row">
+                        <select name="time_h" required aria-label="Hour"></select>
+                        <b>:</b>
+                        <select name="time_m" aria-label="Minutes"></select>
+                        <span class="pm">PM</span>
+                    </div>
+                </div>
                 <label class="field"><span>Notes <span class="opt">(optional)</span></span><textarea name="notes" maxlength="500" placeholder="Parking info, if needed. For example: park down the street, don't park in the driveway."></textarea></label>
 
                 <p class="group-label">About you</p>
@@ -532,7 +549,14 @@
                         <label><input type="radio" name="day" value="either">Either<small>night</small></label>
                     </div>
                 </fieldset>
-                <label class="field"><span>Preferred time</span><input type="time" name="time_pref" required step="300"></label>
+                <div class="field"><span>Preferred time</span>
+                    <div class="time-row">
+                        <select name="time_h" required aria-label="Hour"></select>
+                        <b>:</b>
+                        <select name="time_m" aria-label="Minutes"></select>
+                        <span class="pm">PM</span>
+                    </div>
+                </div>
                 <label class="field"><span>Notes <span class="opt">(optional)</span></span><textarea name="notes" maxlength="500" placeholder="Gate code, parking, anything helpful"></textarea></label>
                 <p class="error-msg" hidden></p>
                 <button class="submit" type="submit">Sign up my home</button>
@@ -778,6 +802,14 @@
             $('seatsRow').hidden = document.querySelector('input[name="transport"]:checked').value !== 'seats';
         });
 
+        // ----- Preferred time: evening only, so the hour list is PM and AM is never shown -----
+        document.querySelectorAll('select[name="time_h"]').forEach(sel => {
+            sel.innerHTML = '<option value="">Hour</option>' + [4, 5, 6, 7, 8, 9, 10, 11].map(h => `<option value="${h + 12}">${h}</option>`).join('');
+        });
+        document.querySelectorAll('select[name="time_m"]').forEach(sel => {
+            sel.innerHTML = Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, '0')).map(m => `<option value="${m}">${m}</option>`).join('');
+        });
+
         // ----- City suggestions from the schedule -----
         fetch('data.json?t=' + Date.now()).then(r => r.json()).then(d => {
             const cities = new Set();
@@ -804,6 +836,10 @@
                 for (const [k, v] of fd.entries()) body[k] = typeof v === 'string' ? v.trim() : v;
                 body.agreed = kind === 'neighbor' ? form.elements.agreed.checked : undefined;
                 form.querySelectorAll('[data-stepper]').forEach(st => { body[st.dataset.stepper] = +st.querySelector('output').value; });
+                if ('time_h' in body) {
+                    body.time_pref = body.time_h ? `${body.time_h}:${body.time_m || '00'}` : '';
+                    delete body.time_h; delete body.time_m;
+                }
 
                 // Check required fields with friendly messages
                 const missing = [...form.querySelectorAll('[required]')].find(el =>
