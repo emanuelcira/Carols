@@ -258,6 +258,7 @@
         .verse q { quotes: none; display: block; font-size: 20px; line-height: 1.5; font-weight: 600; color: var(--text); }
         .verse cite { display: block; margin-top: 14px; font-style: normal; font-size: 22px; font-weight: 800; letter-spacing: -0.01em; color: var(--accent); }
         .verse + p.body { margin-top: 20px; }
+        .verse + .verse { margin-top: 30px; }
         .hl { background: linear-gradient(transparent 60%, var(--accent-soft) 60%); padding: 0 2px; }
 
         /* Sing. Pray. Dip. … Ema  (one line when it fits) */
@@ -607,7 +608,10 @@
             },
             {
                 eyebrow: 'What we pray over them',
-                verse: ['For I am not ashamed of the gospel, for it is the power of God for salvation to everyone who believes.', 'Romans 1:16']
+                verses: [
+                    ['Everyone who calls on the name of the Lord will be saved.', 'Romans 10:13'],
+                    ['Believe in the Lord Jesus, and you will be saved, you and your household.', 'Acts 16:31']
+                ]
             },
             {
                 eyebrow: 'Our priority',
@@ -636,7 +640,7 @@
             return `<div class="slide">
                 <p class="eyebrow">${sl.eyebrow}</p>
                 ${sl.title ? `<h2 class="${animate && sl.jump ? 'jump' : ''}">${sl.title}</h2>` : ''}
-                ${sl.verse ? `<blockquote class="verse"><q>${sl.verse[0]}</q><cite>${sl.verse[1]}</cite></blockquote>` : ''}
+                ${(sl.verses || (sl.verse ? [sl.verse] : [])).map(v => `<blockquote class="verse"><q>${v[0]}</q><cite>${v[1]}</cite></blockquote>`).join('')}
                 ${sl.dip ? `<div class="dip-line">
                         <span class="dip-group"><b class="qm${w}">&ldquo;</b><span class="box${w}" data-say="We sing.">Sing.</span><span class="box${w}" data-say="We pray.">Pray.</span><span class="box${w}" data-say="We dip.">Dip.</span><b class="qm close${w}">&rdquo;</b></span>
                         <span class="dip-group by${w}"><span class="dots3">…</span><span class="box soft">Ema</span></span>
