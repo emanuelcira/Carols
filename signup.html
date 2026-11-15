@@ -260,42 +260,57 @@
         .verse + p.body { margin-top: 20px; }
         .hl { background: linear-gradient(transparent 60%, var(--accent-soft) 60%); padding: 0 2px; }
 
-        .dip { display: flex; gap: 8px; margin: 18px 0 4px; flex-wrap: wrap; }
-        .dip span {
-            font-size: 26px; font-weight: 800; letter-spacing: -0.02em;
-            padding: 10px 16px; border-radius: 14px; background: var(--accent); color: var(--accent-text);
-            opacity: 0; transform: translateY(10px) scale(0.9);
-            animation: pop 0.4s cubic-bezier(.3, 1.6, .5, 1) forwards;
+        /* Sing. Pray. Dip. … Ema  (one line when it fits) */
+        .dip-line { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 8px; margin: 18px 0 4px; }
+        .dip-group { display: flex; align-items: center; gap: 5px; flex-wrap: nowrap; }
+        .dip-line .box {
+            font-size: clamp(16px, 4.7vw, 24px); font-weight: 800; letter-spacing: -0.02em;
+            padding: 7px 10px; border-radius: 12px; background: var(--accent); color: var(--accent-text);
+            display: inline-block; transform-origin: center bottom;
         }
-        .dip span:nth-child(1) { animation-delay: 0.25s; }
-        .dip span:nth-child(2) { animation-delay: 0.6s; }
-        .dip span:nth-child(3) { animation-delay: 0.95s; transform-origin: bottom left; }
-        .dip span:nth-child(3).wiggle { animation: pop 0.4s cubic-bezier(.3, 1.6, .5, 1) 0.95s forwards, dipOut 0.6s ease-in-out 1.6s 1; }
-        @keyframes pop { to { opacity: 1; transform: none; } }
-        @keyframes dipOut { 0%, 100% { transform: none; } 40% { transform: translateX(10px) rotate(4deg); } 70% { transform: translateX(-3px); } }
+        .dip-line .box.soft { background: var(--accent-soft); color: var(--accent); }
+        .dip-line .qm { font: 800 34px/1 Georgia, serif; color: var(--accent); align-self: flex-start; margin-top: -4px; }
+        .dip-line .qm.close { align-self: flex-end; margin: 0 0 -16px; }
+        .dip-line .dots3 { font-size: 24px; font-weight: 800; color: var(--accent); }
+        .dip-line + p.body { margin-top: 18px; }
 
-        .dip { align-items: center; flex-wrap: nowrap; gap: 6px; }
-        .slide .dip span { font-size: clamp(19px, 6vw, 26px); padding: 9px 12px; }
-        .dip .qm { font: 800 40px/1 Georgia, serif; color: var(--accent); align-self: flex-start; margin-top: -4px; flex-shrink: 0; }
-        .dip .qm:last-of-type { align-self: flex-end; margin-bottom: -18px; }
-        .dip.by { margin-top: 10px; }
-        .dip.by .qm { font: 800 26px/1 -apple-system, BlinkMacSystemFont, sans-serif; align-self: center; margin: 0; }
-        .dip.by span { animation-delay: 1.35s; background: var(--accent-soft); color: var(--accent); }
-        .dip + .dip.by + p.body { margin-top: 18px; }
+        /* While the intro plays, pieces wait hidden and pop in on cue */
+        .slide .wait { opacity: 0; }
+        .slide .pop { animation: pop 0.45s cubic-bezier(.3, 1.6, .5, 1) both; }
+        .slide .land { animation: land 0.35s ease-out both; }
+        .slide .fade { animation: riseIn 0.5s ease-out both; }
+        .slide .box.wiggle { animation: wiggle 0.6s ease-in-out both; }
+        @keyframes pop { from { opacity: 0; transform: translateY(10px) scale(0.85); } to { opacity: 1; transform: none; } }
+        @keyframes land { from { opacity: 0.4; transform: scale(1.12); } to { opacity: 1; transform: none; } }
+        @keyframes riseIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+        @keyframes wiggle { 0%, 100% { transform: none; } 30% { transform: translateX(8px) rotate(5deg); } 60% { transform: translateX(-3px) rotate(-2deg); } }
 
-        /* "Our priority": red and blue sweep across, then the words come in */
-        .sweep { position: fixed; inset: 0; z-index: 50; pointer-events: none; overflow: hidden; }
-        .sweep i { position: absolute; inset: 0; transform: translateX(-101%); animation: sweep 1s cubic-bezier(.75, 0, .25, 1) forwards; }
-        .sweep .r { background: #c62828; }
-        .sweep .b { background: #1f3466; animation-delay: 0.14s; }
-        @keyframes sweep { 0% { transform: translateX(-101%); } 45%, 55% { transform: translateX(0); } 100% { transform: translateX(101%); } }
-        .slide.sweeping .eyebrow, .slide.sweeping h2 { opacity: 0; animation: riseIn 0.55s cubic-bezier(.2, .7, .2, 1) 0.85s forwards; }
-        .slide.sweeping h2 { animation-delay: 0.95s; }
-        .slide.sweeping p.body { opacity: 0; animation: riseIn 0.6s ease-out 1.6s forwards; }
-        @keyframes riseIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+        /* The big word that appears first, then flies into its box */
+        .floater {
+            position: fixed; left: 50%; top: 42%; z-index: 40; pointer-events: none;
+            transform: translate(-50%, -50%);
+            font-size: 44px; font-weight: 800; letter-spacing: -0.03em; white-space: nowrap;
+            padding: 12px 22px; border-radius: 20px; background: var(--accent); color: var(--accent-text);
+            box-shadow: 0 18px 40px rgba(16, 24, 40, 0.18);
+        }
+
+        /* "Our priority": the title jumps in with a little wiggle */
+        .slide .jump { animation: jump 0.75s cubic-bezier(.3, 1.5, .5, 1) both; transform-origin: left bottom; }
+        @keyframes jump {
+            0% { opacity: 0; transform: translateY(24px) scale(0.92); }
+            55% { opacity: 1; transform: translateY(-6px) scale(1.03) rotate(-1.2deg); }
+            75% { transform: translateY(2px) rotate(0.8deg); }
+            100% { opacity: 1; transform: none; }
+        }
 
         .intro-nav { display: flex; align-items: center; gap: 12px; }
-        .dots { display: flex; gap: 6px; flex: 1; }
+        .dots { display: flex; gap: 6px; flex: 1; min-width: 0; }
+        @media (max-width: 360px) {
+            .intro-nav { gap: 8px; }
+            .next-btn { padding: 13px 16px; font-size: 16px; }
+            .skip-btn { padding: 8px 2px; }
+            .dots { gap: 4px; }
+        }
         .dots i { width: 7px; height: 7px; border-radius: 99px; background: var(--border); transition: width 0.25s, background-color 0.25s; }
         .dots i.on { width: 22px; background: var(--accent); }
         .next-btn {
@@ -325,12 +340,12 @@
         .why-card .verse { box-shadow: none; background: var(--bg); margin-top: 14px; }
         .why-card .verse q { font-size: 17px; }
         .why-card .verse cite { font-size: 18px; }
-        .why-card .dip span { font-size: 20px; padding: 7px 12px; opacity: 1; transform: none; animation: none; }
+        .why-card .dip-line .box { font-size: clamp(15px, 4.4vw, 20px); }
         .replay { display: block; margin: 14px auto 0; border: none; background: none; color: var(--accent); font-size: 15px; font-weight: 600; cursor: pointer; }
 
         @media (prefers-reduced-motion: reduce) {
-            .slide.enter, .slide.leave, .dip span, .slide.sweeping * { animation: none !important; opacity: 1 !important; transform: none !important; }
-            .sweep { display: none; }
+            .slide.enter, .slide.leave, .slide .wait, .slide .pop, .slide .land, .slide .fade, .slide .jump, .slide .wiggle { animation: none !important; opacity: 1 !important; transform: none !important; }
+            .floater { display: none; }
         }
 
         footer { text-align: center; color: var(--text-3); font-size: 13px; margin-top: 28px; }
@@ -576,7 +591,7 @@
             },
             {
                 eyebrow: 'Our priority',
-                sweep: true,
+                jump: true,
                 title: 'So this year, they come first.',
                 body: 'Ask a neighbor or friend who isn\'t a Christian if we can come sing for them. <strong>If they say yes, sign them up.</strong> Those homes are our priority.'
             },
@@ -594,14 +609,17 @@
         ];
 
         function slideHtml(sl, animate) {
-            const sweep = animate && sl.sweep;
-            return `${sweep ? '<div class="sweep" aria-hidden="true"><i class="r"></i><i class="b"></i></div>' : ''}<div class="slide${sweep ? ' sweeping' : ''}">
+            // While animating, the Sing/Pray/Dip pieces and the text after them wait hidden
+            const w = animate && sl.dip ? ' wait' : '';
+            return `<div class="slide">
                 <p class="eyebrow">${sl.eyebrow}</p>
-                ${sl.title ? `<h2>${sl.title}</h2>` : ''}
+                ${sl.title ? `<h2 class="${animate && sl.jump ? 'jump' : ''}">${sl.title}</h2>` : ''}
                 ${sl.verse ? `<blockquote class="verse"><q>${sl.verse[0]}</q><cite>${sl.verse[1]}</cite></blockquote>` : ''}
-                ${sl.dip ? `<div class="dip"><b class="qm">&ldquo;</b><span>Sing.</span><span>Pray.</span><span class="${animate ? 'wiggle' : ''}">Dip.</span><b class="qm">&rdquo;</b></div>
-                    <div class="dip by"><b class="qm">…</b><span>Ema</span></div>` : ''}
-                ${sl.body ? `<p class="body">${sl.body}</p>` : ''}
+                ${sl.dip ? `<div class="dip-line">
+                        <span class="dip-group"><b class="qm${w}">&ldquo;</b><span class="box${w}" data-say="We sing.">Sing.</span><span class="box${w}" data-say="We pray.">Pray.</span><span class="box${w}" data-say="We dip.">Dip.</span><b class="qm close${w}">&rdquo;</b></span>
+                        <span class="dip-group by${w}"><span class="dots3">…</span><span class="box soft">Ema</span></span>
+                    </div>` : ''}
+                ${sl.body ? `<p class="body${w}${animate && sl.jump ? ' fade" style="animation-delay:0.55s' : ''}">${sl.body}</p>` : ''}
                 ${sl.html || ''}
             </div>`;
         }
@@ -614,19 +632,74 @@
             const draw = () => {
                 stage.innerHTML = slideHtml(SLIDES[slideIndex], true);
                 stage.querySelector('.slide').classList.add('enter');
-                const sw = stage.querySelector('.sweep');
-                if (sw) setTimeout(() => sw.remove(), 1400);
+                if (SLIDES[slideIndex].dip) playDip(stage.querySelector('.slide'));
                 [...$('introDots').children].forEach((d, i) => d.classList.toggle('on', i === slideIndex));
                 $('introPrev').disabled = slideIndex === 0;
                 const last = slideIndex === SLIDES.length - 1;
                 $('introNext').firstElementChild.textContent = last ? 'Sign up' : 'Next';
                 $('introSkip').hidden = last;
             };
+            cancelDip();
             const old = stage.querySelector('.slide');
             if (old && dir) { old.classList.remove('enter'); old.classList.add('leave'); setTimeout(draw, 200); }
             else draw();
         }
+        // Each word shows up big ("We sing."), then shrinks into its box.
+        // A new slide (Next/Back) cancels whatever is still running.
+        let dipRun = 0;
+        async function playDip(slide) {
+            const run = ++dipRun;
+            const alive = () => run === dipRun && slide.isConnected;
+            const wait = (ms) => new Promise(r => setTimeout(r, ms));
+            const show = (el, cls) => { el.classList.remove('wait'); el.classList.add(cls); };
+            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const boxes = [...slide.querySelectorAll('.box[data-say]')];
+            if (reduce || !document.body.animate) {
+                slide.querySelectorAll('.wait').forEach(el => el.classList.remove('wait'));
+                return;
+            }
+            await wait(350);
+            if (!alive()) return;
+            show(slide.querySelector('.qm'), 'pop');
+            for (const box of boxes) {
+                if (!alive()) return;
+                const f = document.createElement('div');
+                f.className = 'floater';
+                f.textContent = box.dataset.say;
+                document.body.appendChild(f);
+                f.animate([{ opacity: 0, transform: 'translate(-50%, -50%) scale(0.6)' }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1.06)', offset: 0.7 }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }],
+                    { duration: 380, easing: 'ease-out', fill: 'forwards' });
+                await wait(620);
+                if (!alive()) { f.remove(); return; }
+                // fly from the middle of the screen into the box
+                const a = f.getBoundingClientRect(), b = box.getBoundingClientRect();
+                const dx = (b.left + b.width / 2) - (a.left + a.width / 2);
+                const dy = (b.top + b.height / 2) - (a.top + a.height / 2);
+                const sc = b.height / a.height;
+                await f.animate([{ transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+                    { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(${sc})`, opacity: 0.2 }],
+                    { duration: 400, easing: 'cubic-bezier(.5, 0, .3, 1)', fill: 'forwards' }).finished.catch(() => {});
+                f.remove();
+                if (!alive()) return;
+                show(box, 'land');
+                await wait(160);
+            }
+            if (!alive()) return;
+            show(slide.querySelector('.qm.close'), 'pop');
+            boxes[2].classList.remove('land');
+            void boxes[2].offsetWidth;
+            boxes[2].classList.add('wiggle');
+            await wait(450);
+            if (!alive()) return;
+            show(slide.querySelector('.dip-group.by'), 'pop');
+            await wait(350);
+            if (!alive()) return;
+            slide.querySelectorAll('p.body.wait').forEach(el => show(el, 'fade'));
+        }
+        function cancelDip() { dipRun++; document.querySelectorAll('.floater').forEach(f => f.remove()); }
+
         function finishIntro() {
+            cancelDip();
             store.set('carols-intro-seen', '1');
             location.replace('#start');
         }
@@ -659,7 +732,7 @@
             const toCarols = view === 'start' || view === 'done' || view === 'intro';
             $('topBackText').textContent = toCarols ? 'Carols' : 'Back';
             $('topBack').setAttribute('href', toCarols ? './' : '#');
-            if (view === 'intro') renderSlide(0);
+            if (view === 'intro') renderSlide(0); else cancelDip();
             window.scrollTo(0, 0);
             if (view !== 'start' && view !== 'done') {
                 const form = $('view-' + view).querySelector('form');
