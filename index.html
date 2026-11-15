@@ -834,6 +834,52 @@
         .pill.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
         .pill b { font-variant-numeric: tabular-nums; }
 
+
+        /* ----- Sign-up link + private sign-up list ----- */
+        .signup-link {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px; margin: -12px 0 24px;
+            background: var(--accent); color: var(--accent-text);
+            border-radius: var(--radius); text-decoration: none;
+        }
+        .signup-link .ic { width: 22px; height: 22px; flex-shrink: 0; }
+        .signup-link .t1 { display: block; font-size: 15px; font-weight: 700; }
+        .signup-link .t2 { display: block; font-size: 13px; opacity: 0.85; margin-top: 1px; }
+        .signup-link .chevron { color: var(--accent-text); opacity: 0.7; margin-left: auto; }
+        .signups-btn { margin: -12px 0 24px; }
+        .signup-link + .signups-btn { margin-top: -14px; }
+
+        .su-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+        .su-night { background: var(--surface-2); border-radius: 12px; padding: 12px; }
+        .su-night h3 { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+        .su-night dl { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; font-size: 13px; color: var(--text-2); }
+        .su-night dd { font-weight: 700; color: var(--text); text-align: right; font-variant-numeric: tabular-nums; }
+        .su-night dd.warn { color: #c4362c; }
+        :root[data-theme="dark"] .su-night dd.warn { color: #f08a80; }
+        .su-either { grid-column: 1 / -1; font-size: 13px; color: var(--text-2); }
+        .su-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; background: var(--surface-2); border-radius: 12px; margin-bottom: 16px; }
+        .su-tabs button { border: none; background: transparent; padding: 9px; border-radius: 9px; font-size: 14px; font-weight: 600; color: var(--text-2); cursor: pointer; }
+        .su-tabs button.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1); }
+        :root[data-theme="dark"] .su-tabs button.active { background: var(--border); box-shadow: none; }
+        .su-group { margin-bottom: 20px; }
+        .su-group > h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin: 0 2px 8px; }
+        .su-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 8px; }
+        .su-item.neighbor { border-left: 4px solid var(--accent); }
+        .su-top { display: flex; align-items: flex-start; gap: 8px; }
+        .su-name { font-size: 16px; font-weight: 700; flex: 1; min-width: 0; }
+        .su-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.03em; border-radius: 6px; padding: 2px 7px; white-space: nowrap; flex-shrink: 0; }
+        .su-tag.inv { background: var(--accent); color: var(--accent-text); }
+        .su-tag.mem { background: var(--surface-2); color: var(--text-2); }
+        .su-tag.route { background: var(--accent-soft); color: var(--accent); }
+        .su-line { font-size: 14px; color: var(--text-2); margin-top: 2px; }
+        .su-line a { color: var(--accent); font-weight: 600; text-decoration: none; }
+        .su-notes { font-size: 14px; color: var(--text); background: var(--surface-2); border-radius: 8px; padding: 8px 10px; margin-top: 8px; white-space: pre-wrap; }
+        .su-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+        .su-actions .btn { padding: 7px 11px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+        .su-actions .btn svg { width: 14px; height: 14px; }
+        .su-actions .spacer { flex: 1; }
+        .su-footer { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--border); }
+        .stop-form .hint.public { margin-top: -4px; }
     </style>
 </head>
 <body>
@@ -873,6 +919,13 @@
                 <span><span class="t1">Christmas Day</span><span class="t2">After evening service</span></span>
             </button>
         </div>
+
+        <a class="signup-link" href="signup.html">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M12 17.5s-3.2-2-3.2-4.1a1.8 1.8 0 0 1 3.2-1.1 1.8 1.8 0 0 1 3.2 1.1c0 2.1-3.2 4.1-3.2 4.1z"/></svg>
+            <span><span class="t1">Caroling sign-up</span><span class="t2">Invite a friend, or tell us you're coming</span></span>
+            <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+        <button class="add-btn edit-only signups-btn" id="signupsBtn">Sign-up list (only you can see it)</button>
 
         <div class="search-wrap">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -999,6 +1052,24 @@
                 </div>
             </div>
             <div class="sheet-body scalable" id="scheduleBody"></div>
+        </div>
+    </div>
+
+    <div class="sheet" id="signupsModal" role="dialog" aria-modal="true" aria-labelledby="signupsTitle">
+        <div class="sheet-panel">
+            <div class="sheet-header">
+                <div class="sheet-heading">
+                    <h2 class="sheet-title" id="signupsTitle">Sign-ups</h2>
+                    <p class="sheet-subtitle" id="signupsSubtitle">Private. Only editors can see this.</p>
+                </div>
+                <div class="sheet-actions">
+                    <button class="icon-btn" id="refreshSignupsBtn" aria-label="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></svg></button>
+                    <button class="icon-btn" id="closeSignupsBtn" aria-label="Close">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="sheet-body" id="signupsBody"></div>
         </div>
     </div>
 
@@ -1151,10 +1222,11 @@
             if (openSheet === modal && !typing && e.key === 'ArrowRight') stepCarol(1);
             if (openSheet === modal && !typing && e.key === 'ArrowLeft') stepCarol(-1);
         });
-        [modal, scheduleModal].forEach(el => el.addEventListener('click', (e) => { if (e.target === el) hideSheet(); }));
+        [modal, scheduleModal, $('signupsModal')].forEach(el => el.addEventListener('click', (e) => { if (e.target === el) hideSheet(); }));
         tokenModal.addEventListener('click', (e) => { if (e.target === tokenModal) closeToken(null); });
         $('closeBtn').onclick = () => hideSheet();
         $('closeScheduleBtn').onclick = () => hideSheet();
+        $('closeSignupsBtn').onclick = () => hideSheet();
 
         // ---------- Edit mode ----------
         const isEditing = () => document.body.classList.contains('editing');
@@ -1303,6 +1375,7 @@
         // ---------- Schedule ----------
         function openSchedule(id) {
             currentScheduleId = id;
+            if (!stopPrefill) editingStopId = null;
             renderSchedule();
             scheduleBody.scrollTop = 0;
             showSheet(scheduleModal);
@@ -1311,6 +1384,7 @@
         $('dec25Btn').addEventListener('click', () => openSchedule('dec25'));
 
         let editingStopId = null; // id of the stop being edited, or 'new'
+        let stopPrefill = null;   // values from a sign-up, for "Add to route"
 
         function renderSchedule() {
             const day = data.schedule.find(d => d.id === currentScheduleId);
@@ -1355,7 +1429,7 @@
             if (!day.stops.length) html = '<p class="muted">No stops yet.</p>';
             if (editing) {
                 html += editingStopId === 'new'
-                    ? stopForm({ city: day.stops.length ? day.stops[day.stops.length - 1].city : '', name: '', address: '' }, day.stops.length + 1)
+                    ? stopForm(stopPrefill || { city: day.stops.length ? day.stops[day.stops.length - 1].city : '', name: '', address: '' }, day.stops.length + 1)
                     : `<button class="add-btn" id="addStopBtn"><span>+</span> Add stop</button>`;
             }
             scheduleBody.innerHTML = html;
@@ -1367,6 +1441,7 @@
                 <label class="field"><span>Family / name</span><input name="name" required value="${escapeHtml(stop.name)}" autocomplete="off"></label>
                 <label class="field"><span>Address</span><input name="address" required value="${escapeHtml(stop.address)}" autocomplete="off"></label>
                 <label class="field"><span>City</span><input name="city" required value="${escapeHtml(stop.city)}" list="cityList" autocomplete="off"></label>
+                ${stop.fromNeighbor ? '<p class="hint public">The schedule is public. For a friend we invited, a first name or "Friend of the …" may be better than a full name.</p>' : ''}
                 <div class="form-actions">
                     <span class="spacer"></span>
                     <button type="button" class="btn" data-cancel-stop>Cancel</button>
@@ -1378,9 +1453,9 @@
         scheduleBody.addEventListener('click', async (e) => {
             const edit = e.target.closest('[data-edit-stop]');
             const del = e.target.closest('[data-delete-stop]');
-            if (edit) { editingStopId = edit.dataset.editStop; renderSchedule(); focusFirst('#stopForm'); return; }
-            if (e.target.closest('#addStopBtn')) { editingStopId = 'new'; renderSchedule(); focusFirst('#stopForm'); return; }
-            if (e.target.closest('[data-cancel-stop]')) { editingStopId = null; renderSchedule(); return; }
+            if (edit) { editingStopId = edit.dataset.editStop; stopPrefill = null; renderSchedule(); focusFirst('#stopForm'); return; }
+            if (e.target.closest('#addStopBtn')) { editingStopId = 'new'; stopPrefill = null; renderSchedule(); focusFirst('#stopForm'); return; }
+            if (e.target.closest('[data-cancel-stop]')) { editingStopId = null; stopPrefill = null; renderSchedule(); return; }
             if (del) {
                 const day = data.schedule.find(d => d.id === currentScheduleId);
                 const stop = day.stops.find(s => s.id === del.dataset.deleteStop);
@@ -1412,7 +1487,7 @@
                     if (s) Object.assign(s, values);
                 }
             }, `${isNew ? 'Add' : 'Update'} ${values.name} on ${day.title}`);
-            if (ok) { editingStopId = null; renderSchedule(); }
+            if (ok) { editingStopId = null; stopPrefill = null; renderSchedule(); }
         });
 
         function focusFirst(sel) { setTimeout(() => { const el = document.querySelector(sel + ' input, ' + sel + ' textarea'); if (el) el.focus(); }, 30); }
@@ -1802,6 +1877,221 @@
                 if (e.status !== 0) toast('Could not delete the song (' + e.message + ')', true);
                 return false;
             }
+        }
+
+        // =====================================================================
+        // Caroling sign-ups (from signup.html). Private: read with the editor's
+        // GitHub token through the Worker. "Add to route" opens the schedule
+        // with a new stop filled in from the sign-up.
+        // =====================================================================
+        const signupsModal = $('signupsModal');
+        const signupsBody = $('signupsBody');
+        let signups = null;
+        let signupsTab = 'homes';
+        const NIGHT = { '24': 'Dec 24', '25': 'Dec 25', either: 'Either night', both: 'Both nights' };
+        const TRANSPORT = { seats: 'Driving, has free seats', full: 'Driving, car full', ride: 'Needs a ride' };
+        const mapsUrl = (x) => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(x.address + ', ' + x.city + ', CA');
+        const telLink = (p) => p ? `<a href="tel:${escapeHtml(p.replace(/[^\d+]/g, ''))}">${escapeHtml(p)}</a>` : '';
+        const sameAddress = (a, b) => normalize(a.address).replace(/[^a-z0-9]/g, '') === normalize(b.address).replace(/[^a-z0-9]/g, '');
+        function onRoute(su) {
+            const found = [];
+            data.schedule.forEach(d => { if (d.stops.some(st => sameAddress(st, su))) found.push(d); });
+            return found;
+        }
+
+        async function openSignups() {
+            showSheet(signupsModal);
+            if (!signups) signupsBody.innerHTML = '<p class="muted">Loading…</p>';
+            await loadSignups();
+        }
+        async function loadSignups() {
+            try {
+                const res = await api('/signups', { auth: true });
+                signups = res.signups;
+                const closes = new Date(res.closesAt - 1);
+                $('signupsSubtitle').textContent = 'Private · ' + (Date.now() < res.closesAt ? 'Closes ' : 'Closed ') +
+                    closes.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+                renderSignups();
+            } catch (e) {
+                if (!signups) signupsBody.innerHTML = `<p class="muted">${e.status === 401 ? 'This GitHub token cannot read sign-ups. It needs write access to the Carols repo.' : e.status === 0 ? 'Sign in with your GitHub token to see sign-ups.' : 'Could not load sign-ups. Check your connection.'}</p>`;
+                else toast('Could not refresh sign-ups', true);
+            }
+        }
+        $('signupsBtn').onclick = openSignups;
+        $('refreshSignupsBtn').onclick = loadSignups;
+
+        function nightStats(night) {
+            const homes = signups.filter(x => x.kind !== 'caroler' && x.day === night);
+            const carolers = signups.filter(x => x.kind === 'caroler' && (x.day === night || x.day === 'both'));
+            const sum = (list, f) => list.reduce((n, x) => n + f(x), 0);
+            return {
+                invited: homes.filter(x => x.kind === 'neighbor').length,
+                members: homes.filter(x => x.kind === 'member').length,
+                people: sum(carolers, x => x.people),
+                seats: sum(carolers.filter(x => x.transport === 'seats'), x => x.seats),
+                rides: sum(carolers.filter(x => x.transport === 'ride'), x => x.people)
+            };
+        }
+
+        function renderSignups() {
+            const homes = signups.filter(x => x.kind !== 'caroler');
+            const carolers = signups.filter(x => x.kind === 'caroler');
+            const either = homes.filter(x => x.day === 'either');
+            const night = (n) => {
+                const st = nightStats(n);
+                return `<div class="su-night"><h3>${NIGHT[n]}</h3><dl>
+                    <dt>Invited homes</dt><dd>${st.invited}</dd>
+                    <dt>Church homes</dt><dd>${st.members}</dd>
+                    <dt>Carolers</dt><dd>${st.people}</dd>
+                    <dt>Free seats</dt><dd>${st.seats}</dd>
+                    <dt>Need a ride</dt><dd class="${st.rides > st.seats ? 'warn' : ''}">${st.rides}</dd>
+                </dl></div>`;
+            };
+            let html = `<div class="su-summary">${night('24')}${night('25')}
+                ${either.length ? `<p class="su-either">Plus ${either.length} home${either.length === 1 ? '' : 's'} that can do either night (${either.filter(x => x.kind === 'neighbor').length} invited).</p>` : ''}
+            </div>
+            <div class="su-tabs">
+                <button data-su-tab="homes" class="${signupsTab === 'homes' ? 'active' : ''}">Homes (${homes.length})</button>
+                <button data-su-tab="carolers" class="${signupsTab === 'carolers' ? 'active' : ''}">Carolers (${carolers.reduce((n, x) => n + x.people, 0)})</button>
+            </div>`;
+
+            if (signupsTab === 'homes') {
+                const byPriority = (a, b) => (a.kind === 'neighbor' ? 0 : 1) - (b.kind === 'neighbor' ? 0 : 1) || a.created_at - b.created_at;
+                html += ['24', '25', 'either'].map(n => {
+                    const list = homes.filter(x => x.day === n).sort(byPriority);
+                    return list.length ? `<div class="su-group"><h4>${NIGHT[n]}</h4>${list.map(homeItem).join('')}</div>` : '';
+                }).join('') || '<p class="muted">No homes signed up yet.</p>';
+            } else {
+                const groups = [['ride', 'Need a ride'], ['seats', 'Drivers with free seats'], ['full', 'Driving, car full']];
+                html += groups.map(([t, label]) => {
+                    const list = carolers.filter(x => x.transport === t);
+                    return list.length ? `<div class="su-group"><h4>${label}</h4>${list.map(carolerItem).join('')}</div>` : '';
+                }).join('') || '<p class="muted">No carolers signed up yet.</p>';
+            }
+
+            html += `<div class="su-footer">
+                <button class="btn" id="exportSignupsBtn">Download spreadsheet</button>
+                <span class="spacer"></span>
+                <button class="btn danger-text" id="deleteAllSignupsBtn">Delete all sign-ups</button>
+            </div>`;
+            signupsBody.innerHTML = html;
+        }
+
+        function homeItem(x) {
+            const routes = onRoute(x);
+            const nights = x.day === 'either' ? ['24', '25'] : [x.day];
+            const addBtns = routes.length ? '' : nights.map(n =>
+                `<button class="btn primary" data-su-route="${x.id}" data-night="${n}">Add to ${NIGHT[n]} route</button>`).join('');
+            return `<div class="su-item ${x.kind}">
+                <div class="su-top">
+                    <span class="su-name">${escapeHtml(x.name)}</span>
+                    ${routes.map(d => `<span class="su-tag route">On ${escapeHtml(d.title.replace('December ', 'Dec ').replace(/(st|nd|rd|th)$/, ''))} route</span>`).join('')}
+                    <span class="su-tag ${x.kind === 'neighbor' ? 'inv' : 'mem'}">${x.kind === 'neighbor' ? 'Invited' : 'Church'}</span>
+                </div>
+                <p class="su-line">${escapeHtml(x.address)}, ${escapeHtml(x.city)}</p>
+                <p class="su-line">${x.kind === 'neighbor'
+                    ? `Invited by ${escapeHtml(x.contact_name)} · ${telLink(x.contact_phone)}`
+                    : telLink(x.phone)}</p>
+                ${x.notes ? `<p class="su-notes">${escapeHtml(x.notes)}</p>` : ''}
+                <div class="su-actions">
+                    ${addBtns}
+                    <a class="btn" href="${mapsUrl(x)}" target="_blank" rel="noopener">${ICON.map}Maps</a>
+                    <span class="spacer"></span>
+                    <button class="tool-btn danger" data-su-delete="${x.id}" aria-label="Delete sign-up">${ICON.trash}</button>
+                </div>
+            </div>`;
+        }
+
+        function carolerItem(x) {
+            const extra = x.transport === 'seats' ? ` · ${x.seats} free seat${x.seats === 1 ? '' : 's'}` : '';
+            return `<div class="su-item">
+                <div class="su-top">
+                    <span class="su-name">${escapeHtml(x.name)}${x.people > 1 ? ` <span class="muted">+${x.people - 1}</span>` : ''}</span>
+                    <span class="su-tag mem">${NIGHT[x.day]}</span>
+                </div>
+                <p class="su-line">${TRANSPORT[x.transport] || ''}${extra}</p>
+                <p class="su-line">${telLink(x.phone)}${x.people > 1 ? ` · ${x.people} people` : ''}</p>
+                ${x.notes ? `<p class="su-notes">${escapeHtml(x.notes)}</p>` : ''}
+                <div class="su-actions"><span class="spacer"></span>
+                    <button class="tool-btn danger" data-su-delete="${x.id}" aria-label="Delete sign-up">${ICON.trash}</button>
+                </div>
+            </div>`;
+        }
+
+        signupsBody.addEventListener('click', async (e) => {
+            const tab = e.target.closest('[data-su-tab]');
+            if (tab) { signupsTab = tab.dataset.suTab; renderSignups(); return; }
+
+            const route = e.target.closest('[data-su-route]');
+            if (route) {
+                const x = signups.find(s => s.id === +route.dataset.suRoute);
+                const dayId = 'dec' + route.dataset.night;
+                if (!x || !data.schedule.some(d => d.id === dayId)) return;
+                stopPrefill = { name: x.name, address: x.address, city: x.city, fromNeighbor: x.kind === 'neighbor' };
+                editingStopId = 'new';
+                openSchedule(dayId);
+                setTimeout(() => {
+                    const form = document.getElementById('stopForm');
+                    if (form) { form.scrollIntoView({ block: 'center' }); form.elements.name.focus({ preventScroll: true }); }
+                }, 60);
+                return;
+            }
+
+            const del = e.target.closest('[data-su-delete]');
+            if (del) {
+                const x = signups.find(s => s.id === +del.dataset.suDelete);
+                if (!x || !confirm(`Delete the sign-up for "${x.name}"?`)) return;
+                try {
+                    await api('/signups/' + x.id, { method: 'DELETE', auth: true });
+                    signups = signups.filter(s => s !== x);
+                    renderSignups();
+                } catch (err) { toast('Could not delete (' + err.message + ')', true); }
+                return;
+            }
+
+            if (e.target.closest('#exportSignupsBtn')) { exportSignups(); return; }
+
+            if (e.target.closest('#deleteAllSignupsBtn')) {
+                if (!signups.length) return;
+                if (!confirm(`Delete all ${signups.length} sign-ups? This cannot be undone. Download the spreadsheet first if you want a copy.`)) return;
+                try {
+                    await api('/signups', { method: 'DELETE', auth: true });
+                    signups = [];
+                    renderSignups();
+                    toast('All sign-ups deleted');
+                } catch (err) { toast('Could not delete (' + err.message + ')', true); }
+            }
+        });
+
+        function exportSignups() {
+            const cols = [
+                ['Type', x => ({ neighbor: 'Invited home', member: 'Church home', caroler: 'Caroler' }[x.kind])],
+                ['Night', x => NIGHT[x.day]],
+                ['Name', x => x.name],
+                ['Address', x => x.address],
+                ['City', x => x.city],
+                ['Phone', x => x.phone],
+                ['Invited by', x => x.contact_name],
+                ['Invited by phone', x => x.contact_phone],
+                ['People', x => x.kind === 'caroler' ? x.people : ''],
+                ['Getting there', x => TRANSPORT[x.transport] || ''],
+                ['Free seats', x => x.transport === 'seats' ? x.seats : ''],
+                ['Notes', x => x.notes],
+                ['Signed up', x => new Date(x.created_at).toLocaleString()]
+            ];
+            const cell = (v) => {
+                let t = String(v ?? '');
+                if (/^[=+\-@]/.test(t)) t = "'" + t; // keep spreadsheet apps from running it as a formula
+                return /[",\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+            };
+            const order = { neighbor: 0, member: 1, caroler: 2 };
+            const rows = [...signups].sort((a, b) => order[a.kind] - order[b.kind] || a.created_at - b.created_at);
+            const csv = [cols.map(c => c[0]), ...rows.map(x => cols.map(c => c[1](x)))].map(r => r.map(cell).join(',')).join('\n');
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+            a.download = 'caroling-signups.csv';
+            a.click();
+            setTimeout(() => URL.revokeObjectURL(a.href), 1000);
         }
 
         // City suggestions for the stop form

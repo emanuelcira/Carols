@@ -9,6 +9,12 @@
 //   DELETE /submissions/:id          remove an added carol (or after moving it into data.json)
 //   DELETE /requests/:songId         clear the stars of one song
 //   DELETE /requests                 clear all stars (new season)
+//
+// Caroling sign-ups (public can only send; editors read and delete):
+//   POST   /signups                  { kind, name, phone, ... } -> { ok }
+//   GET    /signups                  (editor) -> { signups: [...], closesAt }
+//   DELETE /signups/:id              (editor)
+//   DELETE /signups                  (editor) delete all, after Christmas
 
 const REPO = 'emanuelcira/Carols';
 const ORIGINS = ['https://emanuelcira.github.io', 'http://localhost:4620', 'http://127.0.0.1:4620'];
@@ -16,6 +22,11 @@ const ORIGINS = ['https://emanuelcira.github.io', 'http://localhost:4620', 'http
 const MAX_VOTES_PER_IP_PER_SONG = 6;   // a family on one wifi can still star
 const MAX_SUBMISSIONS_PER_IP_PER_HOUR = 5;
 const MAX_PENDING = 200;
+
+// Sign-ups close at the end of December 20 (Pacific time)
+const SIGNUPS_CLOSE_AT = Date.parse('2026-12-21T08:00:00Z');
+const MAX_SIGNUPS_PER_IP_PER_HOUR = 15;
+const MAX_SIGNUPS = 1500;
 
 export default {
   async fetch(request, env) {
@@ -109,6 +120,45 @@ export default {
         }
       }
 
+      // ----- Caroling sign-ups -----
+      if (parts[0] === 'signups') {
+        if (request.method === 'POST' && parts.length === 1) {
+          if (Date.now() >= SIGNUPS_CLOSE_AT) return json({ error: 'Sign-ups are closed.' }, 403);
+          const b = await readJson(request);
+          const v = validateSignup(b);
+          if (v.error) return json({ error: v.error }, 400);
+
+          const since = Date.now() - 3600_000;
+          const { n } = await env.DB.prepare('SELECT COUNT(*) AS n FROM signups WHERE ip = ? AND created_at > ?').bind(ip, since).first();
+          if (n >= MAX_SIGNUPS_PER_IP_PER_HOUR) return json({ error: 'Too many sign-ups from this network. Try again in an hour.' }, 429);
+          const total = await env.DB.prepare('SELECT COUNT(*) AS n FROM signups').first();
+          if (total.n >= MAX_SIGNUPS) return json({ error: 'Sign-ups are full right now.' }, 429);
+
+          await env.DB.prepare(`INSERT INTO signups
+              (kind, name, phone, address, city, day, contact_name, contact_phone, transport, seats, people, notes, ip, created_at)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+            .bind(v.kind, v.name, v.phone, v.address, v.city, v.day, v.contact_name, v.contact_phone,
+                  v.transport, v.seats, v.people, v.notes, ip, Date.now()).run();
+          return json({ ok: true });
+        }
+
+        if (!(await isEditor(request))) return json({ error: 'Not allowed' }, 401);
+
+        if (request.method === 'GET' && parts.length === 1) {
+          const { results } = await env.DB.prepare(`SELECT id, kind, name, phone, address, city, day, contact_name,
+              contact_phone, transport, seats, people, notes, created_at FROM signups ORDER BY created_at`).all();
+          return json({ signups: results, closesAt: SIGNUPS_CLOSE_AT });
+        }
+        if (request.method === 'DELETE' && parts[1]) {
+          await env.DB.prepare('DELETE FROM signups WHERE id = ?').bind(Number(parts[1])).run();
+          return json({ ok: true });
+        }
+        if (request.method === 'DELETE' && parts.length === 1) {
+          await env.DB.prepare('DELETE FROM signups').run();
+          return json({ ok: true });
+        }
+      }
+
       return json({ error: 'Not found' }, 404);
     } catch (err) {
       console.error(err);
@@ -116,6 +166,46 @@ export default {
     }
   }
 };
+
+function validateSignup(b) {
+  const kind = ['neighbor', 'member', 'caroler'].includes(b.kind) ? b.kind : null;
+  if (!kind) return { error: 'Choose a sign-up type' };
+  const v = {
+    kind,
+    name: clean(b.name, 80),
+    phone: clean(b.phone, 30),
+    address: clean(b.address, 160),
+    city: clean(b.city, 60),
+    day: String(b.day || ''),
+    contact_name: clean(b.contact_name, 80),
+    contact_phone: clean(b.contact_phone, 30),
+    transport: '',
+    seats: 0,
+    people: 1,
+    notes: String(b.notes || '').replace(/\r\n/g, '\n').trim().slice(0, 500)
+  };
+  if (!v.name) return { error: 'Add a name' };
+  if (kind === 'caroler') {
+    if (!['24', '25', 'both'].includes(v.day)) return { error: 'Choose which night' };
+    if (!v.phone) return { error: 'Add a phone number' };
+    v.transport = ['seats', 'full', 'ride'].includes(b.transport) ? b.transport : '';
+    if (!v.transport) return { error: 'Choose how you are getting there' };
+    v.seats = v.transport === 'seats' ? Math.min(12, Math.max(1, parseInt(b.seats, 10) || 0)) : 0;
+    v.people = Math.min(15, Math.max(1, parseInt(b.people, 10) || 1));
+    v.address = ''; v.city = ''; v.contact_name = ''; v.contact_phone = '';
+  } else {
+    if (!['24', '25', 'either'].includes(v.day)) return { error: 'Choose which night' };
+    if (!v.address || !v.city) return { error: 'Add the address and city' };
+    if (kind === 'neighbor') {
+      if (!v.contact_name || !v.contact_phone) return { error: 'Add your name and phone' };
+      if (b.agreed !== true) return { error: 'Please confirm they said yes' };
+    } else {
+      if (!v.phone) return { error: 'Add a phone number' };
+      v.contact_name = ''; v.contact_phone = '';
+    }
+  }
+  return v;
+}
 
 function clean(v, max) {
   return String(v || '').replace(/\s+/g, ' ').trim().slice(0, max);
