@@ -601,8 +601,8 @@
         };
 
         // ----- Intro cards -----
-        // Short cards that fade one into the next. Shown the first time on a phone,
-        // and always written out in full under the buttons.
+        // Short cards that fade one into the next. Shown every time the page opens,
+        // and also written out in full under the buttons.
         const SLIDES = [
             {
                 eyebrow: 'Caroling 2026',
@@ -737,7 +737,6 @@
 
         function finishIntro() {
             cancelDip();
-            store.set('carols-intro-seen', '1');
             location.replace('#start');
         }
         $('introNext').onclick = () => {
@@ -776,7 +775,8 @@
                 form.querySelectorAll('[data-remember]').forEach(i => { if (!i.value) i.value = store.get('carols-signup-' + i.dataset.remember) || ''; });
             }
         }
-        const route = () => show(location.hash.slice(1) || (store.get('carols-intro-seen') || closed ? 'start' : 'intro'));
+        // Opening the page always starts with the intro cards (everyone should see why we're doing this)
+        const route = () => show(location.hash.slice(1) || (closed ? 'start' : 'intro'));
         window.addEventListener('hashchange', route);
         $('topBack').onclick = (e) => {
             if ($('topBack').getAttribute('href') === '#') { e.preventDefault(); history.length > 1 ? history.back() : (location.hash = ''); }
