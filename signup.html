@@ -767,7 +767,7 @@
             $('topBack').setAttribute('href', toCarols ? './' : '#');
             if (view === 'intro') renderSlide(0); else cancelDip();
             window.scrollTo(0, 0);
-            if (view !== 'start' && view !== 'done') {
+            if (view !== 'start' && view !== 'done' && view !== 'intro') {
                 const form = $('view-' + view).querySelector('form');
                 form.querySelectorAll('[data-remember]').forEach(i => { if (!i.value) i.value = store.get('carols-signup-' + i.dataset.remember) || ''; });
             }
