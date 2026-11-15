@@ -955,11 +955,11 @@
         (() => {
             const snow = $('snow');
             let html = '';
-            for (let i = 0; i < 24; i++) {
+            for (let i = 0; i < 12; i++) {
                 // small snowflakes; the bigger ones are fainter so they never compete with the text
                 const size = 8 + Math.random() * 7;
-                const dur = 10 + Math.random() * 10;
-                const fade = 0.3 - (size - 8) * 0.022 + Math.random() * 0.05;
+                const dur = 20 + Math.random() * 12;          // slow drift down
+                const fade = 0.14 - (size - 8) * 0.01 + Math.random() * 0.03;   // very faint
                 html += `<i class="flake" style="left:${(Math.random() * 100).toFixed(1)}%;width:${size.toFixed(1)}px;height:${size.toFixed(1)}px;` +
                     `opacity:${fade.toFixed(2)};animation-duration:${dur.toFixed(1)}s;--spin:${(Math.random() < 0.5 ? -1 : 1) * (90 + Math.random() * 180) | 0}deg;` +
                     `animation-delay:-${(Math.random() * dur).toFixed(1)}s;--drift:${(Math.random() * 60 - 30).toFixed(0)}px"></i>`;
