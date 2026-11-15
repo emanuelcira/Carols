@@ -666,7 +666,7 @@
         // and also written out in full under the buttons.
         const SLIDES = [
             {
-                eyebrow: 'Caroling 2026',
+                eyebrow: 'Caroling!',
                 opening: true,
                 title: 'This Christmas, we\'re going to the ones who haven\'t heard.',
                 body: 'Our neighbors. Our coworkers. Our friends who don\'t know Jesus yet.'
@@ -895,7 +895,7 @@
 
         // ----- The opening (about 10-12 seconds):
         //   CHRISTMAS 2026 types in, "is here." fades in under it, both fade away,
-        //   "So we're going" appears, CAROLING 2026 types in, then it glides up into card 1.
+        //   "So we're going" appears, CAROLING! types in, then it glides up into card 1.
         async function openingShow(f, alive, wait) {
             const fit = () => {
                 f.style.fontSize = '';
@@ -942,7 +942,7 @@
             const c2 = caption('So we\'re going', -66);
             await wait(1000);
             if (!alive()) return false;
-            if (!(await typeIn('CAROLING 2026'))) return false;
+            if (!(await typeIn('CAROLING!'))) return false;
             pulse();
             await wait(1400);
             if (!alive()) return false;
