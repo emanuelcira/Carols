@@ -311,6 +311,43 @@
             color: var(--accent); font-size: 30px; letter-spacing: 0.08em; text-transform: uppercase;
         }
 
+        /* Opening: logo + Begin (the tap also lets the bells play) */
+        .opening { display: none; }
+        .intro.is-opening .intro-stage, .intro.is-opening .intro-nav { display: none; }
+        .intro.is-opening .opening {
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 22px; text-align: center; animation: riseIn 0.7s ease-out both;
+        }
+        .opening .logo { width: 128px; height: 128px; margin: 0; }
+        .begin-btn {
+            padding: 16px 48px; border: none; border-radius: 999px; cursor: pointer;
+            background: var(--accent); color: var(--accent-text); font-size: 19px; font-weight: 800; letter-spacing: 0.02em;
+            box-shadow: 0 10px 28px rgba(31, 52, 102, 0.28); animation: breathe 2.4s ease-in-out infinite;
+        }
+        @keyframes breathe { 50% { transform: scale(1.05); } }
+        .opening-hint { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-3); }
+        .opening-hint svg { width: 16px; height: 16px; }
+        .opening.leaving { animation: fadeOut 0.35s ease-in both !important; }
+        @keyframes fadeOut { to { opacity: 0; transform: scale(0.97); } }
+
+        /* "CAROLING 2026" types in letter by letter */
+        .floater.title.opening-title { font-size: 40px; }
+        .floater .ch { opacity: 0; display: inline-block; }
+        .floater .ch.on { animation: chIn 0.28s cubic-bezier(.3, 1.6, .5, 1) both; }
+        @keyframes chIn { from { opacity: 0; transform: translateY(8px) scale(0.6); } to { opacity: 1; transform: none; } }
+
+        /* Falling snow behind the intro */
+        .snow { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; opacity: 0; transition: opacity 0.8s; }
+        body.intro-on .snow { opacity: 1; }
+        .flake { position: absolute; top: -12px; border-radius: 50%; background: var(--accent); animation: fall linear infinite; }
+        @keyframes fall { to { transform: translate3d(var(--drift), 106vh, 0); } }
+        .topbar, .container { position: relative; z-index: 1; }
+
+        .top-actions { display: flex; gap: 8px; }
+        .sound-btn .icon-sound-off { display: none; }
+        .sound-btn.off .icon-sound-on { display: none; }
+        .sound-btn.off .icon-sound-off { display: block; }
+
         /* Word-by-word text */
         .slide .w { display: inline-block; opacity: 0; animation: wordIn 0.32s ease-out both; }
         @keyframes wordIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
@@ -368,6 +405,8 @@
         @media (prefers-reduced-motion: reduce) {
             .slide.enter, .slide.leave, .slide .wait, .slide .pop, .slide .land, .slide .fade, .slide .jump, .slide .wiggle, .slide .w { animation: none !important; opacity: 1 !important; transform: none !important; }
             .floater { display: none; }
+            .snow { display: none; }
+            .begin-btn { animation: none; }
         }
 
         footer { text-align: center; color: var(--text-3); font-size: 13px; margin-top: 28px; }
@@ -379,15 +418,31 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             <span id="topBackText">Carols</span>
         </a>
+        <div class="top-actions">
+        <button class="icon-btn sound-btn" id="soundBtn" aria-label="Sound on" aria-pressed="true">
+            <svg class="icon-sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+            <svg class="icon-sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+        </button>
         <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Switch light / dark mode">
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
         </button>
+        </div>
     </div>
+    <div class="snow" id="snow" aria-hidden="true"></div>
 
     <div class="container">
         <!-- ===== Intro cards (first visit) ===== -->
         <section id="view-intro" class="intro" hidden>
+            <div class="opening">
+                <img class="logo logo-light" src="logo.png" alt="RBCSF">
+                <img class="logo logo-dark" src="logo-white.png" alt="RBCSF">
+                <button class="begin-btn" id="beginBtn">Begin</button>
+                <p class="opening-hint">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>
+                    Turn your sound on
+                </p>
+            </div>
             <div class="intro-stage" id="introStage"></div>
             <div class="intro-nav">
                 <button class="prev-btn" id="introPrev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
@@ -402,7 +457,7 @@
                 <img class="logo logo-light" src="logo.png" alt="RBCSF">
                 <img class="logo logo-dark" src="logo-white.png" alt="RBCSF">
                 <h1>Caroling Sign-up</h1>
-                <p class="lead">Invite a friend who doesn't know Jesus yet, tell us you're coming, or sign up your own home.</p>
+                <p class="lead">Sign up a friend who doesn't know Jesus yet, tell us you're coming, or add your own home.</p>
             </header>
 
             <div class="info">
@@ -418,7 +473,7 @@
                     <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M12 17.5s-3.2-2-3.2-4.1a1.8 1.8 0 0 1 3.2-1.1 1.8 1.8 0 0 1 3.2 1.1c0 2.1-3.2 4.1-3.2 4.1z"/></svg></span>
                     <span>
                         <span class="priority">Most important</span>
-                        <span class="t1">Invite a neighbor or friend</span>
+                        <span class="t1">Sign up a neighbor or friend</span>
                         <span class="t2">Someone who isn't a Christian said yes. These homes come first.</span>
                     </span>
                     <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
@@ -450,10 +505,10 @@
             <footer>Sign-ups close December 20 · RBCSF</footer>
         </section>
 
-        <!-- ===== Invite a neighbor or friend ===== -->
+        <!-- ===== Sign up a neighbor or friend ===== -->
         <section id="view-invite" class="card" hidden>
             <div class="form-head">
-                <h2>Invite a neighbor or friend</h2>
+                <h2>Sign up a neighbor or friend</h2>
                 <p>Only sign up people who said yes. Our group will come sing a few carols at their door.</p>
             </div>
             <form data-kind="neighbor" novalidate>
@@ -578,7 +633,7 @@
             <h2 id="doneTitle">Thank you!</h2>
             <p id="doneText"></p>
             <div class="actions">
-                <button class="submit" id="doneAgain">Invite someone else</button>
+                <button class="submit" id="doneAgain">Sign up someone else</button>
                 <a class="btn-secondary" href="./">Back to carols</a>
             </div>
         </section>
@@ -615,6 +670,7 @@
         const SLIDES = [
             {
                 eyebrow: 'Caroling 2026',
+                opening: true,
                 title: 'This Christmas, we\'re going to the ones who haven\'t heard.',
                 body: 'Our neighbors. Our coworkers. Our friends who don\'t know Jesus yet.'
             },
@@ -653,16 +709,17 @@
         function slideHtml(sl, animate) {
             // While animating, the Sing/Pray/Dip pieces and the text after them wait hidden
             const w = animate && sl.dip ? ' wait' : '';
-            const bigTitle = animate && !sl.title && (sl.verse || sl.verses);   // verse cards: title shows big first
+            // Verse cards and the opening card: the small title shows big first, then moves up
+            const bigTitle = animate && ((!sl.title && (sl.verse || sl.verses)) || sl.opening);
             return `<div class="slide">
                 <p class="eyebrow${bigTitle ? ' wait' : ''}">${sl.eyebrow}</p>
-                ${sl.title ? `<h2 class="${animate ? 'jump' : ''}">${sl.title}</h2>` : ''}
+                ${sl.title ? `<h2 class="${animate ? (bigTitle ? 'wait' : 'jump') : ''}">${sl.title}</h2>` : ''}
                 ${(sl.verses || (sl.verse ? [sl.verse] : [])).map(v => `<blockquote class="verse${bigTitle ? ' wait' : ''}"><q>${v[0]}</q><cite>${v[1]}</cite></blockquote>`).join('')}
                 ${sl.dip ? `<div class="dip-line">
                         <span class="dip-group"><b class="qm${w}">&ldquo;</b><span class="box${w}" data-say="We sing.">Sing.</span><span class="box${w}" data-say="We pray.">Pray.</span><span class="box${w}" data-say="We dip.">Dip.</span><b class="qm close${w}">&rdquo;</b></span>
                         <span class="dip-group by${w}"><span class="dots3">…</span><span class="box soft">Ema</span></span>
                     </div>` : ''}
-                ${sl.body ? `<p class="body${w}">${sl.body}</p>` : ''}
+                ${sl.body ? `<p class="body${w}${bigTitle ? ' wait' : ''}">${sl.body}</p>` : ''}
                 ${sl.html || ''}
             </div>`;
         }
@@ -677,7 +734,7 @@
                 stage.querySelector('.slide').classList.add('enter');
                 const slide = stage.querySelector('.slide');
                 if (SLIDES[slideIndex].dip) playDip(slide);
-                else if (!SLIDES[slideIndex].title) playTitle(slide);
+                else if (!SLIDES[slideIndex].title || SLIDES[slideIndex].opening) playTitle(slide, !!SLIDES[slideIndex].opening);
                 else playText(slide, 450);
                 [...$('introDots').children].forEach((d, i) => d.classList.toggle('on', i === slideIndex));
                 $('introPrev').disabled = slideIndex === 0;
@@ -712,6 +769,7 @@
                 f.className = 'floater';
                 f.textContent = box.dataset.say;
                 document.body.appendChild(f);
+                bell([1046.5, 1318.5, 1568.0][boxes.indexOf(box)], 0, 0.06, 1.5);
                 f.animate([{ opacity: 0, transform: 'translate(-50%, -50%) scale(0.6)' }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1.06)', offset: 0.7 }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }],
                     { duration: 380, easing: 'ease-out', fill: 'forwards' });
                 await wait(620);
@@ -793,26 +851,46 @@
 
         // Verse cards: the title ("Why we go") appears big in the middle of the screen,
         // then shrinks up into its place, then the verse comes in word by word.
-        async function playTitle(slide) {
+        async function playTitle(slide, opening) {
             const run = ++dipRun;
             const alive = () => run === dipRun && slide.isConnected;
             const wait = (ms) => new Promise(r => setTimeout(r, ms));
             const eyebrow = slide.querySelector('.eyebrow');
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !document.body.animate) {
+            const h2 = slide.querySelector('h2');
+            const finish = (start) => {
                 eyebrow.classList.remove('wait');
-                playText(slide, 0);
-                return;
-            }
+                if (h2) { h2.classList.remove('wait'); h2.classList.add('jump'); }
+                playText(slide, start);
+            };
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !document.body.animate) { finish(0); return; }
             const f = document.createElement('div');
-            f.className = 'floater title';
-            f.textContent = eyebrow.textContent;
+            f.className = 'floater title' + (opening ? ' opening-title' : '');
+            if (opening) f.innerHTML = [...eyebrow.textContent.toUpperCase()].map(c => `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
+            else f.textContent = eyebrow.textContent;
             document.body.appendChild(f);
             // never wider than the screen
             const room = window.innerWidth - 40;
-            if (f.offsetWidth > room) f.style.fontSize = (30 * room / f.offsetWidth) + 'px';
-            f.animate([{ opacity: 0, transform: 'translate(-50%, -50%) scale(0.7)' }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1.05)', offset: 0.7 }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }],
-                { duration: 420, easing: 'ease-out', fill: 'forwards' });
-            await wait(900);
+            if (f.offsetWidth > room) f.style.fontSize = (parseFloat(getComputedStyle(f).fontSize) * room / f.offsetWidth) + 'px';
+            if (opening) {
+                // type it in, one bell per letter, then a chord
+                const chars = [...f.querySelectorAll('.ch')];
+                let note = 0;
+                for (const ch of chars) {
+                    if (!alive()) { f.remove(); return; }
+                    ch.classList.add('on');
+                    if (ch.textContent.trim()) bell(TYPE_NOTES[note++ % TYPE_NOTES.length], 0, 0.05, 1.1);
+                    await wait(ch.textContent.trim() ? 130 : 200);
+                }
+                chord();
+                f.animate([{ transform: 'translate(-50%, -50%) scale(1)' }, { transform: 'translate(-50%, -50%) scale(1.08)' }, { transform: 'translate(-50%, -50%) scale(1)' }],
+                    { duration: 600, easing: 'ease-in-out' });
+                await wait(1100);
+            } else {
+                f.animate([{ opacity: 0, transform: 'translate(-50%, -50%) scale(0.7)' }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1.05)', offset: 0.7 }, { opacity: 1, transform: 'translate(-50%, -50%) scale(1)' }],
+                    { duration: 420, easing: 'ease-out', fill: 'forwards' });
+                bell(1318.5, 0, 0.06, 1.6);
+                await wait(900);
+            }
             if (!alive()) { f.remove(); return; }
             const a = f.getBoundingClientRect(), b = eyebrow.getBoundingClientRect();
             const dx = b.left - a.left, dy = (b.top + b.height / 2) - (a.top + a.height / 2);
@@ -823,9 +901,86 @@
                 { duration: 520, easing: 'cubic-bezier(.5, 0, .25, 1)', fill: 'forwards' }).finished.catch(() => {});
             f.remove();
             if (!alive()) return;
-            eyebrow.classList.remove('wait');
-            playText(slide, 80);
+            finish(h2 ? 350 : 80);
         }
+
+        // ----- Bells (Web Audio, no sound files). Phones only allow sound after a tap. -----
+        let actx = null;
+        let soundOn = store.get('carols-sound') !== 'off';
+        const TYPE_NOTES = [1046.5, 1174.7, 1318.5, 1568.0, 1760.0, 2093.0, 1760.0, 1568.0, 1318.5, 1568.0, 1760.0, 2093.0];
+        function ensureAudio() {
+            try {
+                const AC = window.AudioContext || window.webkitAudioContext;
+                if (!actx && AC) actx = new AC();
+                if (actx && actx.state === 'suspended') actx.resume();
+            } catch (e) {}
+            return actx;
+        }
+        function bell(freq, when = 0, vol = 0.06, dur = 1.4) {
+            if (!soundOn || !actx || actx.state !== 'running') return;
+            const t = actx.currentTime + when;
+            const g = actx.createGain();
+            g.gain.setValueAtTime(0.0001, t);
+            g.gain.exponentialRampToValueAtTime(vol, t + 0.008);
+            g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+            g.connect(actx.destination);
+            // a bell is a few out-of-tune partials that fade together
+            [[1, 1], [2.76, 0.32], [5.4, 0.1]].forEach(([m, a]) => {
+                const o = actx.createOscillator();
+                const og = actx.createGain();
+                o.type = 'sine';
+                o.frequency.value = freq * m;
+                og.gain.value = a;
+                o.connect(og); og.connect(g);
+                o.start(t); o.stop(t + dur + 0.05);
+            });
+        }
+        function chord() { [523.25, 659.25, 783.99, 1046.5, 1568.0].forEach((f, i) => bell(f, i * 0.06, 0.045, 2.6)); }
+        function paintSound() {
+            $('soundBtn').classList.toggle('off', !soundOn);
+            $('soundBtn').setAttribute('aria-pressed', soundOn);
+            $('soundBtn').setAttribute('aria-label', soundOn ? 'Sound on' : 'Sound off');
+        }
+        $('soundBtn').onclick = () => {
+            soundOn = !soundOn;
+            store.set('carols-sound', soundOn ? 'on' : 'off');
+            paintSound();
+            if (soundOn) { ensureAudio(); setTimeout(() => bell(1568, 0, 0.05, 0.9), 30); }
+        };
+        paintSound();
+
+        // ----- Snow -----
+        (() => {
+            const snow = $('snow');
+            let html = '';
+            for (let i = 0; i < 28; i++) {
+                const size = 3 + Math.random() * 4.5;
+                const dur = 9 + Math.random() * 10;
+                html += `<i class="flake" style="left:${(Math.random() * 100).toFixed(1)}%;width:${size.toFixed(1)}px;height:${size.toFixed(1)}px;` +
+                    `opacity:${(0.12 + Math.random() * 0.25).toFixed(2)};animation-duration:${dur.toFixed(1)}s;` +
+                    `animation-delay:-${(Math.random() * dur).toFixed(1)}s;--drift:${(Math.random() * 60 - 30).toFixed(0)}px"></i>`;
+            }
+            snow.innerHTML = html;
+        })();
+
+        // ----- Opening screen -----
+        function startOpening() {
+            cancelDip();
+            slideIndex = 0;
+            $('introStage').innerHTML = '';
+            $('view-intro').classList.add('is-opening');
+            document.querySelector('.opening').classList.remove('leaving');
+        }
+        $('beginBtn').onclick = () => {
+            ensureAudio();
+            const op = document.querySelector('.opening');
+            op.classList.add('leaving');
+            setTimeout(() => {
+                $('view-intro').classList.remove('is-opening');
+                op.classList.remove('leaving');
+                renderSlide(0);
+            }, 330);
+        };
 
         function cancelDip() { dipRun++; document.querySelectorAll('.floater').forEach(f => f.remove()); }
 
@@ -861,7 +1016,8 @@
             const toCarols = view === 'start' || view === 'done' || view === 'intro';
             $('topBackText').textContent = toCarols ? 'Carols' : 'Back';
             $('topBack').setAttribute('href', toCarols ? './' : '#');
-            if (view === 'intro') renderSlide(0); else cancelDip();
+            if (view === 'intro') startOpening(); else cancelDip();
+            document.body.classList.toggle('intro-on', view === 'intro');
             window.scrollTo(0, 0);
             if (view !== 'start' && view !== 'done' && view !== 'intro') {
                 const form = $('view-' + view).querySelector('form');
@@ -912,7 +1068,7 @@
 
         // ----- Submit -----
         const DONE = {
-            neighbor: ['Thank you!', 'They\'re on the list. Thank you for inviting them. We\'ll be praying for them, and we\'ll let you know which night we plan to come.', 'Invite someone else'],
+            neighbor: ['Thank you!', 'They\'re on the list. Thank you for inviting them. We\'ll be praying for them, and we\'ll let you know which night we plan to come.', 'Sign up someone else'],
             caroler: ['See you there!', 'We\'ll leave from church together after the service. If you need a ride, we\'ll match you with a driver.', 'Sign up someone else'],
             member: ['Thank you!', 'Your home is on the list. We\'ll come by if time allows, after the friends we\'ve invited.', 'Sign up another home']
         };
