@@ -162,6 +162,7 @@
         .field > span, .legend { font-size: 14px; font-weight: 600; color: var(--text-2); }
         .field .opt { font-weight: 400; color: var(--text-3); }
         .field-row { display: flex; gap: 12px; }
+        .field input[type="time"] { min-height: 48px; text-align: left; }
         .field input, .field textarea {
             width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 10px;
             background: var(--bg); color: var(--text); font-size: 16px; -webkit-appearance: none; appearance: none;
@@ -449,14 +450,7 @@
                         <label><input type="radio" name="day" value="either">Either<small>night</small></label>
                     </div>
                 </fieldset>
-                <fieldset>
-                    <span class="legend">Preferred time</span>
-                    <div class="seg">
-                        <label><input type="radio" name="time_pref" value="early" required>Earlier<small>first half of the night</small></label>
-                        <label><input type="radio" name="time_pref" value="late">Later<small>second half</small></label>
-                        <label><input type="radio" name="time_pref" value="any">Any time<small>works for them</small></label>
-                    </div>
-                </fieldset>
+                <label class="field"><span>Preferred time</span><input type="time" name="time_pref" required step="300"></label>
                 <label class="field"><span>Notes <span class="opt">(optional)</span></span><textarea name="notes" maxlength="500" placeholder="Parking info, if needed. For example: park down the street, don't park in the driveway."></textarea></label>
 
                 <p class="group-label">About you</p>
@@ -538,14 +532,7 @@
                         <label><input type="radio" name="day" value="either">Either<small>night</small></label>
                     </div>
                 </fieldset>
-                <fieldset>
-                    <span class="legend">Preferred time</span>
-                    <div class="seg">
-                        <label><input type="radio" name="time_pref" value="early" required>Earlier<small>first half of the night</small></label>
-                        <label><input type="radio" name="time_pref" value="late">Later<small>second half</small></label>
-                        <label><input type="radio" name="time_pref" value="any">Any time<small>works for us</small></label>
-                    </div>
-                </fieldset>
+                <label class="field"><span>Preferred time</span><input type="time" name="time_pref" required step="300"></label>
                 <label class="field"><span>Notes <span class="opt">(optional)</span></span><textarea name="notes" maxlength="500" placeholder="Gate code, parking, anything helpful"></textarea></label>
                 <p class="error-msg" hidden></p>
                 <button class="submit" type="submit">Sign up my home</button>
@@ -609,8 +596,8 @@
             {
                 eyebrow: 'What we pray over them',
                 verses: [
-                    ['Everyone who calls on the name of the Lord will be saved.', 'Romans 10:13'],
-                    ['Believe in the Lord Jesus, and you will be saved, you and your household.', 'Acts 16:31']
+                    ['Believe in the Lord Jesus, and you will be saved, you and your household.', 'Acts 16:31'],
+                    ['Everyone who calls on the name of the Lord will be saved.', 'Romans 10:13']
                 ]
             },
             {

@@ -196,7 +196,7 @@ function validateSignup(b) {
     v.address = ''; v.city = ''; v.contact_name = ''; v.contact_phone = '';
   } else {
     if (!['24', '25', 'either'].includes(v.day)) return { error: 'Choose which night' };
-    v.time_pref = ['early', 'late', 'any'].includes(b.time_pref) ? b.time_pref : '';
+    v.time_pref = /^([01]\d|2[0-3]):[0-5]\d$/.test(String(b.time_pref || '')) ? b.time_pref : '';
     if (!v.time_pref) return { error: 'Choose a preferred time' };
     if (!v.address || !v.city) return { error: 'Add the address and city' };
     if (kind === 'neighbor') {
