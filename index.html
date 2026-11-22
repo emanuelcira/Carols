@@ -803,6 +803,7 @@
             border: none; background: transparent; color: var(--text-2);
             font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 8px; cursor: pointer; white-space: nowrap;
         }
+.reset-requests { margin: 0 0 10px; padding: 10px; font-size: 14px; }
         .sort-toggle button.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1); }
         :root[data-theme="dark"] .sort-toggle button.active { background: var(--border); box-shadow: none; }
 
@@ -950,6 +951,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
             </button>
         </div>
+        <button class="add-btn edit-only reset-requests" id="resetRequestsBtn">New house: clear all requests</button>
         <div class="carol-list" id="carolList"></div>
         <p class="result-count" id="resultCount"></p>
         <div class="no-results" id="noResults" style="display: none;">
@@ -1783,8 +1785,21 @@
         $('sungBtn').onclick = () => {
             const s = visibleSongs[currentIndex];
             if (!s) return;
-            if (isSung(s.id)) delete sung[s.id]; else sung[s.id] = Date.now();
+            const marking = !isSung(s.id);
+            if (marking) sung[s.id] = Date.now(); else delete sung[s.id];
             store.set('carols-sung', JSON.stringify(sung));
+            // Sung: clear its stars for everyone so it can be requested again at the next house
+            if (marking && starCount(s.id) > 0) {
+                api('/requests/' + s.id, { method: 'DELETE', auth: true })
+                    .then(() => {
+                        starCounts[s.id] = 0;
+                        myStars.delete(s.id);
+                        store.set('carols-stars', JSON.stringify([...myStars]));
+                        repaintStars(s.id);
+                        toast('Marked as sung. Its requests are cleared.');
+                    })
+                    .catch(e => { if (e.status !== 0) toast('Could not clear the requests (' + e.message + ')', true); });
+            }
             paintSongActions(s.id);
             const row = document.querySelector(`.row-star[data-star="${s.id}"]`);
             if (row) {
@@ -1797,17 +1812,36 @@
             }
         };
 
+        // New house: clear every request so everyone can vote again
+        $('resetRequestsBtn').onclick = async () => {
+            if (!confirm('Clear all requests so everyone can vote again for the next house?')) return;
+            try {
+                await api('/requests', { method: 'DELETE', auth: true });
+                starCounts = {};
+                myStars.clear();
+                store.set('carols-stars', '[]');
+                filterCarols();
+                toast('All requests cleared. Ready for the next house.');
+            } catch (e) { if (e.status !== 0) toast('Could not clear requests (' + e.message + ')', true); }
+        };
+
         async function loadStars() {
             try {
-                const res = await api('/requests');
+                const res = await api('/requests?device=' + encodeURIComponent(deviceId));
                 starCounts = res.counts || {};
+                // After a reset (song sung or new house) this phone's stars are cleared too
+                if (Array.isArray(res.mine)) {
+                    myStars.clear();
+                    res.mine.forEach(id => myStars.add(id));
+                    store.set('carols-stars', JSON.stringify([...myStars]));
+                }
                 // Keep the list still while someone is scrolling: only repaint the numbers,
                 // except in "Most requested" where the order itself is the point
                 if (sortMode === 'top' && !openSheet) filterCarols();
                 else allSongs().forEach(s => repaintStars(s.id));
             } catch (e) { /* offline: stars just stay as they were */ }
         }
-        setInterval(() => { if (document.visibilityState === 'visible') loadStars(); }, 30000);
+        setInterval(() => { if (document.visibilityState === 'visible') loadStars(); }, 15000);
         document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') loadStars(); });
 
         function setSort(mode) {

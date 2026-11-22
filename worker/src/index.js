@@ -55,6 +55,12 @@ export default {
           const { results } = await env.DB.prepare('SELECT song_id, COUNT(*) AS n FROM votes GROUP BY song_id').all();
           const counts = {};
           results.forEach(r => { counts[r.song_id] = r.n; });
+          // ?device=… also returns which songs this phone has starred, so a reset clears its stars too
+          const device = url.searchParams.get('device') || '';
+          if (/^[a-z0-9-]{8,64}$/i.test(device)) {
+            const mine = await env.DB.prepare('SELECT song_id FROM votes WHERE device = ?').bind(device).all();
+            return json({ counts, mine: mine.results.map(r => r.song_id) });
+          }
           return json({ counts });
         }
 
