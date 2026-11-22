@@ -819,11 +819,6 @@
         .row-star:hover { background: var(--surface); }
         .row-star.on, .star-pill.on { color: var(--accent); }
         .row-star.on svg, .star-pill.on svg { fill: currentColor; }
-        .carol-item.sung .carol-main, .carol-item.sung .carol-num { opacity: 0.5; }
-        .sung-tag {
-            display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
-            color: var(--accent); background: var(--accent-soft); border-radius: 6px; padding: 1px 6px; margin-left: 6px;
-        }
 
         .song-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
         .pill {
@@ -972,7 +967,7 @@
                     <p class="sheet-subtitle" id="modalSubtitle"></p>
                     <div class="song-actions" id="songActions">
                         <button class="pill star-pill" id="starBtn" aria-pressed="false"></button>
-                        <button class="pill sung-pill edit-only" id="sungBtn" aria-pressed="false"></button>
+                        <button class="pill sung-pill edit-only" id="sungBtn" ></button>
                     </div>
                 </div>
                 <div class="sheet-actions">
@@ -1515,18 +1510,16 @@
             resultCount.textContent = list.length + (list.length === 1 ? ' carol' : ' carols');
 
             const frag = document.createDocumentFragment();
-            const editing = isEditing();
             list.forEach((song, i) => {
                 const item = document.createElement('div');
-                const sung = editing && isSung(song.id);
-                item.className = 'carol-item' + (sung ? ' sung' : '');
+                item.className = 'carol-item';
                 item.setAttribute('role', 'button');
                 item.tabIndex = 0;
                 item.innerHTML = `
                     <span class="carol-num">${songNumber(song)}</span>
                     <span class="carol-main">
                         <span class="carol-title">${escapeHtml(song.title)}${keyBadge(song.key)}</span>
-                        <span class="carol-subtitle">${LANG_LABEL[song.language] || ''}${sung ? '<span class="sung-tag">Sung</span>' : ''}</span>
+                        <span class="carol-subtitle">${LANG_LABEL[song.language] || ''}</span>
                     </span>
                     <button class="row-star" data-star="${song.id}" aria-label="Request this carol"></button>`;
                 paintStar(item.querySelector('.row-star'), song.id);
@@ -1549,9 +1542,7 @@
             if (term) filtered = filtered.filter(c => normalize(c.title).includes(term) || normalize(c.lyrics).includes(term));
             if (sortMode === 'top') {
                 const order = new Map(allSongs().map((s, i) => [s, i]));
-                const editing = isEditing();
                 filtered = [...filtered].sort((a, b) =>
-                    (editing ? (isSung(a.id) - isSung(b.id)) : 0) ||
                     (starCount(b.id) - starCount(a.id)) ||
                     (order.get(a) - order.get(b)));
             }
@@ -1697,8 +1688,8 @@
 
         // =====================================================================
         // Requests (stars). One star per phone per song. The worship leader
-        // sorts by "Most requested" and marks songs as Sung (Sung is kept only
-        // on the leader's phone and clears itself after 12 hours).
+        // sorts by "Most requested"; after singing a song, "Sang it" resets its
+        // stars to zero (it can be requested again, even the same night).
         // =====================================================================
         async function api(path, opts = {}) {
             const headers = { 'Content-Type': 'application/json' };
@@ -1732,11 +1723,7 @@
         const starCount = (id) => starCounts[id] || 0;
         let sortMode = 'az';
 
-        const SUNG_HOURS = 12;
-        let sung = readJsonStore('carols-sung', {});
-        for (const id in sung) if (Date.now() - sung[id] > SUNG_HOURS * 3600_000) delete sung[id];
-        store.set('carols-sung', JSON.stringify(sung));
-        const isSung = (id) => !!sung[id] && Date.now() - sung[id] < SUNG_HOURS * 3600_000;
+        store.remove('carols-sung');   // old "Sung tonight" marks are no longer used
 
         function paintStar(btn, id) {
             const on = myStars.has(id);
@@ -1752,10 +1739,7 @@
             star.classList.toggle('on', on);
             star.setAttribute('aria-pressed', on);
             star.innerHTML = `${ICON.star}<span>${on ? 'Requested' : 'Request'}</span>${n ? `<b>${n}</b>` : ''}`;
-            const s = $('sungBtn');
-            s.classList.toggle('on', isSung(id));
-            s.setAttribute('aria-pressed', isSung(id));
-            s.innerHTML = `${ICON.check}<span>${isSung(id) ? 'Sung tonight' : 'Mark as sung'}</span>`;
+            $('sungBtn').innerHTML = `${ICON.check}<span>Sang it · reset stars</span>`;
         }
         function repaintStars(id) {
             document.querySelectorAll(`.row-star[data-star="${id}"]`).forEach(b => paintStar(b, id));
@@ -1782,34 +1766,18 @@
             repaintStars(id);
         }
         $('starBtn').onclick = () => { const s = visibleSongs[currentIndex]; if (s) toggleStar(s.id); };
-        $('sungBtn').onclick = () => {
+        // Sang it: reset this song's stars to zero for everyone (no other effect)
+        $('sungBtn').onclick = async () => {
             const s = visibleSongs[currentIndex];
             if (!s) return;
-            const marking = !isSung(s.id);
-            if (marking) sung[s.id] = Date.now(); else delete sung[s.id];
-            store.set('carols-sung', JSON.stringify(sung));
-            // Sung: clear its stars for everyone so it can be requested again at the next house
-            if (marking && starCount(s.id) > 0) {
-                api('/requests/' + s.id, { method: 'DELETE', auth: true })
-                    .then(() => {
-                        starCounts[s.id] = 0;
-                        myStars.delete(s.id);
-                        store.set('carols-stars', JSON.stringify([...myStars]));
-                        repaintStars(s.id);
-                        toast('Marked as sung. Its requests are cleared.');
-                    })
-                    .catch(e => { if (e.status !== 0) toast('Could not clear the requests (' + e.message + ')', true); });
-            }
-            paintSongActions(s.id);
-            const row = document.querySelector(`.row-star[data-star="${s.id}"]`);
-            if (row) {
-                const item = row.closest('.carol-item');
-                item.classList.toggle('sung', isSung(s.id));
-                const sub = item.querySelector('.carol-subtitle');
-                const tag = sub.querySelector('.sung-tag');
-                if (isSung(s.id) && !tag) sub.insertAdjacentHTML('beforeend', '<span class="sung-tag">Sung</span>');
-                if (!isSung(s.id) && tag) tag.remove();
-            }
+            try {
+                await api('/requests/' + s.id, { method: 'DELETE', auth: true });
+                starCounts[s.id] = 0;
+                myStars.delete(s.id);
+                store.set('carols-stars', JSON.stringify([...myStars]));
+                repaintStars(s.id);
+                toast('Stars reset to zero');
+            } catch (e) { if (e.status !== 0) toast('Could not reset the stars (' + e.message + ')', true); }
         };
 
         // New house: clear every request so everyone can vote again
