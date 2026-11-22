@@ -803,8 +803,7 @@
             border: none; background: transparent; color: var(--text-2);
             font-size: 13px; font-weight: 600; padding: 6px 10px; border-radius: 8px; cursor: pointer; white-space: nowrap;
         }
-.reset-requests { margin: 0 0 10px; padding: 10px; font-size: 14px; }
-        .sort-toggle button.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1); }
+.sort-toggle button.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(16, 24, 40, 0.1); }
         :root[data-theme="dark"] .sort-toggle button.active { background: var(--border); box-shadow: none; }
 
         .row-star {
@@ -946,7 +945,6 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
             </button>
         </div>
-        <button class="add-btn edit-only reset-requests" id="resetRequestsBtn">New house: clear all requests</button>
         <div class="carol-list" id="carolList"></div>
         <p class="result-count" id="resultCount"></p>
         <div class="no-results" id="noResults" style="display: none;">
@@ -1688,8 +1686,8 @@
 
         // =====================================================================
         // Requests (stars). One star per phone per song. The worship leader
-        // sorts by "Most requested"; after singing a song, "Sang it" resets its
-        // stars to zero (it can be requested again, even the same night).
+        // sorts by "Most requested"; after singing a song, "Sang · clear votes"
+        // sets its votes back to zero, so songs we haven't sung yet rise to the top.
         // =====================================================================
         async function api(path, opts = {}) {
             const headers = { 'Content-Type': 'application/json' };
@@ -1739,7 +1737,7 @@
             star.classList.toggle('on', on);
             star.setAttribute('aria-pressed', on);
             star.innerHTML = `${ICON.star}<span>${on ? 'Requested' : 'Request'}</span>${n ? `<b>${n}</b>` : ''}`;
-            $('sungBtn').innerHTML = `${ICON.check}<span>Sang it · reset stars</span>`;
+            $('sungBtn').innerHTML = `${ICON.check}<span>Sang · clear votes</span>`;
         }
         function repaintStars(id) {
             document.querySelectorAll(`.row-star[data-star="${id}"]`).forEach(b => paintStar(b, id));
@@ -1766,7 +1764,7 @@
             repaintStars(id);
         }
         $('starBtn').onclick = () => { const s = visibleSongs[currentIndex]; if (s) toggleStar(s.id); };
-        // Sang it: reset this song's stars to zero for everyone (no other effect)
+        // Sang · clear votes: sets this song's votes back to zero for everyone. Nothing else.
         $('sungBtn').onclick = async () => {
             const s = visibleSongs[currentIndex];
             if (!s) return;
@@ -1776,21 +1774,8 @@
                 myStars.delete(s.id);
                 store.set('carols-stars', JSON.stringify([...myStars]));
                 repaintStars(s.id);
-                toast('Stars reset to zero');
+                toast('Votes cleared');
             } catch (e) { if (e.status !== 0) toast('Could not reset the stars (' + e.message + ')', true); }
-        };
-
-        // New house: clear every request so everyone can vote again
-        $('resetRequestsBtn').onclick = async () => {
-            if (!confirm('Clear all requests so everyone can vote again for the next house?')) return;
-            try {
-                await api('/requests', { method: 'DELETE', auth: true });
-                starCounts = {};
-                myStars.clear();
-                store.set('carols-stars', '[]');
-                filterCarols();
-                toast('All requests cleared. Ready for the next house.');
-            } catch (e) { if (e.status !== 0) toast('Could not clear requests (' + e.message + ')', true); }
         };
 
         async function loadStars() {
